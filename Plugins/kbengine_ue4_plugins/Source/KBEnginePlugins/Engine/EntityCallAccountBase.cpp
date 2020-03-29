@@ -13,16 +13,6 @@ EntityBaseEntityCall_AccountBase::~EntityBaseEntityCall_AccountBase()
 {
 }
 
-void EntityBaseEntityCall_AccountBase::Say(const FString& arg1)
-{
-	Bundle* pBundleRet = newCall("Say", 0);
-	if(!pBundleRet)
-		return;
-
-	pBundleRet->writeUnicode(arg1);
-	sendCall(NULL);
-}
-
 
 
 EntityCellEntityCall_AccountBase::EntityCellEntityCall_AccountBase(int32 eid, const FString& ename) : EntityCall(eid, ename)
@@ -32,6 +22,16 @@ EntityCellEntityCall_AccountBase::EntityCellEntityCall_AccountBase(int32 eid, co
 
 EntityCellEntityCall_AccountBase::~EntityCellEntityCall_AccountBase()
 {
+}
+
+void EntityCellEntityCall_AccountBase::Say(const FString& arg1)
+{
+	Bundle* pBundleRet = newCall("Say", 0);
+	if(!pBundleRet)
+		return;
+
+	pBundleRet->writeUnicode(arg1);
+	sendCall(NULL);
 }
 
 

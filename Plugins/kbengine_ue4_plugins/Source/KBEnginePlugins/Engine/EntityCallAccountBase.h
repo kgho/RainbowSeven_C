@@ -25,7 +25,6 @@ public:
 	EntityBaseEntityCall_AccountBase(int32 eid, const FString& ename);
 
 	virtual ~EntityBaseEntityCall_AccountBase();
-	void Say(const FString& arg1);
 };
 
 class KBENGINEPLUGINS_API EntityCellEntityCall_AccountBase : public EntityCall
@@ -35,6 +34,7 @@ public:
 	EntityCellEntityCall_AccountBase(int32 eid, const FString& ename);
 
 	virtual ~EntityCellEntityCall_AccountBase();
+	void Say(const FString& arg1);
 };
 
 }

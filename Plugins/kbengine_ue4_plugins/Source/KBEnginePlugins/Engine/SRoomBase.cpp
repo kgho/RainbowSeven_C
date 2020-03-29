@@ -1,4 +1,4 @@
-#include "AccountBase.h"
+#include "SRoomBase.h"
 #include "KBVar.h"
 #include "EntityDef.h"
 #include "ScriptModule.h"
@@ -14,96 +14,53 @@ namespace KBEngine
 
 
 
-void AccountBase::onComponentsEnterworld()
+void SRoomBase::onComponentsEnterworld()
 {
 }
 
-void AccountBase::onComponentsLeaveworld()
+void SRoomBase::onComponentsLeaveworld()
 {
 }
 
-void AccountBase::onGetBase()
+void SRoomBase::onGetBase()
 {
 	if(pBaseEntityCall)
 		delete pBaseEntityCall;
 
-	pBaseEntityCall = new EntityBaseEntityCall_AccountBase(id(), className());
+	pBaseEntityCall = new EntityBaseEntityCall_SRoomBase(id(), className());
 }
 
-void AccountBase::onGetCell()
+void SRoomBase::onGetCell()
 {
 	if(pCellEntityCall)
 		delete pCellEntityCall;
 
-	pCellEntityCall = new EntityCellEntityCall_AccountBase(id(), className());
+	pCellEntityCall = new EntityCellEntityCall_SRoomBase(id(), className());
 }
 
-void AccountBase::onLoseCell()
+void SRoomBase::onLoseCell()
 {
 	delete pCellEntityCall;
 	pCellEntityCall = NULL;
 }
 
-EntityCall* AccountBase::getBaseEntityCall()
+EntityCall* SRoomBase::getBaseEntityCall()
 {
 	return pBaseEntityCall;
 }
 
-EntityCall* AccountBase::getCellEntityCall()
+EntityCall* SRoomBase::getCellEntityCall()
 {
 	return pCellEntityCall;
 }
 
-void AccountBase::onRemoteMethodCall(MemoryStream& stream)
+void SRoomBase::onRemoteMethodCall(MemoryStream& stream)
 {
-	ScriptModule* sm = *EntityDef::moduledefs.Find("Account");
-	uint16 methodUtype = 0;
-	uint16 componentPropertyUType = 0;
-
-	if (sm->usePropertyDescrAlias)
-	{
-		componentPropertyUType = stream.readUint8();
-	}
-	else
-	{
-		componentPropertyUType = stream.readUint16();
-	}
-
-	if (sm->useMethodDescrAlias)
-	{
-		methodUtype = stream.read<uint8>();
-	}
-	else
-	{
-		methodUtype = stream.read<uint16>();
-	}
-
-	if(componentPropertyUType > 0)
-	{
-		KBE_ASSERT(false);
-
-		return;
-	}
-
-	Method* pMethod = sm->idmethods[methodUtype];
-
-	switch(pMethod->methodUtype)
-	{
-		case 2:
-		{
-			CHAT_INFO OnSay_arg1;
-			((DATATYPE_CHAT_INFO*)pMethod->args[0])->createFromStreamEx(stream, OnSay_arg1);
-			OnSay(OnSay_arg1);
-			break;
-		}
-		default:
-			break;
-	};
 }
 
-void AccountBase::onUpdatePropertys(MemoryStream& stream)
+void SRoomBase::onUpdatePropertys(MemoryStream& stream)
 {
-	ScriptModule* sm = *EntityDef::moduledefs.Find("Account");
+	ScriptModule* sm = *EntityDef::moduledefs.Find("SRoom");
 
 	while(stream.length() > 0)
 	{
@@ -179,9 +136,9 @@ void AccountBase::onUpdatePropertys(MemoryStream& stream)
 	}
 }
 
-void AccountBase::callPropertysSetMethods()
+void SRoomBase::callPropertysSetMethods()
 {
-	ScriptModule* sm = EntityDef::moduledefs["Account"];
+	ScriptModule* sm = EntityDef::moduledefs["SRoom"];
 	TMap<uint16, Property*>& pdatas = sm->idpropertys;
 
 	FVector oldval_direction = direction;
@@ -228,14 +185,14 @@ void AccountBase::callPropertysSetMethods()
 
 }
 
-AccountBase::AccountBase():
+SRoomBase::SRoomBase():
 	Entity(),
 	pBaseEntityCall(NULL),
 	pCellEntityCall(NULL)
 {
 }
 
-AccountBase::~AccountBase()
+SRoomBase::~SRoomBase()
 {
 	if(pBaseEntityCall)
 		delete pBaseEntityCall;
@@ -245,11 +202,11 @@ AccountBase::~AccountBase()
 
 }
 
-void AccountBase::attachComponents()
+void SRoomBase::attachComponents()
 {
 }
 
-void AccountBase::detachComponents()
+void SRoomBase::detachComponents()
 {
 }
 

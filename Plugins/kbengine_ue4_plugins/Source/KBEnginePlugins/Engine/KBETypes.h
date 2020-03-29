@@ -56,5 +56,21 @@ typedef FVector VECTOR3;
 
 typedef FVector4 VECTOR4;
 
+class KBENGINEPLUGINS_API CHAT_INFO
+{
+public:
+	FString Name;
+	FString Time;
+	FString Msg;
+
+	CHAT_INFO():
+	Name(),
+	Time(),
+	Msg()
+	{
+	}
+
+};
+
 
 }

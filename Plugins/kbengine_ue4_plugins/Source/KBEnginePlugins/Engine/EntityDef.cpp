@@ -152,7 +152,7 @@ void EntityDef::initScriptModules()
 	//DEBUG_MSG("EntityDef::initScriptModules: add(Account), property(spaceID / 40002).");
 
 	TArray<DATATYPE_BASE*> Account_OnSay_args;
-	Account_OnSay_args.Add(EntityDef::id2datatypes[12]);
+	Account_OnSay_args.Add(EntityDef::id2datatypes[22]);
 
 	Method* pAccount_OnSay = new Method();
 	pAccount_OnSay->name = TEXT("OnSay");
@@ -176,9 +176,9 @@ void EntityDef::initScriptModules()
 	pAccount_Say->args = Account_Say_args;
 
 	pAccountModule->methods.Add(TEXT("Say"), pAccount_Say); 
-	pAccountModule->base_methods.Add(TEXT("Say"), pAccount_Say);
+	pAccountModule->cell_methods.Add(TEXT("Say"), pAccount_Say);
 
-	pAccountModule->idbase_methods.Add(pAccount_Say->methodUtype, pAccount_Say);
+	pAccountModule->idcell_methods.Add(pAccount_Say->methodUtype, pAccount_Say);
 
 	//DEBUG_MSG("EntityDef::initScriptModules: add(Account), method(Say / 1).");
 
@@ -413,6 +413,15 @@ void EntityDef::initDefTypes()
 		DATATYPE_BASE** fPtr = EntityDef::datatypes.Find(name);
 		DATATYPE_BASE* pVal = fPtr != NULL ? *fPtr : NULL;
 		EntityDef::datatypes.Add(typeName, pVal);
+		EntityDef::id2datatypes.Add(utype, EntityDef::datatypes[typeName]);
+		EntityDef::datatype2id.Add(typeName, utype);
+	}
+
+	{
+		uint16 utype = 22;
+		FString typeName = TEXT("CHAT_INFO");
+		DATATYPE_CHAT_INFO* pDatatype = new DATATYPE_CHAT_INFO();
+		EntityDef::datatypes.Add(typeName, (DATATYPE_BASE*)pDatatype);
 		EntityDef::id2datatypes.Add(utype, EntityDef::datatypes[typeName]);
 		EntityDef::datatype2id.Add(typeName, utype);
 	}
