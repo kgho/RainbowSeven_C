@@ -23,4 +23,6 @@ protected:
 		void OnSay(const UKBEventData* EventData);
 	UFUNCTION(BlueprintImplementableEvent)
 		void OnLoginSucced(const UKBEventData* EventData);
+	UFUNCTION(BlueprintImplementableEvent)
+		void AddSpaceGeometryMapping(const UKBEventData* EventData);
 };

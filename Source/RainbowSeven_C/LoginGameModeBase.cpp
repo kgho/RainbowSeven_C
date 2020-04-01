@@ -9,7 +9,9 @@ void ALoginGameModeBase::BeginPlay()
 	//KB自己的注册事件系统(字符串，方法名）
 	KBENGINE_REGISTER_EVENT("OnSay", OnSay);
 	KBENGINE_REGISTER_EVENT("OnLoginSucced", OnLoginSucced);
+	KBENGINE_REGISTER_EVENT("addSpaceGeometryMapping", AddSpaceGeometryMapping);
 }
+
 void ALoginGameModeBase::Say(FString Msg)
 {
 	UKBEventData_Say* EventData = NewObject<UKBEventData_Say>();
