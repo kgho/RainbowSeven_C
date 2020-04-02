@@ -24,6 +24,14 @@ void APlayGameModeBase::BeginPlay()
 	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::onEnterSpace, OnEnterSpace);
 	//已经创建的实体跳转场景, 离开原房间
 	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::onLeaveSpace, OnLeaveSpace);
+
+	//设置位置, 实体进入房间后调用更新状态变量时调用, 可以看做只调用一次
+	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::set_position, SetPosition);
+	//设置旋转, 实体进入房间后调用更新状态变量时调用, 可以看做只调用一次
+	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::set_direction, SetDirection);
+	//实时更新位置旋转, 频率可以修改kbengine.xml文件的gameUpdateHertz来设置
+	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::updatePosition, UpdatePosition);
+
 	// 如果已经有被创建的实体，说明在上一个场景未来得及跳转之前就已经通知创建了，但由于World场景并没有来得及创建，这部分实体进入世界事件已经漏掉
 	// 此时需要再次触发OnEnterWorld，让表现层能够在游戏场景中创建出所有的实体
 	KBEngine::KBEngineApp::ENTITIES_MAP& EntitiesMap = KBEngine::KBEngineApp::getSingleton().entities();
@@ -71,6 +79,26 @@ void APlayGameModeBase::OnEnterWorld(const UKBEventData* EventData)
 			APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 			PlayerController->Possess(PlayerCharacter);
 		}
+		else
+		{
+			//如果进入的实体不是玩家
+			//强转为Account
+			KBEngine::Account* AccountInst = static_cast<KBEngine::Account*>(EntityInst);
+			FRotator SpawnRotator(0.f, 0.f, 0.f);
+			KBDir2UE4Dir(SpawnRotator, ServerData->direction);
+			FTransform SpawnTransform(SpawnRotator, ServerData->position);
+			//生成对象
+			ADefaultCharacter* RemoteCharacter = Cast<ADefaultCharacter>(UGameplayStatics::BeginDeferredActorSpawnFromClass(this, RemoteCharacterClass, SpawnTransform));
+			if (RemoteCharacter)
+			{
+				//给角色实体 赋值 实体的数据
+				RemoteCharacter->EntityId = ServerData->entityID;
+				RemoteCharacter->AccountInst = AccountInst;
+				RemoteCharacter->PlayGameMode = this;
+				//激活角色
+				UGameplayStatics::FinishSpawningActor(RemoteCharacter, SpawnTransform);
+			}
+		}
 	}
 }
 void APlayGameModeBase::OnLeaveWorld(const UKBEventData* EventData)
@@ -83,11 +111,48 @@ void APlayGameModeBase::OnLeaveWorld(const UKBEventData* EventData)
 		GetWorld()->DestroyActor(PlayerCharacter);
 		PlayerCharacter = NULL;
 	}
+	else
+	{
+		if (RemoteCharacters.Contains(ServerData->entityID))
+		{
+			GetWorld()->DestroyActor(*RemoteCharacters.Find(ServerData->entityID));
+		}
+	}
 }
 void APlayGameModeBase::OnEnterSpace(const UKBEventData* EventData)
 {
 }
 void APlayGameModeBase::OnLeaveSpace(const UKBEventData* EventData)
 {
+}
+
+
+void APlayGameModeBase::SetPosition(const UKBEventData* EventData)
+{
+	const  UKBEventData_set_position* ServerData = Cast<UKBEventData_set_position>(EventData);
+	if (RemoteCharacters.Contains(ServerData->entityID))
+	{
+		ADefaultCharacter* RemoteCharacter = *RemoteCharacters.Find(ServerData->entityID);
+		RemoteCharacter->SetActorLocation(ServerData->position);
+	}
+}
+void APlayGameModeBase::SetDirection(const UKBEventData* EventData)
+{
+	const  UKBEventData_set_direction* ServerData = Cast<UKBEventData_set_direction>(EventData);
+	if (RemoteCharacters.Contains(ServerData->entityID))
+	{
+		ADefaultCharacter* RemoteCharacter = *RemoteCharacters.Find(ServerData->entityID);
+		RemoteCharacter->SetActorRotation(ServerData->direction);
+	}
+}
+void APlayGameModeBase::UpdatePosition(const UKBEventData* EventData)
+{
+	const  UKBEventData_updatePosition* ServerData = Cast<UKBEventData_updatePosition>(EventData);
+	if (RemoteCharacters.Contains(ServerData->entityID))
+	{
+		ADefaultCharacter* RemoteCharacter = *RemoteCharacters.Find(ServerData->entityID);
+		RemoteCharacter->SetActorLocation(ServerData->position);
+		RemoteCharacter->SetActorRotation(ServerData->direction);
+	}
 }
 
