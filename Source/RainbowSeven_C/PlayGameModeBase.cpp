@@ -73,6 +73,7 @@ void APlayGameModeBase::OnEnterWorld(const UKBEventData* EventData)
 			PlayerCharacter->EntityId = ServerData->entityID;
 			PlayerCharacter->AccountInst = AccountInst;
 			PlayerCharacter->PlayGameMode = this;
+			PlayerCharacter->IsPlayer = ServerData->isPlayer;
 			//激活角色
 			UGameplayStatics::FinishSpawningActor(PlayerCharacter, SpawnTransform);
 			//将角色绑定到Controller
@@ -96,11 +97,13 @@ void APlayGameModeBase::OnEnterWorld(const UKBEventData* EventData)
 			RemoteCharacter->EntityId = ServerData->entityID;
 			RemoteCharacter->AccountInst = AccountInst;
 			RemoteCharacter->PlayGameMode = this;
+			RemoteCharacter->IsPlayer = ServerData->isPlayer;
 			//激活角色
 			UGameplayStatics::FinishSpawningActor(RemoteCharacter, SpawnTransform);
 		}
 	}
 }
+
 void APlayGameModeBase::OnLeaveWorld(const UKBEventData* EventData)
 {
 	const UKBEventData_onLeaveWorld* ServerData = Cast<UKBEventData_onLeaveWorld>(EventData);
@@ -119,13 +122,14 @@ void APlayGameModeBase::OnLeaveWorld(const UKBEventData* EventData)
 		}
 	}
 }
+
 void APlayGameModeBase::OnEnterSpace(const UKBEventData* EventData)
 {
 }
+
 void APlayGameModeBase::OnLeaveSpace(const UKBEventData* EventData)
 {
 }
-
 
 void APlayGameModeBase::SetPosition(const UKBEventData* EventData)
 {
@@ -134,8 +138,10 @@ void APlayGameModeBase::SetPosition(const UKBEventData* EventData)
 	{
 		ADefaultCharacter* RemoteCharacter = *RemoteCharacters.Find(ServerData->entityID);
 		RemoteCharacter->SetActorLocation(ServerData->position);
+		RemoteCharacter->SetTargetPosition(ServerData->position);
 	}
 }
+
 void APlayGameModeBase::SetDirection(const UKBEventData* EventData)
 {
 	const  UKBEventData_set_direction* ServerData = Cast<UKBEventData_set_direction>(EventData);
@@ -143,16 +149,20 @@ void APlayGameModeBase::SetDirection(const UKBEventData* EventData)
 	{
 		ADefaultCharacter* RemoteCharacter = *RemoteCharacters.Find(ServerData->entityID);
 		RemoteCharacter->SetActorRotation(ServerData->direction);
+		RemoteCharacter->SetTargetRotator(ServerData->direction);
 	}
 }
+
 void APlayGameModeBase::UpdatePosition(const UKBEventData* EventData)
 {
 	const  UKBEventData_updatePosition* ServerData = Cast<UKBEventData_updatePosition>(EventData);
 	if (RemoteCharacters.Contains(ServerData->entityID))
 	{
 		ADefaultCharacter* RemoteCharacter = *RemoteCharacters.Find(ServerData->entityID);
-		RemoteCharacter->SetActorLocation(ServerData->position);
-		RemoteCharacter->SetActorRotation(ServerData->direction);
+		//RemoteCharacter->SetActorLocation(ServerData->position);
+		//RemoteCharacter->SetActorRotation(ServerData->direction);
+		RemoteCharacter->SetTargetPosition(ServerData->position);
+		RemoteCharacter->SetTargetRotator(ServerData->direction);
 	}
 }
 
