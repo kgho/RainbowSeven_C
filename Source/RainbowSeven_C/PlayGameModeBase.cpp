@@ -83,23 +83,34 @@ void APlayGameModeBase::OnEnterWorld(const UKBEventData* EventData)
 	}
 	else
 	{
-		//如果进入的实体不是玩家
-		//强转为Account
-		KBEngine::Account* AccountInst = static_cast<KBEngine::Account*>(EntityInst);
 		FRotator SpawnRotator(0.f, 0.f, 0.f);
 		KBDir2UE4Dir(SpawnRotator, ServerData->direction);
 		FTransform SpawnTransform(SpawnRotator, ServerData->position);
-		//生成对象
-		ADefaultCharacter* RemoteCharacter = Cast<ADefaultCharacter>(UGameplayStatics::BeginDeferredActorSpawnFromClass(this, RemoteCharacterClass, SpawnTransform));
-		if (RemoteCharacter)
+
+		//如果实体是Account
+		if (ServerData->entityClassName.Equals("Account"))
 		{
-			//给角色实体 赋值 实体的数据
-			RemoteCharacter->EntityId = ServerData->entityID;
-			RemoteCharacter->AccountInst = AccountInst;
-			RemoteCharacter->PlayGameMode = this;
-			RemoteCharacter->IsPlayer = ServerData->isPlayer;
-			//激活角色
-			UGameplayStatics::FinishSpawningActor(RemoteCharacter, SpawnTransform);
+			//如果进入的实体不是玩家
+		//强转为Account
+			KBEngine::Account* AccountInst = static_cast<KBEngine::Account*>(EntityInst);
+
+			//生成对象
+			ADefaultCharacter* RemoteCharacter = Cast<ADefaultCharacter>(UGameplayStatics::BeginDeferredActorSpawnFromClass(this, RemoteCharacterClass, SpawnTransform));
+			if (RemoteCharacter)
+			{
+				//给角色实体 赋值 实体的数据
+				RemoteCharacter->EntityId = ServerData->entityID;
+				RemoteCharacter->AccountInst = AccountInst;
+				RemoteCharacter->PlayGameMode = this;
+				RemoteCharacter->IsPlayer = ServerData->isPlayer;
+				//激活角色
+				UGameplayStatics::FinishSpawningActor(RemoteCharacter, SpawnTransform);
+			}
+		}
+		else if (ServerData->entityClassName.Equals("Gate"))
+		{
+			AActor* GateActor = UGameplayStatics::BeginDeferredActorSpawnFromClass(this, GateClass, SpawnTransform);
+			UGameplayStatics::FinishSpawningActor(GateActor, SpawnTransform);
 		}
 	}
 }

@@ -14,6 +14,10 @@ public:
 	// Sets default values for this character's properties
 	ADefaultCharacter();
 
+	//是否是单机模式，单机模式方便调节玩家动画蓝图等
+	UPROPERTY(EditAnywhere)
+		bool IsSinglePlayer;
+
 	bool IsPlayer;
 
 	//实体ID

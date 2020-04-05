@@ -8,6 +8,7 @@
 #include "Entity.h"
 
 #include "Scripts/Account.h"
+#include "Scripts/Gate.h"
 
 namespace KBEngine
 {
@@ -94,6 +95,9 @@ Entity* EntityDef::createEntity(int utype)
 	{
 		case 1:
 			pEntity = new Account();
+			break;
+		case 5:
+			pEntity = new Gate();
 			break;
 		default:
 			SCREEN_ERROR_MSG("EntityDef::createEntity() : entity(%d) not found!", utype);
@@ -182,6 +186,53 @@ void EntityDef::initScriptModules()
 
 	//DEBUG_MSG("EntityDef::initScriptModules: add(Account), method(Say / 1).");
 
+	ScriptModule* pGateModule = new ScriptModule("Gate", 5);
+	EntityDef::moduledefs.Add(TEXT("Gate"), pGateModule);
+	EntityDef::idmoduledefs.Add(5, pGateModule);
+
+	Property* pGate_position = new Property();
+	pGate_position->name = TEXT("position");
+	pGate_position->properUtype = 40000;
+	pGate_position->properFlags = 4;
+	pGate_position->aliasID = 1;
+	KBVar* pGate_position_defval = new KBVar(FVector());
+	pGate_position->pDefaultVal = pGate_position_defval;
+	pGateModule->propertys.Add(TEXT("position"), pGate_position); 
+
+	pGateModule->usePropertyDescrAlias = true;
+	pGateModule->idpropertys.Add((uint16)pGate_position->aliasID, pGate_position);
+
+	//DEBUG_MSG("EntityDef::initScriptModules: add(Gate), property(position / 40000).");
+
+	Property* pGate_direction = new Property();
+	pGate_direction->name = TEXT("direction");
+	pGate_direction->properUtype = 40001;
+	pGate_direction->properFlags = 4;
+	pGate_direction->aliasID = 2;
+	KBVar* pGate_direction_defval = new KBVar(FVector());
+	pGate_direction->pDefaultVal = pGate_direction_defval;
+	pGateModule->propertys.Add(TEXT("direction"), pGate_direction); 
+
+	pGateModule->usePropertyDescrAlias = true;
+	pGateModule->idpropertys.Add((uint16)pGate_direction->aliasID, pGate_direction);
+
+	//DEBUG_MSG("EntityDef::initScriptModules: add(Gate), property(direction / 40001).");
+
+	Property* pGate_spaceID = new Property();
+	pGate_spaceID->name = TEXT("spaceID");
+	pGate_spaceID->properUtype = 40002;
+	pGate_spaceID->properFlags = 16;
+	pGate_spaceID->aliasID = 3;
+	KBVar* pGate_spaceID_defval = new KBVar((uint32)FCString::Atoi64(TEXT("")));
+	pGate_spaceID->pDefaultVal = pGate_spaceID_defval;
+	pGateModule->propertys.Add(TEXT("spaceID"), pGate_spaceID); 
+
+	pGateModule->usePropertyDescrAlias = true;
+	pGateModule->idpropertys.Add((uint16)pGate_spaceID->aliasID, pGate_spaceID);
+
+	//DEBUG_MSG("EntityDef::initScriptModules: add(Gate), property(spaceID / 40002).");
+
+	pGateModule->useMethodDescrAlias = true;
 }
 
 void EntityDef::initDefTypes()

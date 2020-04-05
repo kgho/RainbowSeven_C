@@ -5,6 +5,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "Scripts/LoginEvents.h"
 #include "PlayGameModeBase.generated.h"
+
 class ADefaultCharacter;
 /**
 *
@@ -13,13 +14,20 @@ UCLASS()
 class RAINBOWSEVEN_C_API APlayGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
 public:
+
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<ADefaultCharacter> PlayerCharacterClass;
+
 	UPROPERTY(EditAnywhere)
 		FVector PlayerSpawnPos;
+
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<ADefaultCharacter> RemoteCharacterClass;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<AActor> GateClass;
 
 	//用指针保存玩家生成的 Character
 	ADefaultCharacter* PlayerCharacter;
