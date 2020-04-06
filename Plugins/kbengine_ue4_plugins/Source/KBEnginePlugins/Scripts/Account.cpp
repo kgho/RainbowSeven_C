@@ -25,6 +25,8 @@ void KBEngine::Account::__init__()
 }
 void KBEngine::Account::onDestroy()
 {
+
+	KBENGINE_EVENT_FIRE("QuitGame", NewObject< UKBEventData>());
 	//注销该对象注册的所有事件
 	KBENGINE_DEREGISTER_ALL_EVENT();
 }

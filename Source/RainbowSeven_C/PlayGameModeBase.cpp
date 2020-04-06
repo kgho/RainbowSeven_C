@@ -44,6 +44,9 @@ void APlayGameModeBase::BeginPlay()
 	//从TeamMap跳转到GameMap
 	KBENGINE_REGISTER_EVENT("addSpaceGeometryMapping", AddSpaceGeometryMapping);
 
+	//退出游戏
+	KBENGINE_REGISTER_EVENT("QuitGame", KBEQuitGame);
+
 	// 如果已经有被创建的实体，说明在上一个场景未来得及跳转之前就已经通知创建了，但由于World场景并没有来得及创建，这部分实体进入世界事件已经漏掉
 	// 此时需要再次触发OnEnterWorld，让表现层能够在游戏场景中创建出所有的实体
 	KBEngine::KBEngineApp::ENTITIES_MAP& EntitiesMap = KBEngine::KBEngineApp::getSingleton().entities();
@@ -189,5 +192,10 @@ void APlayGameModeBase::UpdatePosition(const UKBEventData* EventData)
 		RemoteCharacter->SetTargetPosition(ServerData->position);
 		RemoteCharacter->SetTargetRotator(ServerData->direction);
 	}
+}
+
+void APlayGameModeBase::KBEQuitGame(const UKBEventData* EventData)
+{
+	UKismetSystemLibrary::QuitGame(this, NULL, EQuitPreference::Quit, true);
 }
 

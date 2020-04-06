@@ -51,4 +51,6 @@ protected:
 	void SetPosition(const UKBEventData* EventData);
 	void SetDirection(const UKBEventData* EventData);
 	void UpdatePosition(const UKBEventData* EventData);
+
+	void KBEQuitGame(const UKBEventData* EventData);
 };
