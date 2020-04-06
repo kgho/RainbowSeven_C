@@ -6,7 +6,16 @@
 #include "Engine/KBEngine.h"
 #include "Engine//Entity.h"
 #include "Scripts/Account.h"
+#include "Scripts/ExCommon.h"
 #include "Kismet/GameplayStatics.h"
+void APlayGameModeBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	//注销该对象注册的所有事件
+	KBENGINE_DEREGISTER_ALL_EVENT();
+}
+
 void APlayGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -31,6 +40,9 @@ void APlayGameModeBase::BeginPlay()
 	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::set_direction, SetDirection);
 	//实时更新位置旋转, 频率可以修改kbengine.xml文件的gameUpdateHertz来设置
 	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::updatePosition, UpdatePosition);
+
+	//从TeamMap跳转到GameMap
+	KBENGINE_REGISTER_EVENT("addSpaceGeometryMapping", AddSpaceGeometryMapping);
 
 	// 如果已经有被创建的实体，说明在上一个场景未来得及跳转之前就已经通知创建了，但由于World场景并没有来得及创建，这部分实体进入世界事件已经漏掉
 	// 此时需要再次触发OnEnterWorld，让表现层能够在游戏场景中创建出所有的实体
@@ -136,10 +148,12 @@ void APlayGameModeBase::OnLeaveWorld(const UKBEventData* EventData)
 
 void APlayGameModeBase::OnEnterSpace(const UKBEventData* EventData)
 {
+	//DDH::Debug() << "OnEnterSpace" << DDH::Endl;
 }
 
 void APlayGameModeBase::OnLeaveSpace(const UKBEventData* EventData)
 {
+	//DDH::Debug() << "OnLeaveSpace" << DDH::Endl;
 }
 
 void APlayGameModeBase::SetPosition(const UKBEventData* EventData)

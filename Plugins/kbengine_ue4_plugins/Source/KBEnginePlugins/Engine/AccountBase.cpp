@@ -89,7 +89,7 @@ void AccountBase::onRemoteMethodCall(MemoryStream& stream)
 
 	switch(pMethod->methodUtype)
 	{
-		case 2:
+		case 5:
 		{
 			CHAT_INFO OnSay_arg1;
 			((DATATYPE_CHAT_INFO*)pMethod->args[0])->createFromStreamEx(stream, OnSay_arg1);

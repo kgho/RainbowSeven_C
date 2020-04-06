@@ -160,7 +160,7 @@ void EntityDef::initScriptModules()
 
 	Method* pAccount_OnSay = new Method();
 	pAccount_OnSay->name = TEXT("OnSay");
-	pAccount_OnSay->methodUtype = 2;
+	pAccount_OnSay->methodUtype = 5;
 	pAccount_OnSay->aliasID = 1;
 	pAccount_OnSay->args = Account_OnSay_args;
 
@@ -168,7 +168,7 @@ void EntityDef::initScriptModules()
 	pAccountModule->useMethodDescrAlias = true;
 	pAccountModule->idmethods.Add((uint16)pAccount_OnSay->aliasID, pAccount_OnSay);
 
-	//DEBUG_MSG("EntityDef::initScriptModules: add(Account), method(OnSay / 2).");
+	//DEBUG_MSG("EntityDef::initScriptModules: add(Account), method(OnSay / 5).");
 
 	TArray<DATATYPE_BASE*> Account_Say_args;
 	Account_Say_args.Add(EntityDef::id2datatypes[12]);

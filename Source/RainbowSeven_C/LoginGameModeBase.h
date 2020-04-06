@@ -17,6 +17,10 @@ class RAINBOWSEVEN_C_API ALoginGameModeBase : public AGameModeBase
 public:
 	UFUNCTION(BlueprintCallable)
 		void Say(FString Msg);
+
+	//实体销毁后注销事件，防止空指针
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason)override;
+
 protected:
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintImplementableEvent)

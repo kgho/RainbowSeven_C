@@ -17,6 +17,12 @@ class RAINBOWSEVEN_C_API APlayGameModeBase : public AGameModeBase
 
 public:
 
+	UFUNCTION(BlueprintImplementableEvent)
+		void AddSpaceGeometryMapping(const UKBEventData* EventData);
+
+	//实体销毁后注销事件，防止空指针
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason)override;
+
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<ADefaultCharacter> PlayerCharacterClass;
 

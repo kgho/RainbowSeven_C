@@ -3,6 +3,14 @@
 
 #include "LoginGameModeBase.h"
 
+void ALoginGameModeBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	//注销该对象注册的所有事件
+	KBENGINE_DEREGISTER_ALL_EVENT();
+}
+
 void ALoginGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
