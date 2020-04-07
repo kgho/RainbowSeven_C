@@ -2,26 +2,17 @@
 
 
 #include "KBEClient.h"
+#include "Engine/KBEMain.h"
 
 // Sets default values
 AKBEClient::AKBEClient()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = false;
 
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootScene"));
+
+	KBEMain = CreateDefaultSubobject<UKBEMain>(TEXT("KBEMain"));
 }
 
-// Called when the game starts or when spawned
-void AKBEClient::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-// Called every frame
-void AKBEClient::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
 

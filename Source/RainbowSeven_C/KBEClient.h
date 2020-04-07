@@ -6,21 +6,19 @@
 #include "GameFramework/Actor.h"
 #include "KBEClient.generated.h"
 
+class UKBEMain;
+
 UCLASS()
 class RAINBOWSEVEN_C_API AKBEClient : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AKBEClient();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+public:
+	//KBEMain×é¼þ
+	UPROPERTY(EditAnywhere)
+		UKBEMain* KBEMain;
 };
