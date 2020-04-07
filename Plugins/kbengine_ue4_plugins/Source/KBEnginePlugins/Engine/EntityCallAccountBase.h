@@ -34,7 +34,6 @@ public:
 	EntityCellEntityCall_AccountBase(int32 eid, const FString& ename);
 
 	virtual ~EntityCellEntityCall_AccountBase();
-	void Say(const FString& arg1);
 };
 
 }

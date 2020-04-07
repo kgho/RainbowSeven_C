@@ -155,37 +155,7 @@ void EntityDef::initScriptModules()
 
 	//DEBUG_MSG("EntityDef::initScriptModules: add(Account), property(spaceID / 40002).");
 
-	TArray<DATATYPE_BASE*> Account_OnSay_args;
-	Account_OnSay_args.Add(EntityDef::id2datatypes[22]);
-
-	Method* pAccount_OnSay = new Method();
-	pAccount_OnSay->name = TEXT("OnSay");
-	pAccount_OnSay->methodUtype = 5;
-	pAccount_OnSay->aliasID = 1;
-	pAccount_OnSay->args = Account_OnSay_args;
-
-	pAccountModule->methods.Add(TEXT("OnSay"), pAccount_OnSay); 
 	pAccountModule->useMethodDescrAlias = true;
-	pAccountModule->idmethods.Add((uint16)pAccount_OnSay->aliasID, pAccount_OnSay);
-
-	//DEBUG_MSG("EntityDef::initScriptModules: add(Account), method(OnSay / 5).");
-
-	TArray<DATATYPE_BASE*> Account_Say_args;
-	Account_Say_args.Add(EntityDef::id2datatypes[12]);
-
-	Method* pAccount_Say = new Method();
-	pAccount_Say->name = TEXT("Say");
-	pAccount_Say->methodUtype = 1;
-	pAccount_Say->aliasID = -1;
-	pAccount_Say->args = Account_Say_args;
-
-	pAccountModule->methods.Add(TEXT("Say"), pAccount_Say); 
-	pAccountModule->cell_methods.Add(TEXT("Say"), pAccount_Say);
-
-	pAccountModule->idcell_methods.Add(pAccount_Say->methodUtype, pAccount_Say);
-
-	//DEBUG_MSG("EntityDef::initScriptModules: add(Account), method(Say / 1).");
-
 	ScriptModule* pGateModule = new ScriptModule("Gate", 5);
 	EntityDef::moduledefs.Add(TEXT("Gate"), pGateModule);
 	EntityDef::idmoduledefs.Add(5, pGateModule);

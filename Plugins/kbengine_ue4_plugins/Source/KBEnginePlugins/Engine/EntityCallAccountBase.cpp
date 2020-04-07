@@ -24,15 +24,5 @@ EntityCellEntityCall_AccountBase::~EntityCellEntityCall_AccountBase()
 {
 }
 
-void EntityCellEntityCall_AccountBase::Say(const FString& arg1)
-{
-	Bundle* pBundleRet = newCall("Say", 0);
-	if(!pBundleRet)
-		return;
-
-	pBundleRet->writeUnicode(arg1);
-	sendCall(NULL);
-}
-
 
 }

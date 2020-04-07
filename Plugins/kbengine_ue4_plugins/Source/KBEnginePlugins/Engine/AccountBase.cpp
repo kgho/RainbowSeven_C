@@ -56,49 +56,6 @@ EntityCall* AccountBase::getCellEntityCall()
 
 void AccountBase::onRemoteMethodCall(MemoryStream& stream)
 {
-	ScriptModule* sm = *EntityDef::moduledefs.Find("Account");
-	uint16 methodUtype = 0;
-	uint16 componentPropertyUType = 0;
-
-	if (sm->usePropertyDescrAlias)
-	{
-		componentPropertyUType = stream.readUint8();
-	}
-	else
-	{
-		componentPropertyUType = stream.readUint16();
-	}
-
-	if (sm->useMethodDescrAlias)
-	{
-		methodUtype = stream.read<uint8>();
-	}
-	else
-	{
-		methodUtype = stream.read<uint16>();
-	}
-
-	if(componentPropertyUType > 0)
-	{
-		KBE_ASSERT(false);
-
-		return;
-	}
-
-	Method* pMethod = sm->idmethods[methodUtype];
-
-	switch(pMethod->methodUtype)
-	{
-		case 5:
-		{
-			CHAT_INFO OnSay_arg1;
-			((DATATYPE_CHAT_INFO*)pMethod->args[0])->createFromStreamEx(stream, OnSay_arg1);
-			OnSay(OnSay_arg1);
-			break;
-		}
-		default:
-			break;
-	};
 }
 
 void AccountBase::onUpdatePropertys(MemoryStream& stream)

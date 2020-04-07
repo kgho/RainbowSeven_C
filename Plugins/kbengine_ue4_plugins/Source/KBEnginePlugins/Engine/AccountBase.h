@@ -27,7 +27,6 @@ public:
 	EntityCellEntityCall_AccountBase* pCellEntityCall;
 
 
-	virtual void OnSay(const CHAT_INFO& arg1) = 0; 
 
 	void onComponentsEnterworld() override;
 	void onComponentsLeaveworld() override;
