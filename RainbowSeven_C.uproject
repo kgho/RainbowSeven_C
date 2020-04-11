@@ -7,7 +7,21 @@
 		{
 			"Name": "RainbowSeven_C",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine",
+				"UMG"
+			]
 		}
+	],
+	"Plugins": [
+		{
+			"Name": "KBEnginePlugins",
+			"Enabled": true,
+			"MarketplaceURL": "http://kbengine.org/marketplace"
+		}
+	],
+	"AdditionalPluginDirectories": [
+		"../../../kbengine_ue4_demo/Plugins"
 	]
 }
