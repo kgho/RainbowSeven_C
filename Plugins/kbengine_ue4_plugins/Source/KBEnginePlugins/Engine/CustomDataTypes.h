@@ -14,12 +14,4 @@ namespace KBEngine
 {
 
 
-class KBENGINEPLUGINS_API DATATYPE_CHAT_INFO : DATATYPE_BASE
-{
-public:
-	void createFromStreamEx(MemoryStream& stream, CHAT_INFO& datas);
-	void addToStreamEx(Bundle& stream, const CHAT_INFO& v);
-};
-
-
 }

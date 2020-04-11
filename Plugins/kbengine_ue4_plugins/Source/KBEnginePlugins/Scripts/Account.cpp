@@ -1,15 +1,8 @@
+// Author : Kgho	Github : https://github.com/kgho
+
 #include "Account.h"
 #include "Engine/KBEngine.h"
 #include "Engine//KBEvent.h"
-#include "LoginEvents.h"	
-
-KBEngine::Account::Account() :AccountBase()
-{
-}
-
-KBEngine::Account::~Account()
-{
-}
 
 //登录成功就会创建Account，然后执行该函数
 void KBEngine::Account::__init__()
