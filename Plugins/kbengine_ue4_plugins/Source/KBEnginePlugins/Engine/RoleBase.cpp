@@ -89,7 +89,7 @@ void RoleBase::onUpdatePropertys(MemoryStream& stream)
 
 		switch(pProp->properUtype)
 		{
-			case 2:
+			case 6:
 			{
 				FString oldval_Name = Name;
 				Name = stream.readUnicode();
@@ -107,7 +107,7 @@ void RoleBase::onUpdatePropertys(MemoryStream& stream)
 
 				break;
 			}
-			case 3:
+			case 7:
 			{
 				uint8 oldval_RoleType = RoleType;
 				RoleType = stream.readUint8();

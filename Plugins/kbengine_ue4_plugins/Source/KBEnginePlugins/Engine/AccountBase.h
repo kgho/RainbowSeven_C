@@ -26,7 +26,16 @@ public:
 	EntityBaseEntityCall_AccountBase* pBaseEntityCall;
 	EntityCellEntityCall_AccountBase* pCellEntityCall;
 
+	uint64 Coin;
+	virtual void onCoinChanged(uint64 oldValue) {}
+	uint64 Exp;
+	virtual void onExpChanged(uint64 oldValue) {}
+	uint64 Fame;
+	virtual void onFameChanged(uint64 oldValue) {}
+	uint16 Level;
+	virtual void onLevelChanged(uint16 oldValue) {}
 
+	virtual void OnReqAccountInfo(uint16 arg1, uint64 arg2, uint64 arg3, uint64 arg4) = 0; 
 	virtual void OnReqRoleList(const ROLE_LIST& arg1) = 0; 
 	virtual void OnReqUnlockRole(uint8 arg1) = 0; 
 

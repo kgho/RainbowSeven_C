@@ -25,6 +25,7 @@ public:
 	EntityBaseEntityCall_AccountBase(int32 eid, const FString& ename);
 
 	virtual ~EntityBaseEntityCall_AccountBase();
+	void ReqAccountInfo();
 	void ReqRoleList();
 	void ReqUnlockole(uint8 arg1);
 };

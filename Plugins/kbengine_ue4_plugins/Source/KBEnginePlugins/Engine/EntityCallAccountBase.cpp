@@ -13,6 +13,15 @@ EntityBaseEntityCall_AccountBase::~EntityBaseEntityCall_AccountBase()
 {
 }
 
+void EntityBaseEntityCall_AccountBase::ReqAccountInfo()
+{
+	Bundle* pBundleRet = newCall("ReqAccountInfo", 0);
+	if(!pBundleRet)
+		return;
+
+	sendCall(NULL);
+}
+
 void EntityBaseEntityCall_AccountBase::ReqRoleList()
 {
 	Bundle* pBundleRet = newCall("ReqRoleList", 0);

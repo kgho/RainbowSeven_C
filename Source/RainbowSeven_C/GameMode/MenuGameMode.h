@@ -29,4 +29,6 @@ protected:
 	virtual void BeginPlay() override;
 
 	void OnReqRoleList(const UKBEventData* EventData);
+
+	void OnReqAccountInfo(const UKBEventData* EventData);
 };
