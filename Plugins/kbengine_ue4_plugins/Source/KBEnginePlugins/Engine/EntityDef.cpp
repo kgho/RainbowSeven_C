@@ -8,6 +8,7 @@
 #include "Entity.h"
 
 #include "Scripts/Account.h"
+#include "Scripts/Role.h"
 
 namespace KBEngine
 {
@@ -95,6 +96,9 @@ Entity* EntityDef::createEntity(int utype)
 		case 1:
 			pEntity = new Account();
 			break;
+		case 2:
+			pEntity = new Role();
+			break;
 		default:
 			SCREEN_ERROR_MSG("EntityDef::createEntity() : entity(%d) not found!", utype);
 			break;
@@ -151,7 +155,142 @@ void EntityDef::initScriptModules()
 
 	//DEBUG_MSG("EntityDef::initScriptModules: add(Account), property(spaceID / 40002).");
 
+	TArray<DATATYPE_BASE*> Account_OnReqRoleList_args;
+	Account_OnReqRoleList_args.Add(EntityDef::id2datatypes[23]);
+
+	Method* pAccount_OnReqRoleList = new Method();
+	pAccount_OnReqRoleList->name = TEXT("OnReqRoleList");
+	pAccount_OnReqRoleList->methodUtype = 3;
+	pAccount_OnReqRoleList->aliasID = 1;
+	pAccount_OnReqRoleList->args = Account_OnReqRoleList_args;
+
+	pAccountModule->methods.Add(TEXT("OnReqRoleList"), pAccount_OnReqRoleList); 
 	pAccountModule->useMethodDescrAlias = true;
+	pAccountModule->idmethods.Add((uint16)pAccount_OnReqRoleList->aliasID, pAccount_OnReqRoleList);
+
+	//DEBUG_MSG("EntityDef::initScriptModules: add(Account), method(OnReqRoleList / 3).");
+
+	TArray<DATATYPE_BASE*> Account_OnReqUnlockRole_args;
+	Account_OnReqUnlockRole_args.Add(EntityDef::id2datatypes[2]);
+
+	Method* pAccount_OnReqUnlockRole = new Method();
+	pAccount_OnReqUnlockRole->name = TEXT("OnReqUnlockRole");
+	pAccount_OnReqUnlockRole->methodUtype = 4;
+	pAccount_OnReqUnlockRole->aliasID = 2;
+	pAccount_OnReqUnlockRole->args = Account_OnReqUnlockRole_args;
+
+	pAccountModule->methods.Add(TEXT("OnReqUnlockRole"), pAccount_OnReqUnlockRole); 
+	pAccountModule->useMethodDescrAlias = true;
+	pAccountModule->idmethods.Add((uint16)pAccount_OnReqUnlockRole->aliasID, pAccount_OnReqUnlockRole);
+
+	//DEBUG_MSG("EntityDef::initScriptModules: add(Account), method(OnReqUnlockRole / 4).");
+
+	TArray<DATATYPE_BASE*> Account_ReqRoleList_args;
+
+	Method* pAccount_ReqRoleList = new Method();
+	pAccount_ReqRoleList->name = TEXT("ReqRoleList");
+	pAccount_ReqRoleList->methodUtype = 1;
+	pAccount_ReqRoleList->aliasID = -1;
+	pAccount_ReqRoleList->args = Account_ReqRoleList_args;
+
+	pAccountModule->methods.Add(TEXT("ReqRoleList"), pAccount_ReqRoleList); 
+	pAccountModule->base_methods.Add(TEXT("ReqRoleList"), pAccount_ReqRoleList);
+
+	pAccountModule->idbase_methods.Add(pAccount_ReqRoleList->methodUtype, pAccount_ReqRoleList);
+
+	//DEBUG_MSG("EntityDef::initScriptModules: add(Account), method(ReqRoleList / 1).");
+
+	TArray<DATATYPE_BASE*> Account_ReqUnlockole_args;
+	Account_ReqUnlockole_args.Add(EntityDef::id2datatypes[2]);
+
+	Method* pAccount_ReqUnlockole = new Method();
+	pAccount_ReqUnlockole->name = TEXT("ReqUnlockole");
+	pAccount_ReqUnlockole->methodUtype = 2;
+	pAccount_ReqUnlockole->aliasID = -1;
+	pAccount_ReqUnlockole->args = Account_ReqUnlockole_args;
+
+	pAccountModule->methods.Add(TEXT("ReqUnlockole"), pAccount_ReqUnlockole); 
+	pAccountModule->base_methods.Add(TEXT("ReqUnlockole"), pAccount_ReqUnlockole);
+
+	pAccountModule->idbase_methods.Add(pAccount_ReqUnlockole->methodUtype, pAccount_ReqUnlockole);
+
+	//DEBUG_MSG("EntityDef::initScriptModules: add(Account), method(ReqUnlockole / 2).");
+
+	ScriptModule* pRoleModule = new ScriptModule("Role", 2);
+	EntityDef::moduledefs.Add(TEXT("Role"), pRoleModule);
+	EntityDef::idmoduledefs.Add(2, pRoleModule);
+
+	Property* pRole_position = new Property();
+	pRole_position->name = TEXT("position");
+	pRole_position->properUtype = 40000;
+	pRole_position->properFlags = 4;
+	pRole_position->aliasID = 1;
+	KBVar* pRole_position_defval = new KBVar(FVector());
+	pRole_position->pDefaultVal = pRole_position_defval;
+	pRoleModule->propertys.Add(TEXT("position"), pRole_position); 
+
+	pRoleModule->usePropertyDescrAlias = true;
+	pRoleModule->idpropertys.Add((uint16)pRole_position->aliasID, pRole_position);
+
+	//DEBUG_MSG("EntityDef::initScriptModules: add(Role), property(position / 40000).");
+
+	Property* pRole_direction = new Property();
+	pRole_direction->name = TEXT("direction");
+	pRole_direction->properUtype = 40001;
+	pRole_direction->properFlags = 4;
+	pRole_direction->aliasID = 2;
+	KBVar* pRole_direction_defval = new KBVar(FVector());
+	pRole_direction->pDefaultVal = pRole_direction_defval;
+	pRoleModule->propertys.Add(TEXT("direction"), pRole_direction); 
+
+	pRoleModule->usePropertyDescrAlias = true;
+	pRoleModule->idpropertys.Add((uint16)pRole_direction->aliasID, pRole_direction);
+
+	//DEBUG_MSG("EntityDef::initScriptModules: add(Role), property(direction / 40001).");
+
+	Property* pRole_spaceID = new Property();
+	pRole_spaceID->name = TEXT("spaceID");
+	pRole_spaceID->properUtype = 40002;
+	pRole_spaceID->properFlags = 16;
+	pRole_spaceID->aliasID = 3;
+	KBVar* pRole_spaceID_defval = new KBVar((uint32)FCString::Atoi64(TEXT("")));
+	pRole_spaceID->pDefaultVal = pRole_spaceID_defval;
+	pRoleModule->propertys.Add(TEXT("spaceID"), pRole_spaceID); 
+
+	pRoleModule->usePropertyDescrAlias = true;
+	pRoleModule->idpropertys.Add((uint16)pRole_spaceID->aliasID, pRole_spaceID);
+
+	//DEBUG_MSG("EntityDef::initScriptModules: add(Role), property(spaceID / 40002).");
+
+	Property* pRole_Name = new Property();
+	pRole_Name->name = TEXT("Name");
+	pRole_Name->properUtype = 2;
+	pRole_Name->properFlags = 4;
+	pRole_Name->aliasID = 4;
+	KBVar* pRole_Name_defval = new KBVar(FString());
+	pRole_Name->pDefaultVal = pRole_Name_defval;
+	pRoleModule->propertys.Add(TEXT("Name"), pRole_Name); 
+
+	pRoleModule->usePropertyDescrAlias = true;
+	pRoleModule->idpropertys.Add((uint16)pRole_Name->aliasID, pRole_Name);
+
+	//DEBUG_MSG("EntityDef::initScriptModules: add(Role), property(Name / 2).");
+
+	Property* pRole_RoleType = new Property();
+	pRole_RoleType->name = TEXT("RoleType");
+	pRole_RoleType->properUtype = 3;
+	pRole_RoleType->properFlags = 4;
+	pRole_RoleType->aliasID = 5;
+	KBVar* pRole_RoleType_defval = new KBVar((uint8)FCString::Atoi64(TEXT("")));
+	pRole_RoleType->pDefaultVal = pRole_RoleType_defval;
+	pRoleModule->propertys.Add(TEXT("RoleType"), pRole_RoleType); 
+
+	pRoleModule->usePropertyDescrAlias = true;
+	pRoleModule->idpropertys.Add((uint16)pRole_RoleType->aliasID, pRole_RoleType);
+
+	//DEBUG_MSG("EntityDef::initScriptModules: add(Role), property(RoleType / 3).");
+
+	pRoleModule->useMethodDescrAlias = true;
 }
 
 void EntityDef::initDefTypes()
@@ -180,7 +319,7 @@ void EntityDef::initDefTypes()
 
 	{
 		uint16 utype = 5;
-		FString typeName = TEXT("UINT64");
+		FString typeName = TEXT("DBID");
 		FString name = TEXT("UINT64");
 		DATATYPE_BASE** fPtr = EntityDef::datatypes.Find(name);
 		DATATYPE_BASE* pVal = fPtr != NULL ? *fPtr : NULL;
@@ -383,6 +522,24 @@ void EntityDef::initDefTypes()
 		DATATYPE_BASE** fPtr = EntityDef::datatypes.Find(name);
 		DATATYPE_BASE* pVal = fPtr != NULL ? *fPtr : NULL;
 		EntityDef::datatypes.Add(typeName, pVal);
+		EntityDef::id2datatypes.Add(utype, EntityDef::datatypes[typeName]);
+		EntityDef::datatype2id.Add(typeName, utype);
+	}
+
+	{
+		uint16 utype = 22;
+		FString typeName = TEXT("ROLE_INFO");
+		DATATYPE_ROLE_INFO* pDatatype = new DATATYPE_ROLE_INFO();
+		EntityDef::datatypes.Add(typeName, (DATATYPE_BASE*)pDatatype);
+		EntityDef::id2datatypes.Add(utype, EntityDef::datatypes[typeName]);
+		EntityDef::datatype2id.Add(typeName, utype);
+	}
+
+	{
+		uint16 utype = 23;
+		FString typeName = TEXT("ROLE_LIST");
+		DATATYPE_ROLE_LIST* pDatatype = new DATATYPE_ROLE_LIST();
+		EntityDef::datatypes.Add(typeName, (DATATYPE_BASE*)pDatatype);
 		EntityDef::id2datatypes.Add(utype, EntityDef::datatypes[typeName]);
 		EntityDef::datatype2id.Add(typeName, utype);
 	}

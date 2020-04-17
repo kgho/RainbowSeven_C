@@ -1,4 +1,4 @@
-#include "AccountBase.h"
+#include "RoleBase.h"
 #include "KBVar.h"
 #include "EntityDef.h"
 #include "ScriptModule.h"
@@ -14,102 +14,53 @@ namespace KBEngine
 
 
 
-void AccountBase::onComponentsEnterworld()
+void RoleBase::onComponentsEnterworld()
 {
 }
 
-void AccountBase::onComponentsLeaveworld()
+void RoleBase::onComponentsLeaveworld()
 {
 }
 
-void AccountBase::onGetBase()
+void RoleBase::onGetBase()
 {
 	if(pBaseEntityCall)
 		delete pBaseEntityCall;
 
-	pBaseEntityCall = new EntityBaseEntityCall_AccountBase(id(), className());
+	pBaseEntityCall = new EntityBaseEntityCall_RoleBase(id(), className());
 }
 
-void AccountBase::onGetCell()
+void RoleBase::onGetCell()
 {
 	if(pCellEntityCall)
 		delete pCellEntityCall;
 
-	pCellEntityCall = new EntityCellEntityCall_AccountBase(id(), className());
+	pCellEntityCall = new EntityCellEntityCall_RoleBase(id(), className());
 }
 
-void AccountBase::onLoseCell()
+void RoleBase::onLoseCell()
 {
 	delete pCellEntityCall;
 	pCellEntityCall = NULL;
 }
 
-EntityCall* AccountBase::getBaseEntityCall()
+EntityCall* RoleBase::getBaseEntityCall()
 {
 	return pBaseEntityCall;
 }
 
-EntityCall* AccountBase::getCellEntityCall()
+EntityCall* RoleBase::getCellEntityCall()
 {
 	return pCellEntityCall;
 }
 
-void AccountBase::onRemoteMethodCall(MemoryStream& stream)
+void RoleBase::onRemoteMethodCall(MemoryStream& stream)
 {
-	ScriptModule* sm = *EntityDef::moduledefs.Find("Account");
-	uint16 methodUtype = 0;
-	uint16 componentPropertyUType = 0;
-
-	if (sm->usePropertyDescrAlias)
-	{
-		componentPropertyUType = stream.readUint8();
-	}
-	else
-	{
-		componentPropertyUType = stream.readUint16();
-	}
-
-	if (sm->useMethodDescrAlias)
-	{
-		methodUtype = stream.read<uint8>();
-	}
-	else
-	{
-		methodUtype = stream.read<uint16>();
-	}
-
-	if(componentPropertyUType > 0)
-	{
-		KBE_ASSERT(false);
-
-		return;
-	}
-
-	Method* pMethod = sm->idmethods[methodUtype];
-
-	switch(pMethod->methodUtype)
-	{
-		case 3:
-		{
-			ROLE_LIST OnReqRoleList_arg1;
-			((DATATYPE_ROLE_LIST*)pMethod->args[0])->createFromStreamEx(stream, OnReqRoleList_arg1);
-			OnReqRoleList(OnReqRoleList_arg1);
-			break;
-		}
-		case 4:
-		{
-			uint8 OnReqUnlockRole_arg1 = stream.readUint8();
-			OnReqUnlockRole(OnReqUnlockRole_arg1);
-			break;
-		}
-		default:
-			break;
-	};
 }
 
-void AccountBase::onUpdatePropertys(MemoryStream& stream)
+void RoleBase::onUpdatePropertys(MemoryStream& stream)
 {
-	ScriptModule* sm = *EntityDef::moduledefs.Find("Account");
+	ScriptModule* sm = *EntityDef::moduledefs.Find("Role");
 
 	while(stream.length() > 0)
 	{
@@ -138,6 +89,42 @@ void AccountBase::onUpdatePropertys(MemoryStream& stream)
 
 		switch(pProp->properUtype)
 		{
+			case 2:
+			{
+				FString oldval_Name = Name;
+				Name = stream.readUnicode();
+
+				if(pProp->isBase())
+				{
+					if(inited())
+						onNameChanged(oldval_Name);
+				}
+				else
+				{
+					if(inWorld())
+						onNameChanged(oldval_Name);
+				}
+
+				break;
+			}
+			case 3:
+			{
+				uint8 oldval_RoleType = RoleType;
+				RoleType = stream.readUint8();
+
+				if(pProp->isBase())
+				{
+					if(inited())
+						onRoleTypeChanged(oldval_RoleType);
+				}
+				else
+				{
+					if(inWorld())
+						onRoleTypeChanged(oldval_RoleType);
+				}
+
+				break;
+			}
 			case 40001:
 			{
 				FVector oldval_direction = direction;
@@ -185,10 +172,52 @@ void AccountBase::onUpdatePropertys(MemoryStream& stream)
 	}
 }
 
-void AccountBase::callPropertysSetMethods()
+void RoleBase::callPropertysSetMethods()
 {
-	ScriptModule* sm = EntityDef::moduledefs["Account"];
+	ScriptModule* sm = EntityDef::moduledefs["Role"];
 	TMap<uint16, Property*>& pdatas = sm->idpropertys;
+
+	FString oldval_Name = Name;
+	Property* pProp_Name = pdatas[4];
+	if(pProp_Name->isBase())
+	{
+		if(inited() && !inWorld())
+			onNameChanged(oldval_Name);
+	}
+	else
+	{
+		if(inWorld())
+		{
+			if(pProp_Name->isOwnerOnly() && !isPlayer())
+			{
+			}
+			else
+			{
+				onNameChanged(oldval_Name);
+			}
+		}
+	}
+
+	uint8 oldval_RoleType = RoleType;
+	Property* pProp_RoleType = pdatas[5];
+	if(pProp_RoleType->isBase())
+	{
+		if(inited() && !inWorld())
+			onRoleTypeChanged(oldval_RoleType);
+	}
+	else
+	{
+		if(inWorld())
+		{
+			if(pProp_RoleType->isOwnerOnly() && !isPlayer())
+			{
+			}
+			else
+			{
+				onRoleTypeChanged(oldval_RoleType);
+			}
+		}
+	}
 
 	FVector oldval_direction = direction;
 	Property* pProp_direction = pdatas[2];
@@ -234,14 +263,16 @@ void AccountBase::callPropertysSetMethods()
 
 }
 
-AccountBase::AccountBase():
+RoleBase::RoleBase():
 	Entity(),
 	pBaseEntityCall(NULL),
-	pCellEntityCall(NULL)
+	pCellEntityCall(NULL),
+	Name(TEXT("")),
+	RoleType((uint8)FCString::Atoi64(TEXT("0")))
 {
 }
 
-AccountBase::~AccountBase()
+RoleBase::~RoleBase()
 {
 	if(pBaseEntityCall)
 		delete pBaseEntityCall;
@@ -251,11 +282,11 @@ AccountBase::~AccountBase()
 
 }
 
-void AccountBase::attachComponents()
+void RoleBase::attachComponents()
 {
 }
 
-void AccountBase::detachComponents()
+void RoleBase::detachComponents()
 {
 }
 

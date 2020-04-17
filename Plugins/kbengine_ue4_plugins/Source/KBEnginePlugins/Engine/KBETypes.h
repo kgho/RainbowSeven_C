@@ -56,5 +56,45 @@ typedef FVector VECTOR3;
 
 typedef FVector4 VECTOR4;
 
+typedef uint64 DBID;
+
+class KBENGINEPLUGINS_API ROLE_INFO
+{
+public:
+	uint64 Dbid;
+	uint8 RoleType;
+	uint8 IsLock;
+	uint32 Kill;
+	uint32 Death;
+	uint32 Assist;
+	uint32 Point;
+	uint32 PlayCount;
+
+	ROLE_INFO():
+	Dbid(0),
+	RoleType(0),
+	IsLock(0),
+	Kill(0),
+	Death(0),
+	Assist(0),
+	Point(0),
+	PlayCount(0)
+	{
+	}
+
+};
+
+class KBENGINEPLUGINS_API ROLE_LIST
+{
+public:
+	TArray<ROLE_INFO> Value;
+
+	ROLE_LIST():
+	Value()
+	{
+	}
+
+};
+
 
 }

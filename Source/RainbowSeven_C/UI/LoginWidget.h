@@ -13,7 +13,7 @@ class ALoginGameMode;
 *
 */
 UCLASS()
-class RAINBOWSEVEN_C_API ULoginWidget : public UUserWidget
+class RAINBOWSEVEN_C_API ULoginWidget : public UUserWidget	
 {
 	GENERATED_BODY()
 

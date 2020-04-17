@@ -25,6 +25,8 @@ public:
 	EntityBaseEntityCall_AccountBase(int32 eid, const FString& ename);
 
 	virtual ~EntityBaseEntityCall_AccountBase();
+	void ReqRoleList();
+	void ReqUnlockole(uint8 arg1);
 };
 
 class KBENGINEPLUGINS_API EntityCellEntityCall_AccountBase : public EntityCall
