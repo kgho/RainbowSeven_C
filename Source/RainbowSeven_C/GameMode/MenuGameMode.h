@@ -31,4 +31,6 @@ protected:
 	void OnReqRoleList(const UKBEventData* EventData);
 
 	void OnReqAccountInfo(const UKBEventData* EventData);
+
+	void OnReqUnlockRole(const UKBEventData* EventData);
 };

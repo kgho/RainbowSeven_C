@@ -80,6 +80,16 @@ public:
 		TArray<FROLE_INFO> RoleList;
 };
 
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_OnReqUnlockRole :public UKBEventData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+		uint8 Result;
+};
+
 /**
  *
  */
