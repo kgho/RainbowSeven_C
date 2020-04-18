@@ -27,6 +27,8 @@ void AMenuGameMode::BeginPlay()
 void AMenuGameMode::OnReqRoleList(const UKBEventData* EventData)
 {
 	const UKBEventData_OnReqRoleList* ServerData = Cast<UKBEventData_OnReqRoleList>(EventData);
+
+	MenuWidget->OnReqRoleList(ServerData->RoleList);
 }
 
 void AMenuGameMode::OnReqAccountInfo(const UKBEventData* EventData)

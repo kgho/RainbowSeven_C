@@ -37,7 +37,7 @@ void KBEngine::Account::onDestroy()
 void KBEngine::Account::OnReqAccountInfo(uint16 arg1, uint64 arg2, uint64 arg3, uint64 arg4)
 {
 	UKBEventData_OnReqAccountInfo* EventData = NewObject<UKBEventData_OnReqAccountInfo>();
-	DDH::Debug() << "ExAccount::OnReqAccountInfo : Level = " << arg1 << ", Exp = " << arg2 << ", Fame = " << arg3 << ", Coin = " << arg4 << DDH::Endl();
+	DDH::Debug() << "ExAccount::OnReqAccountInfo--> Level = " << arg1 << ", Exp = " << arg2 << ", Fame = " << arg3 << ", Coin = " << arg4 << DDH::Endl();
 
 	EventData->Level = arg1;
 	EventData->Exp = arg2;
@@ -51,7 +51,7 @@ void KBEngine::Account::OnReqAccountInfo(uint16 arg1, uint64 arg2, uint64 arg3, 
 void KBEngine::Account::OnReqRoleList(const ROLE_LIST& arg1)
 {
 	UKBEventData_OnReqRoleList* EventData = NewObject<UKBEventData_OnReqRoleList>();
-	DDH::Debug() << "ExAccount::OnReqRoleList : RoleList Number: --> " << arg1.Value.Num() << DDH::Endl();
+	DDH::Debug() << "ExAccount::OnReqRoleList--> RoleList Number:" << arg1.Value.Num() << DDH::Endl();
 
 	for (int i = 0; i < arg1.Value.Num(); i++)
 	{
@@ -65,5 +65,5 @@ void KBEngine::Account::OnReqRoleList(const ROLE_LIST& arg1)
 
 void KBEngine::Account::OnReqUnlockRole(uint8 arg1, uint8 arg2)
 {
-	DDH::Debug() << "ExAccount::OnReqUnlockRole : Result: --> " << arg1 << "Roel Type: ->>" << arg2 << DDH::Endl();
+	DDH::Debug() << "ExAccount::OnReqUnlockRole--> Result:" << arg1 << ", RoelType:" << arg2 << DDH::Endl();
 }
