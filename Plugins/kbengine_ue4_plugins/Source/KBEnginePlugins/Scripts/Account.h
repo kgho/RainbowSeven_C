@@ -21,7 +21,7 @@ namespace KBEngine
 
 		virtual void OnReqRoleList(const ROLE_LIST& arg1) override;
 
-		virtual void OnReqUnlockRole(uint8 arg1) override;
+		virtual void OnReqUnlockRole(uint8 arg1, uint8 arg2) override;
 
 	public:
 		//保存干员信息列表到本地

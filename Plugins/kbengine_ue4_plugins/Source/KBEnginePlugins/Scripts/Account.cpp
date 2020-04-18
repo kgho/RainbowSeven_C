@@ -63,6 +63,7 @@ void KBEngine::Account::OnReqRoleList(const ROLE_LIST& arg1)
 	KBENGINE_EVENT_FIRE("OnReqRoleList", EventData);
 }
 
-void KBEngine::Account::OnReqUnlockRole(uint8 arg1)
+void KBEngine::Account::OnReqUnlockRole(uint8 arg1, uint8 arg2)
 {
+	DDH::Debug() << "ExAccount::OnReqUnlockRole : Result: --> " << arg1 << "Roel Type: ->>" << arg2 << DDH::Endl();
 }
