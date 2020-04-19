@@ -9,6 +9,10 @@
 #include "RoleItem.h"
 #include "LoginWidget.h"
 #include "CanvasPanel.h"
+#include "RoomItem.h"
+#include "WidgetTree.h"
+#include "ScrollBox.h"
+#include "ScrollBoxSlot.h"
 
 void UMenuWidget::OnReqAccountInfo(uint16 level, uint64 exp, uint64 fame, uint64 coin)
 {
@@ -106,6 +110,57 @@ void UMenuWidget::RoleUnlockSuccessfulBack()
 	UKBEventData_ReqRoleList* EventData = NewObject<UKBEventData_ReqRoleList>();
 	EventData->AccountName = "AccountName";
 	KBENGINE_EVENT_FIRE("ReqRoleList", EventData);
+}
+
+void UMenuWidget::ButtonCombatEvent()
+{
+	CanvasRoomMenu->SetVisibility(ESlateVisibility::Visible);
+	ReqRoomList();
+}
+
+void UMenuWidget::OnReqRoomList(TArray<FROOM_INFO> RoomList)
+{
+	//把旧的从列表移除
+	for (int i = 0; i < RoomItemGroup.Num(); ++i)
+	{
+		RoomItemGroup[i]->RemoveFromParent();
+		RoomItemGroup[i]->ConditionalBeginDestroy();
+	}
+	//清空数组
+	RoomItemGroup.Empty();
+
+	//循环创建RoomItem
+	for (int i = 0; i < RoomList.Num(); ++i)
+	{
+		// 创建RoomItem
+		URoomItem* RoomItem = WidgetTree->ConstructWidget<URoomItem>(RoomItemClass);
+		UScrollBoxSlot* RoomItemSlot = Cast<UScrollBoxSlot>(Scroll_Box_RoomList->AddChild(RoomItem));
+		RoomItemSlot->SetPadding(FMargin(0.f, 5.f, 0.f, 5.f));
+
+		// 设置房间信息
+		RoomItem->InitItem(RoomList[i]);
+		//RoomItem->RoomItemSelectDel.BindUObject(this, &UExRoomWidget::RoomItemSelect);
+
+		// 保存房间条目到本地数组
+		RoomItemGroup.Add(RoomItem);
+	}
+}
+
+void UMenuWidget::OnCreateRoom(FROOM_INFO RoomInfo)
+{
+}
+
+void UMenuWidget::CreateRoomEvent()
+{
+}
+
+void UMenuWidget::EnterRoomEvent()
+{
+}
+
+void UMenuWidget::ReqRoomList()
+{
+	KBENGINE_EVENT_FIRE("ReqRoomList", NewObject<UKBEventData>());
 }
 
 void UMenuWidget::RoleItemSelect(uint8 RoleType, bool IsUnlock)

@@ -13,6 +13,9 @@ class UProgressBar;
 class UButton;
 class URoleItem;
 class UCanvasPanel;
+class UScrollBox;
+class URoomItem;
+class UEditableTextBox;
 /**
  *
  */
@@ -30,6 +33,8 @@ public:
 
 	void OnReqUnlockRole(uint8 result);
 
+	void ReqRoomList();
+
 	UFUNCTION(BlueprintCallable)
 		void CanvasRoleInfoHide();
 
@@ -41,6 +46,21 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void RoleUnlockSuccessfulBack();
+
+	//Room
+	UFUNCTION(BlueprintCallable)
+		void ButtonCombatEvent();
+
+	void OnReqRoomList(TArray<FROOM_INFO> RoomList);
+
+	void OnCreateRoom(FROOM_INFO RoomInfo);
+
+
+	UFUNCTION(BlueprintCallable)
+		void CreateRoomEvent();
+
+	UFUNCTION(BlueprintCallable)
+		void EnterRoomEvent();
 
 public:
 	UPROPERTY(Meta = (BindWidget))
@@ -100,6 +120,25 @@ public:
 
 	UPROPERTY(Meta = (BindWidget))
 		UButton* Button_Role_Unlock_Successful_Back;
+
+	//Room
+	UPROPERTY(Meta = (BindWidget))
+		UButton* Button_Combat;
+
+	UPROPERTY(Meta = (BindWidget))
+		UCanvasPanel* CanvasRoomMenu;
+
+	UPROPERTY(Meta = (BindWidget))
+		UScrollBox* Scroll_Box_RoomList;
+
+	UPROPERTY(Meta = (BindWidget))
+		UEditableTextBox* EditableTextBox_RoomName;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<URoomItem> RoomItemClass;
+
+	UPROPERTY()
+		TArray<URoomItem*> RoomItemGroup;
 
 protected:
 

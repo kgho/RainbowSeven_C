@@ -34,6 +34,21 @@ void KBEngine::Account::__init__()
 		pBaseEntityCall->ReqRoleList();
 		});
 
+	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqRoomList", "ReqRoomList", [this](const UKBEventData* EventData)
+		{
+			pBaseEntityCall->ReqRoomList();
+		});
+	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqCreateRoom", "ReqCreateRoom", [this](const UKBEventData* EventData)
+		{
+			const UKBEventData_ReqCreateRoom* ServerData = Cast<UKBEventData_ReqCreateRoom>(EventData);
+			pBaseEntityCall->ReqCreateRoom(ServerData->RoomName);
+		});
+	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqEnterRoom", "ReqEnterRoom", [this](const UKBEventData* EventData)
+		{
+			const UKBEventData_ReqEnterRoom* ServerData = Cast<UKBEventData_ReqEnterRoom>(EventData);
+			pBaseEntityCall->ReqEnterRoom(ServerData->RoomId);
+		});
+
 	//用户实体创建说明登录成功，触发登录成功事件
 	UKBEventData_onLoginSuccessfully* EventData = NewObject<UKBEventData_onLoginSuccessfully>();
 	EventData->entity_uuid = KBEngineApp::getSingleton().entity_uuid();
@@ -100,5 +115,32 @@ void KBEngine::Account::OnReqUnlockRole(uint8 arg1, uint8 arg2)
 	EventData->Result = arg1;
 	DDH::Debug() << "Account::OnReqUnlockRole--> Result:" << arg1 << ", RoelType:" << arg2 << DDH::Endl();
 	KBENGINE_EVENT_FIRE("OnReqUnlockRole", EventData);
+}
+
+//房间
+
+void KBEngine::Account::OnReqRoomList(const ROOM_LIST& arg1)
+{
+	UKBEventData_OnReqRoomList* EventData = NewObject<UKBEventData_OnReqRoomList>();
+	for (int i = 0; i < arg1.Value.Num(); ++i)
+	{
+		FROOM_INFO RoomInfo;
+		RoomInfo.InitData(arg1.Value[i].RoomId, arg1.Value[i].Name);
+		EventData->RoomList.Add(RoomInfo);
+	}
+	
+	KBENGINE_EVENT_FIRE("OnReqRoomList", EventData);
+}
+void KBEngine::Account::OnCreateRoom(uint8 arg1, const ROOM_INFO& arg2)
+{
+	if (arg1 == 1)
+	{
+		DDH::Debug() << "ExAccount::OnCreateRoom Failed By Name --> " << arg2.Name << DDH::Endl();
+		return;
+	}
+	UKBEventData_OnCreateRoom* EventData = NewObject<UKBEventData_OnCreateRoom>();
+	EventData->RoomInfo.InitData(arg2.RoomId, arg2.Name);
+
+	KBENGINE_EVENT_FIRE("OnCreateRoom", EventData);
 }
 

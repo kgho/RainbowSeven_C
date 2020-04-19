@@ -132,6 +132,55 @@ public:
 		uint8 Result;
 };
 
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_ReqCreateRoom : public UKBEventData {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+		FString RoomName;
+};
+
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_ReqEnterRoom : public UKBEventData {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+		uint64 RoomId;
+};
+
+USTRUCT()
+struct FROOM_INFO
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY()
+		uint64 RoomId;
+	UPROPERTY()
+		FString Name;
+	void InitData(uint64 InRoomId, const FString& InName)
+	{
+		RoomId = InRoomId;
+		Name = InName;
+	}
+};
+
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_OnReqRoomList : public UKBEventData {
+	GENERATED_BODY()
+public:
+	UPROPERTY()
+		TArray<FROOM_INFO> RoomList;
+};
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_OnCreateRoom : public UKBEventData {
+	GENERATED_BODY()
+public:
+	UPROPERTY()
+		FROOM_INFO RoomInfo;
+};
+
 /**
  *
  */

@@ -35,4 +35,10 @@ protected:
 	void OnReqUnlockRole(const UKBEventData* EventData);
 
 	void OnReqRoleInfo(const UKBEventData* EventData);
+
+	//请求房间列表回调函数
+	void OnReqRoomList(const UKBEventData* EventData);
+
+	//创建房间回调函数
+	void OnCreateRoom(const UKBEventData* EventData);
 };

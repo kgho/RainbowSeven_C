@@ -25,6 +25,10 @@ namespace KBEngine
 
 		virtual void OnReqUnlockRole(uint8 arg1, uint8 arg2) override;
 
+		void OnReqRoomList(const ROOM_LIST& arg1);
+
+		void OnCreateRoom(uint8 arg1, const ROOM_INFO& arg2);
+
 	public:
 		//保存干员信息列表到本地
 		ROLE_LIST RoleList;
