@@ -14,7 +14,6 @@ void URoleItem::RefreshItem(uint8 RoleID, uint8 isLock)
 		Text_IsUnlock->SetVisibility(ESlateVisibility::Hidden);
 		Button->SetBackgroundColor(FLinearColor(1.f, 1.f, 1.f, 1.f));
 		Button->bIsEnabled = true;
-		DDH::Debug() << "URoleItem::RefreshItem--> Color" << Button->BackgroundColor.ToString() << DDH::Endl();
 		isUnlock = true;
 	}
 	else

@@ -60,10 +60,14 @@ void UMenuWidget::RefreshRoleInfo(FROLE_INFO RoleInfo)
 	}
 
 	uint32 playCount = RoleInfo.PlayCount;
+	float averageKill = (float)RoleInfo.Kill / (float)playCount;
+	float averageDeath = (float)RoleInfo.Death / (float)playCount;
+	float averageAssist = (float)RoleInfo.Assist / (float)playCount;
 
-	Text_Role_Info_Kill->SetText(FText::FromString(FString::SanitizeFloat((float)RoleInfo.Kill / (float)playCount)));
-	Text_Role_Info_Death->SetText(FText::FromString(FString::SanitizeFloat((float)RoleInfo.Death / (float)playCount)));
-	Text_Role_Info_Assist->SetText(FText::FromString(FString::SanitizeFloat((float)RoleInfo.Assist / (float)playCount)));
+	Text_KDA->SetText(FText::FromString(FString::SanitizeFloat((averageKill + averageAssist) / (averageDeath == 0 ? 0.5f : averageDeath))));
+	Text_Role_Info_Kill->SetText(FText::FromString(FString::SanitizeFloat(averageKill)));
+	Text_Role_Info_Death->SetText(FText::FromString(FString::SanitizeFloat(averageDeath)));
+	Text_Role_Info_Assist->SetText(FText::FromString(FString::SanitizeFloat(averageAssist)));
 	Text_Role_Info_PlayCount->SetText(FText::FromString(FString::FromInt(playCount)));
 }
 

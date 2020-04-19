@@ -74,6 +74,9 @@ public:
 		UTextBlock* Text_Role_Info_Name;
 
 	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* Text_KDA;
+
+	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* Text_Role_Info_Kill;
 
 	UPROPERTY(Meta = (BindWidget))
