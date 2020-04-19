@@ -15,16 +15,25 @@ void URoleItem::RefreshItem(uint8 RoleID, uint8 isLock)
 		Button->SetBackgroundColor(FLinearColor(1.f, 1.f, 1.f, 1.f));
 		Button->bIsEnabled = true;
 		DDH::Debug() << "URoleItem::RefreshItem--> Color" << Button->BackgroundColor.ToString() << DDH::Endl();
+		isUnlock = true;
 	}
 	else
 	{
 		Text_IsUnlock->SetVisibility(ESlateVisibility::Visible);
 		Button->SetBackgroundColor(FLinearColor(.1f, .1f, .1f, 1));
 		Button->bIsEnabled = false;
+		isUnlock = false;
 	}
 }
 
 void URoleItem::InitItemStyle()
 {
 	Button->SetStyle(RoleStyle);
+	isUnlock = false;
 }
+
+void URoleItem::ButtonReleasedEvent()
+{
+	RoleItemSelectDel.ExecuteIfBound(RoleType, isUnlock);
+}
+

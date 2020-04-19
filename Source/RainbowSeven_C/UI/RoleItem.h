@@ -9,6 +9,8 @@
 
 class UTextBlock;
 class UButton;
+
+DECLARE_DELEGATE_TwoParams(FRoleItemSelect, uint8, bool)
 /**
  *
  */
@@ -23,9 +25,21 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void InitItemStyle();
 
+	UFUNCTION(BlueprintCallable)
+		void ButtonReleasedEvent();
+
 public:
 	UPROPERTY(EditAnywhere)
-		uint8 RoleID;
+		uint8 RoleType;
+
+	UPROPERTY(BlueprintReadWrite)
+		bool isUnlock;
+
+	UPROPERTY(EditAnywhere)
+		uint16 Fame;
+
+	UPROPERTY(EditAnywhere)
+		uint16 Coin;
 
 	UPROPERTY(Meta = (BindWidget))
 		UButton* Button;
@@ -36,4 +50,5 @@ public:
 	UPROPERTY(EditAnywhere)
 		FButtonStyle RoleStyle;
 
+	FRoleItemSelect RoleItemSelectDel;
 };

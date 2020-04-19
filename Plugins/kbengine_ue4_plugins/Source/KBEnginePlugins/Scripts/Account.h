@@ -19,6 +19,8 @@ namespace KBEngine
 
 		virtual void OnReqAccountInfo(uint16 arg1, uint64 arg2, uint64 arg3, uint64 arg4) override;
 
+		virtual void OnReqRoleInfo(const ROLE_INFO& arg1) override;
+
 		virtual void OnReqRoleList(const ROLE_LIST& arg1) override;
 
 		virtual void OnReqUnlockRole(uint8 arg1, uint8 arg2) override;

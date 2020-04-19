@@ -15,6 +15,25 @@ KBEngine::Account::~Account()
 //登录成功就会创建Account，然后执行该函数
 void KBEngine::Account::__init__()
 {
+	// 注册事件
+	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqRoleInfo", "ReqRoleInfo", [this](const UKBEventData* EventData) {
+		const UKBEventData_ReqRoleInfo* ServerData = Cast<UKBEventData_ReqRoleInfo>(EventData);
+
+		pBaseEntityCall->ReqRoleInfo(ServerData->RoleType);
+		});
+
+	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqUnlockRole", "ReqUnlockRole", [this](const UKBEventData* EventData) {
+		const UKBEventData_ReqUnlockRole* ServerData = Cast<UKBEventData_ReqUnlockRole>(EventData);
+
+		pBaseEntityCall->ReqUnlockRole(ServerData->RoleType);
+		});
+
+	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqRoleList", "ReqRoleList", [this](const UKBEventData* EventData) {
+		const UKBEventData_ReqRoleList* ServerData = Cast<UKBEventData_ReqRoleList>(EventData);
+
+		pBaseEntityCall->ReqRoleList();
+		});
+
 	//用户实体创建说明登录成功，触发登录成功事件
 	UKBEventData_onLoginSuccessfully* EventData = NewObject<UKBEventData_onLoginSuccessfully>();
 	EventData->entity_uuid = KBEngineApp::getSingleton().entity_uuid();
@@ -37,7 +56,7 @@ void KBEngine::Account::onDestroy()
 void KBEngine::Account::OnReqAccountInfo(uint16 arg1, uint64 arg2, uint64 arg3, uint64 arg4)
 {
 	UKBEventData_OnReqAccountInfo* EventData = NewObject<UKBEventData_OnReqAccountInfo>();
-	DDH::Debug() << "ExAccount::OnReqAccountInfo--> Level = " << arg1 << ", Exp = " << arg2 << ", Fame = " << arg3 << ", Coin = " << arg4 << DDH::Endl();
+	DDH::Debug() << "Account::OnReqAccountInfo--> Level = " << arg1 << ", Exp = " << arg2 << ", Fame = " << arg3 << ", Coin = " << arg4 << DDH::Endl();
 
 	EventData->Level = arg1;
 	EventData->Exp = arg2;
@@ -47,11 +66,23 @@ void KBEngine::Account::OnReqAccountInfo(uint16 arg1, uint64 arg2, uint64 arg3, 
 	KBENGINE_EVENT_FIRE("OnReqAccountInfo", EventData);
 }
 
+void KBEngine::Account::OnReqRoleInfo(const ROLE_INFO& arg1)
+{
+	UKBEventData_OnReqRoleInfo* EventData = NewObject<UKBEventData_OnReqRoleInfo>();
+	FROLE_INFO RoleInfo;
+	RoleInfo.InitData(arg1.Dbid, arg1.RoleType, arg1.IsLock, arg1.Kill, arg1.Death, arg1.Assist, arg1.Point, arg1.PlayCount);
+	EventData->RoleInfo = RoleInfo;
+
+	DDH::Debug() << "Account::OnReqRoleInfo--> Kill:" << uint64(arg1.Kill) << DDH::Endl();
+
+	KBENGINE_EVENT_FIRE("OnReqRoleInfo", EventData);
+}
+
 //请求干员信息的回调函数
 void KBEngine::Account::OnReqRoleList(const ROLE_LIST& arg1)
 {
 	UKBEventData_OnReqRoleList* EventData = NewObject<UKBEventData_OnReqRoleList>();
-	DDH::Debug() << "ExAccount::OnReqRoleList--> RoleList Number:" << arg1.Value.Num() << DDH::Endl();
+	DDH::Debug() << "Account::OnReqRoleList--> RoleList Number:" << arg1.Value.Num() << DDH::Endl();
 
 	for (int i = 0; i < arg1.Value.Num(); i++)
 	{
@@ -65,5 +96,9 @@ void KBEngine::Account::OnReqRoleList(const ROLE_LIST& arg1)
 
 void KBEngine::Account::OnReqUnlockRole(uint8 arg1, uint8 arg2)
 {
-	DDH::Debug() << "ExAccount::OnReqUnlockRole--> Result:" << arg1 << ", RoelType:" << arg2 << DDH::Endl();
+	UKBEventData_OnReqUnlockRole* EventData = NewObject< UKBEventData_OnReqUnlockRole>();
+	EventData->Result = arg1;
+	DDH::Debug() << "Account::OnReqUnlockRole--> Result:" << arg1 << ", RoelType:" << arg2 << DDH::Endl();
+	KBENGINE_EVENT_FIRE("OnReqUnlockRole", EventData);
 }
+

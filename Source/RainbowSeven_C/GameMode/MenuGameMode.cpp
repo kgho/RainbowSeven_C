@@ -14,6 +14,7 @@ void AMenuGameMode::InstallEvent()
 	KBENGINE_REGISTER_EVENT("OnReqAccountInfo", OnReqAccountInfo);
 	KBENGINE_REGISTER_EVENT("OnReqRoleList", OnReqRoleList);
 	KBENGINE_REGISTER_EVENT("OnReqUnlockRole", OnReqUnlockRole);
+	KBENGINE_REGISTER_EVENT("OnReqRoleInfo", OnReqRoleInfo);
 }
 
 void AMenuGameMode::BeginPlay()
@@ -42,6 +43,14 @@ void AMenuGameMode::OnReqAccountInfo(const UKBEventData* EventData)
 void AMenuGameMode::OnReqUnlockRole(const UKBEventData* EventData)
 {
 	const UKBEventData_OnReqUnlockRole* ServerData = Cast<UKBEventData_OnReqUnlockRole>(EventData);
-	DDH::Debug() << "AMenuGameMode::OnReqAccountInfo Result-->" << ServerData->Result << DDH::Endl();
+	DDH::Debug() << "AMenuGameMode::OnReqUnlockRole Result-->" << ServerData->Result << DDH::Endl();
+	MenuWidget->OnReqUnlockRole(ServerData->Result);
+}
+
+void AMenuGameMode::OnReqRoleInfo(const UKBEventData* EventData)
+{
+	const UKBEventData_OnReqRoleInfo* ServerData = Cast<UKBEventData_OnReqRoleInfo>(EventData);
+	DDH::Debug() << "AMenuGameMode::OnReqRoleInfo Kill-->" << uint64(ServerData->RoleInfo.Kill) << DDH::Endl();
+	MenuWidget->RefreshRoleInfo(ServerData->RoleInfo);
 }
 

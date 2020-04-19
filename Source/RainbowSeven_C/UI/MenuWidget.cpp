@@ -7,6 +7,8 @@
 #include "ProgressBar.h"
 #include "Button.h"
 #include "RoleItem.h"
+#include "LoginWidget.h"
+#include "CanvasPanel.h"
 
 void UMenuWidget::OnReqAccountInfo(uint16 level, uint64 exp, uint64 fame, uint64 coin)
 {
@@ -17,6 +19,12 @@ void UMenuWidget::OnReqAccountInfo(uint16 level, uint64 exp, uint64 fame, uint64
 	Text_Fame->SetText(FText::FromString(FString::FromInt(fame)));
 	Text_Coin->SetText(FText::FromString(FString::FromInt(coin)));
 	ProgressBar_Exp->SetPercent(exp / level * 100);
+
+	for (size_t i = 0; i < RoleItemArray.Num(); i++)
+	{
+		DDH::Debug() << "UMenuWidget::OnReqAccountInfo RoleItemIndex-->" << i << DDH::Endl();
+		RoleItemArray[i]->RoleItemSelectDel.BindUObject(this, &UMenuWidget::RoleItemSelect);
+	}
 }
 
 void UMenuWidget::OnReqRoleList(TArray<FROLE_INFO> RoleList)
@@ -29,4 +37,89 @@ void UMenuWidget::OnReqRoleList(TArray<FROLE_INFO> RoleList)
 		DDH::Debug() << "UMenuWidget::OnReqAccountInfo RoleItemList:-->" << RoleItemArray.Num() << DDH::Endl();
 		RoleItemArray[RoleIndex]->RefreshItem(RoleList[i].RoleType, RoleList[i].IsLock);
 	}
+}
+
+void UMenuWidget::RefreshRoleInfo(FROLE_INFO RoleInfo)
+{
+	CanvasRoleInfo->SetVisibility(ESlateVisibility::Visible);
+
+	switch (RoleInfo.RoleType)
+	{
+	case 1:
+		Text_Role_Info_Name->SetText(FText::FromString("A"));
+		break;
+	case 2:
+		Text_Role_Info_Name->SetText(FText::FromString("B"));
+		break;
+	case 3:
+		Text_Role_Info_Name->SetText(FText::FromString("C"));
+		break;
+	case 4:
+		Text_Role_Info_Name->SetText(FText::FromString("D"));
+		break;
+	}
+
+	uint32 playCount = RoleInfo.PlayCount;
+
+	Text_Role_Info_Kill->SetText(FText::FromString(FString::SanitizeFloat((float)RoleInfo.Kill / (float)playCount)));
+	Text_Role_Info_Death->SetText(FText::FromString(FString::SanitizeFloat((float)RoleInfo.Death / (float)playCount)));
+	Text_Role_Info_Assist->SetText(FText::FromString(FString::SanitizeFloat((float)RoleInfo.Assist / (float)playCount)));
+	Text_Role_Info_PlayCount->SetText(FText::FromString(FString::FromInt(playCount)));
+}
+
+void UMenuWidget::OnReqUnlockRole(uint8 result)
+{
+	DDH::Debug() << "UMenuWidget::OnReqUnlockRole--> Result:" << result << DDH::Endl();
+	if (result == 0)
+	{
+		CanvasRoleUnlockSuccessful->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void UMenuWidget::CanvasRoleInfoHide()
+{
+	CanvasRoleInfo->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UMenuWidget::UnlockRoleSure()
+{
+	DDH::Debug() << "UMenuWidget::UnlockRoleSure selectedRoleType-->" << selectedRoleType << DDH::Endl();
+	UKBEventData_ReqUnlockRole* EventData = NewObject<UKBEventData_ReqUnlockRole>();
+	EventData->RoleType = selectedRoleType;
+	DDH::Debug() << "UMenuWidget::UnlockRoleSure EventData->RoleType-->" << EventData->RoleType << DDH::Endl();
+	KBENGINE_EVENT_FIRE("ReqUnlockRole", EventData);
+}
+
+void UMenuWidget::CanvasRoleUnlockBack()
+{
+	CanvasRoleUnlock->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UMenuWidget::RoleUnlockSuccessfulBack()
+{
+	CanvasRoleUnlock->SetVisibility(ESlateVisibility::Hidden);
+	CanvasRoleUnlockSuccessful->SetVisibility(ESlateVisibility::Hidden);
+	UKBEventData_ReqRoleList* EventData = NewObject<UKBEventData_ReqRoleList>();
+	EventData->AccountName = "AccountName";
+	KBENGINE_EVENT_FIRE("ReqRoleList", EventData);
+}
+
+void UMenuWidget::RoleItemSelect(uint8 RoleType, bool IsUnlock)
+{
+	selectedRoleType = RoleType;
+	DDH::Debug() << "UMenuWidget::RoleItemSelect RoleType-->" << selectedRoleType << DDH::Endl();
+
+	DDH::Debug() << "UMenuWidget::RoleItemSelect IsUnlock-->" << IsUnlock << DDH::Endl();
+	if (IsUnlock)
+	{
+		CanvasRoleInfo->SetVisibility(ESlateVisibility::Visible);
+		UKBEventData_ReqRoleInfo* EventData = NewObject<UKBEventData_ReqRoleInfo>();
+		EventData->RoleType = RoleType;
+		KBENGINE_EVENT_FIRE("ReqRoleInfo", EventData);
+	}
+	else
+	{
+		CanvasRoleUnlock->SetVisibility(ESlateVisibility::Visible);
+	}
+
 }

@@ -20,6 +20,7 @@ void ULoginWidget::SignInButtonEvent()
 {
 	FString Username = EditableTextBox_Username->GetText().ToString();
 	FString Password = EditableTextBox_Password->GetText().ToString();
+
 	if (Username.IsEmpty() || Password.IsEmpty())
 	{
 		DDH::Debug() << "Username or Password can not be none!" << DDH::Endl();

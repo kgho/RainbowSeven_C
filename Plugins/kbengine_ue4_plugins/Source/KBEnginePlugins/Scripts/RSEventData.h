@@ -81,6 +81,48 @@ public:
 };
 
 UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_ReqRoleInfo : public UKBEventData {
+
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+		uint8 RoleType;
+
+
+};
+
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_OnReqRoleInfo :public UKBEventData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+		FROLE_INFO RoleInfo;
+};
+
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_ReqUnlockRole :public UKBEventData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+		uint8 RoleType;
+};
+
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_ReqRoleList :public UKBEventData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+		FString AccountName;
+};
+
+UCLASS()
 class KBENGINEPLUGINS_API UKBEventData_OnReqUnlockRole :public UKBEventData
 {
 	GENERATED_BODY()
