@@ -173,12 +173,47 @@ public:
 	UPROPERTY()
 		TArray<FROOM_INFO> RoomList;
 };
+
 UCLASS()
 class KBENGINEPLUGINS_API UKBEventData_OnReqCreateRoom : public UKBEventData {
 	GENERATED_BODY()
 public:
 	UPROPERTY()
 		FROOM_INFO RoomInfo;
+};
+
+USTRUCT()
+struct FPLAYER_INFO
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY()
+		FString Name;
+	UPROPERTY()
+		uint16 Levle;
+	UPROPERTY()
+		uint8 State;
+	UPROPERTY()
+		uint16 Avatar;
+	UPROPERTY()
+		uint16 Master;
+
+	void InitData(const FString InName, uint16 InLevle, uint8 InState, uint16 InAvatar, uint16 InMaster)
+	{
+		Name = InName;
+		Levle = InLevle;
+		State = InState;
+		Avatar = InAvatar;
+		Master = InMaster;
+	}
+};
+
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_OnReqEnterRoom : public UKBEventData {
+	GENERATED_BODY()
+public:
+	UPROPERTY()
+		TArray<FPLAYER_INFO> RoleList;
 };
 
 /**

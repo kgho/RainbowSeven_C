@@ -148,3 +148,16 @@ void KBEngine::Account::OnReqCreateRoom(uint8 arg1, const ROOM_INFO& arg2)
 	KBENGINE_EVENT_FIRE("OnReqCreateRoom", EventData);
 }
 
+void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2)
+{
+	UKBEventData_OnReqRoleList* EventData = NewObject<UKBEventData_OnReqRoleList>();
+	DDH::Debug() << "Account::OnReqEnterRoom--> Player Number:" << arg2.Value.Num() << DDH::Endl();
+
+	// 保存信息到回调函数参数，触发事件给GameMode
+	for (int i = 0; i < arg2.Value.Num(); i++)
+	{
+		DDH::Debug() << "Account::OnReqEnterRoom--> Name:" << arg2.Value[i].Name << DDH::Endl();
+		DDH::Debug() << "Account::OnReqEnterRoom--> IsMaster:" << arg2.Value[i].Master << DDH::Endl();
+	}
+}
+
