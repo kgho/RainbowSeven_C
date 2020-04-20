@@ -35,6 +35,20 @@ public:
 
 	void ReqRoomList();
 
+	//Main
+	UFUNCTION(BlueprintCallable)
+		void ButtonHomeEvent();
+
+	UFUNCTION(BlueprintCallable)
+		void ButtonRoleEvent();
+
+	UFUNCTION(BlueprintCallable)
+		void ButtonCombatEvent();
+
+	UFUNCTION(BlueprintCallable)
+		void ButtonRefreshRoomEvent();
+
+	//Role
 	UFUNCTION(BlueprintCallable)
 		void CanvasRoleInfoHide();
 
@@ -48,9 +62,6 @@ public:
 		void RoleUnlockSuccessfulBack();
 
 	//Room
-	UFUNCTION(BlueprintCallable)
-		void ButtonCombatEvent();
-
 	void OnReqRoomList(TArray<FROOM_INFO> RoomList);
 
 	void OnCreateRoom(FROOM_INFO RoomInfo);
@@ -63,6 +74,7 @@ public:
 		void EnterRoomEvent();
 
 public:
+	//Canvas Main
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* Text_Level;
 
@@ -84,7 +96,16 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		TArray<URoleItem*> RoleItemArray;
 
+	//当前选择的干员类型
 	uint8 selectedRoleType;
+
+	//Canvas Home
+	UPROPERTY(Meta = (BindWidget))
+		UCanvasPanel* CanvasHome;
+
+	//Canvas Role
+	UPROPERTY(Meta = (BindWidget))
+		UCanvasPanel* CanvasRole;
 
 	//Canvas Role Info
 	UPROPERTY(Meta = (BindWidget))

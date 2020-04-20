@@ -112,9 +112,30 @@ void UMenuWidget::RoleUnlockSuccessfulBack()
 	KBENGINE_EVENT_FIRE("ReqRoleList", EventData);
 }
 
+void UMenuWidget::ButtonHomeEvent()
+{
+	CanvasHome->SetVisibility(ESlateVisibility::Visible);
+	CanvasRole->SetVisibility(ESlateVisibility::Hidden);
+	CanvasRoomMenu->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UMenuWidget::ButtonRoleEvent()
+{
+	CanvasHome->SetVisibility(ESlateVisibility::Hidden);
+	CanvasRole->SetVisibility(ESlateVisibility::Visible);
+	CanvasRoomMenu->SetVisibility(ESlateVisibility::Hidden);
+}
+
 void UMenuWidget::ButtonCombatEvent()
 {
+	CanvasHome->SetVisibility(ESlateVisibility::Hidden);
+	CanvasRole->SetVisibility(ESlateVisibility::Hidden);
 	CanvasRoomMenu->SetVisibility(ESlateVisibility::Visible);
+	ReqRoomList();
+}
+
+void UMenuWidget::ButtonRefreshRoomEvent()
+{
 	ReqRoomList();
 }
 
@@ -162,6 +183,8 @@ void UMenuWidget::ReqRoomList()
 {
 	KBENGINE_EVENT_FIRE("ReqRoomList", NewObject<UKBEventData>());
 }
+
+
 
 void UMenuWidget::RoleItemSelect(uint8 RoleType, bool IsUnlock)
 {
