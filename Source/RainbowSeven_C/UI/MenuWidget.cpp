@@ -190,31 +190,8 @@ void UMenuWidget::ButtonCreatRoomEvent()
 {
 	CanvasRoomCreate->SetVisibility(ESlateVisibility::Visible);
 
-	//// 基于当前系统的当前日期/时间
-	//time_t now = time(0);
-	//// 把 now 转换为字符串形式
-	//FString dt = ctime(&now);
 
-	// 基于当前系统的当前日期/时间
-	time_t now = time(0);
-
-	tm* ltm = localtime(&now);
-
-	// 年
-	FString year = FString::FromInt(1900 + ltm->tm_year);
-	// 月
-	FString month = FString::FromInt(1 + ltm->tm_mon);
-	// 日
-	FString day = FString::FromInt(ltm->tm_mday);
-	// 时
-	FString hour = FString::FromInt(ltm->tm_hour);
-	// 分
-	FString minute = FString::FromInt(ltm->tm_min);
-	// 秒
-	FString second = FString::FromInt(ltm->tm_sec);
-
-	FString timeStr = year + "年" + month + "月";
-	EditableTextBox_RoomName->SetText(FText::FromString("肃清模式---木屋---" + year + "/" + month + "/" + day + "	" + hour + ":" + minute + ":" + second));
+	EditableTextBox_RoomName->SetText(FText::FromString(TEXT("肃清模式--木屋  ") + GetTimeStr()));
 }
 
 void UMenuWidget::ButtonSureCreateRoom()
@@ -223,7 +200,8 @@ void UMenuWidget::ButtonSureCreateRoom()
 
 	if (roomNameStr.IsEmpty())
 	{
-		Text_TipCreateRoom->SetText(FText::FromString("房间名称不能未空！"));
+		Text_TipCreateRoom->SetText(FText::FromString(TEXT("房间名称不能未空！")));
+		EditableTextBox_RoomName->SetText(FText::FromString(TEXT("肃清模式--木屋  ") + GetTimeStr()));
 		return;
 	}
 
@@ -231,7 +209,7 @@ void UMenuWidget::ButtonSureCreateRoom()
 	EventData->RoomName = roomNameStr;
 	KBENGINE_EVENT_FIRE("ReqCreateRoom", EventData);
 	Button_SureCreateRoom->bIsEnabled = false;
-	Text_TipCreateRoom->SetText(FText::FromString("正在创建房间..."));
+	Text_TipCreateRoom->SetText(FText::FromString(TEXT("正在创建房间...")));
 }
 
 void UMenuWidget::ButtonCancelCreateRoom()
@@ -268,4 +246,45 @@ void UMenuWidget::RoleItemSelect(uint8 RoleType, bool IsUnlock)
 		CanvasRoleUnlock->SetVisibility(ESlateVisibility::Visible);
 	}
 
+}
+
+FString UMenuWidget::GetTimeStr()
+{
+	// 基于当前系统的当前日期/时间
+	//time_t now = time(0);
+	// 把 now 转换为字符串形式
+	//FString dt = ctime(&now);
+
+	// 基于当前系统的当前日期/时间
+	time_t now = time(0);
+
+	tm* ltm = localtime(&now);
+
+	// 年
+	FString year = FString::FromInt(1900 + ltm->tm_year);
+
+	// 月
+	FString month = FString::FromInt(1 + ltm->tm_mon);
+	month = month.Len() == 1 ? "0" + month : month;
+
+	// 日
+	FString day = FString::FromInt(ltm->tm_mday);
+	day = day.Len() == 1 ? "0" + day : day;
+
+	// 时
+	FString hour = FString::FromInt(ltm->tm_hour);
+	hour = hour.Len() == 1 ? "0" + hour : hour;
+
+	// 分
+	FString minute = FString::FromInt(ltm->tm_min);
+	minute = minute.Len() == 1 ? "0" + minute : minute;
+
+	// 秒
+	FString second = FString::FromInt(ltm->tm_sec);
+	second = second.Len() == 1 ? "0" + second : second;
+
+
+	FString timeStr = year + "/" + month + "/" + day + "	" + hour + ":" + minute + ":" + second;
+
+	return timeStr;
 }

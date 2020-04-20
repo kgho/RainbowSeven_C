@@ -181,4 +181,6 @@ protected:
 
 	void RoleItemSelect(uint8 RoleType, bool IsUnlock);
 
+	FString GetTimeStr();
+
 };
