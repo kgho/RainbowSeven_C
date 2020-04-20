@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+﻿// Author : Kgho	Github : https://github.com/kgho
 
 
 #include "MenuWidget.h"
@@ -13,6 +13,8 @@
 #include "WidgetTree.h"
 #include "ScrollBox.h"
 #include "ScrollBoxSlot.h"
+#include "EditableTextBox.h"
+#include <ctime>
 
 void UMenuWidget::OnReqAccountInfo(uint16 level, uint64 exp, uint64 fame, uint64 coin)
 {
@@ -91,7 +93,6 @@ void UMenuWidget::CanvasRoleInfoHide()
 
 void UMenuWidget::UnlockRoleSure()
 {
-	DDH::Debug() << "UMenuWidget::UnlockRoleSure selectedRoleType-->" << selectedRoleType << DDH::Endl();
 	UKBEventData_ReqUnlockRole* EventData = NewObject<UKBEventData_ReqUnlockRole>();
 	EventData->RoleType = selectedRoleType;
 	DDH::Debug() << "UMenuWidget::UnlockRoleSure EventData->RoleType-->" << EventData->RoleType << DDH::Endl();
@@ -128,6 +129,7 @@ void UMenuWidget::ButtonRoleEvent()
 
 void UMenuWidget::ButtonCombatEvent()
 {
+	Button_SureCreateRoom->bIsEnabled = true;
 	CanvasHome->SetVisibility(ESlateVisibility::Hidden);
 	CanvasRole->SetVisibility(ESlateVisibility::Hidden);
 	CanvasRoomMenu->SetVisibility(ESlateVisibility::Visible);
@@ -141,38 +143,100 @@ void UMenuWidget::ButtonRefreshRoomEvent()
 
 void UMenuWidget::OnReqRoomList(TArray<FROOM_INFO> RoomList)
 {
-	//�ѾɵĴ��б��Ƴ�
+	//把旧的从列表移除
 	for (int i = 0; i < RoomItemGroup.Num(); ++i)
 	{
 		RoomItemGroup[i]->RemoveFromParent();
 		RoomItemGroup[i]->ConditionalBeginDestroy();
 	}
-	//�������
+	//清空数组
 	RoomItemGroup.Empty();
 
-	//ѭ������RoomItem
+	//循环创建RoomItem
 	for (int i = 0; i < RoomList.Num(); ++i)
 	{
-		// ����RoomItem
+		// 创建RoomItem
 		URoomItem* RoomItem = WidgetTree->ConstructWidget<URoomItem>(RoomItemClass);
 		UScrollBoxSlot* RoomItemSlot = Cast<UScrollBoxSlot>(Scroll_Box_RoomList->AddChild(RoomItem));
 		RoomItemSlot->SetPadding(FMargin(0.f, 5.f, 0.f, 5.f));
 
-		// ���÷�����Ϣ
+		// 设置房间信息
 		RoomItem->InitItem(RoomList[i]);
 		//RoomItem->RoomItemSelectDel.BindUObject(this, &UExRoomWidget::RoomItemSelect);
 
-		// ���淿����Ŀ����������
+		// 保存房间条目到本地数组
 		RoomItemGroup.Add(RoomItem);
 	}
 }
 
-void UMenuWidget::OnCreateRoom(FROOM_INFO RoomInfo)
+void UMenuWidget::OnReqCreateRoom(FROOM_INFO RoomInfo)
 {
+	CanvasRoomCreate->SetVisibility(ESlateVisibility::Hidden);
+
+	// 创建RoomItem
+	URoomItem* RoomItem = WidgetTree->ConstructWidget<URoomItem>(RoomItemClass);
+	UScrollBoxSlot* RoomItemSlot = Cast<UScrollBoxSlot>(Scroll_Box_RoomList->AddChild(RoomItem));
+	RoomItemSlot->SetPadding(FMargin(0.f, 5.f, 0.f, 5.f));
+
+	// 设置房间信息
+	RoomItem->InitItem(RoomInfo);
+	//RoomItem->RoomItemSelectDel.BindUObject(this, &UExRoomWidget::RoomItemSelect);
+
+	// 保存房间条目到本地数组
+	RoomItemGroup.Add(RoomItem);
 }
 
-void UMenuWidget::CreateRoomEvent()
+void UMenuWidget::ButtonCreatRoomEvent()
 {
+	CanvasRoomCreate->SetVisibility(ESlateVisibility::Visible);
+
+	//// 基于当前系统的当前日期/时间
+	//time_t now = time(0);
+	//// 把 now 转换为字符串形式
+	//FString dt = ctime(&now);
+
+	// 基于当前系统的当前日期/时间
+	time_t now = time(0);
+
+	tm* ltm = localtime(&now);
+
+	// 年
+	FString year = FString::FromInt(1900 + ltm->tm_year);
+	// 月
+	FString month = FString::FromInt(1 + ltm->tm_mon);
+	// 日
+	FString day = FString::FromInt(ltm->tm_mday);
+	// 时
+	FString hour = FString::FromInt(ltm->tm_hour);
+	// 分
+	FString minute = FString::FromInt(ltm->tm_min);
+	// 秒
+	FString second = FString::FromInt(ltm->tm_sec);
+
+	FString timeStr = year + "年" + month + "月";
+	EditableTextBox_RoomName->SetText(FText::FromString("肃清模式---木屋---" + year + "/" + month + "/" + day + "	" + hour + ":" + minute + ":" + second));
+}
+
+void UMenuWidget::ButtonSureCreateRoom()
+{
+	FString roomNameStr = EditableTextBox_RoomName->Text.ToString();
+
+	if (roomNameStr.IsEmpty())
+	{
+		Text_TipCreateRoom->SetText(FText::FromString("房间名称不能未空！"));
+		return;
+	}
+
+	UKBEventData_ReqCreateRoom* EventData = NewObject<UKBEventData_ReqCreateRoom>();
+	EventData->RoomName = roomNameStr;
+	KBENGINE_EVENT_FIRE("ReqCreateRoom", EventData);
+	Button_SureCreateRoom->bIsEnabled = false;
+	Text_TipCreateRoom->SetText(FText::FromString("正在创建房间..."));
+}
+
+void UMenuWidget::ButtonCancelCreateRoom()
+{
+	CanvasRoomCreate->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UMenuWidget::EnterRoomEvent()

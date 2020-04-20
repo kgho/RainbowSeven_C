@@ -18,7 +18,7 @@ void AMenuGameMode::InstallEvent()
 	KBENGINE_REGISTER_EVENT("OnReqRoleInfo", OnReqRoleInfo);
 
 	KBENGINE_REGISTER_EVENT("OnReqRoomList", OnReqRoomList);
-	KBENGINE_REGISTER_EVENT("OnCreateRoom", OnCreateRoom);
+	KBENGINE_REGISTER_EVENT("OnReqCreateRoom", OnReqCreateRoom);
 }
 
 void AMenuGameMode::BeginPlay()
@@ -65,9 +65,10 @@ void AMenuGameMode::OnReqRoomList(const UKBEventData* EventData)
 	MenuWidget->OnReqRoomList(ServerData->RoomList);
 }
 
-void AMenuGameMode::OnCreateRoom(const UKBEventData* EventData)
+void AMenuGameMode::OnReqCreateRoom(const UKBEventData* EventData)
 {
-	const UKBEventData_OnCreateRoom* ServerData = Cast<UKBEventData_OnCreateRoom>(EventData);
-	DDH::Debug() << "AMenuGameMode::OnCreateRoom -->" << ServerData->RoomInfo.Name << DDH::Endl();
+	const UKBEventData_OnReqCreateRoom* ServerData = Cast<UKBEventData_OnReqCreateRoom>(EventData);
+	DDH::Debug() << "AMenuGameMode::OnReqCreateRoom -->" << ServerData->RoomInfo.Name << DDH::Endl();
+	MenuWidget->OnReqCreateRoom(ServerData->RoomInfo);
 }
 

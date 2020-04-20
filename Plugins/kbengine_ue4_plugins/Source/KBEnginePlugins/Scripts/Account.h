@@ -27,7 +27,7 @@ namespace KBEngine
 
 		void OnReqRoomList(const ROOM_LIST& arg1);
 
-		void OnCreateRoom(uint8 arg1, const ROOM_INFO& arg2);
+		void OnReqCreateRoom(uint8 arg1, const ROOM_INFO& arg2) override;
 
 	public:
 		//保存干员信息列表到本地

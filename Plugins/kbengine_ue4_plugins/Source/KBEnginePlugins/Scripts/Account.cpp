@@ -38,11 +38,15 @@ void KBEngine::Account::__init__()
 		{
 			pBaseEntityCall->ReqRoomList();
 		});
+
 	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqCreateRoom", "ReqCreateRoom", [this](const UKBEventData* EventData)
 		{
+
 			const UKBEventData_ReqCreateRoom* ServerData = Cast<UKBEventData_ReqCreateRoom>(EventData);
+			DDH::Debug() << "Account::ReqCreateRoom--> RoomName:= " << ServerData->RoomName << DDH::Endl();
 			pBaseEntityCall->ReqCreateRoom(ServerData->RoomName);
 		});
+
 	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqEnterRoom", "ReqEnterRoom", [this](const UKBEventData* EventData)
 		{
 			const UKBEventData_ReqEnterRoom* ServerData = Cast<UKBEventData_ReqEnterRoom>(EventData);
@@ -128,19 +132,19 @@ void KBEngine::Account::OnReqRoomList(const ROOM_LIST& arg1)
 		RoomInfo.InitData(arg1.Value[i].RoomId, arg1.Value[i].Name);
 		EventData->RoomList.Add(RoomInfo);
 	}
-	
+
 	KBENGINE_EVENT_FIRE("OnReqRoomList", EventData);
 }
-void KBEngine::Account::OnCreateRoom(uint8 arg1, const ROOM_INFO& arg2)
+void KBEngine::Account::OnReqCreateRoom(uint8 arg1, const ROOM_INFO& arg2)
 {
 	if (arg1 == 1)
 	{
-		DDH::Debug() << "ExAccount::OnCreateRoom Failed By Name --> " << arg2.Name << DDH::Endl();
+		DDH::Debug() << "ExAccount::OnReqCreateRoom Failed By Name --> " << arg2.Name << DDH::Endl();
 		return;
 	}
-	UKBEventData_OnCreateRoom* EventData = NewObject<UKBEventData_OnCreateRoom>();
+	UKBEventData_OnReqCreateRoom* EventData = NewObject<UKBEventData_OnReqCreateRoom>();
 	EventData->RoomInfo.InitData(arg2.RoomId, arg2.Name);
 
-	KBENGINE_EVENT_FIRE("OnCreateRoom", EventData);
+	KBENGINE_EVENT_FIRE("OnReqCreateRoom", EventData);
 }
 

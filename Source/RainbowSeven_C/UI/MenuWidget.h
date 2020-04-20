@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+Ôªø// Author : Kgho	Github : https://github.com/kgho
 
 #pragma once
 
@@ -64,11 +64,17 @@ public:
 	//Room
 	void OnReqRoomList(TArray<FROOM_INFO> RoomList);
 
-	void OnCreateRoom(FROOM_INFO RoomInfo);
+	void OnReqCreateRoom(FROOM_INFO RoomInfo);
 
 
 	UFUNCTION(BlueprintCallable)
-		void CreateRoomEvent();
+		void ButtonCreatRoomEvent();
+
+	UFUNCTION(BlueprintCallable)
+		void ButtonSureCreateRoom();
+
+	UFUNCTION(BlueprintCallable)
+		void ButtonCancelCreateRoom();
 
 	UFUNCTION(BlueprintCallable)
 		void EnterRoomEvent();
@@ -96,7 +102,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		TArray<URoleItem*> RoleItemArray;
 
-	//µ±«∞—°‘Òµƒ∏…‘±¿‡–Õ
+	//ÂΩìÂâçÈÄâÊã©ÁöÑÂπ≤ÂëòÁ±ªÂûã
 	uint8 selectedRoleType;
 
 	//Canvas Home
@@ -142,7 +148,7 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UButton* Button_Role_Unlock_Successful_Back;
 
-	//Room
+	//Room Menu
 	UPROPERTY(Meta = (BindWidget))
 		UButton* Button_Combat;
 
@@ -152,14 +158,24 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UScrollBox* Scroll_Box_RoomList;
 
-	UPROPERTY(Meta = (BindWidget))
-		UEditableTextBox* EditableTextBox_RoomName;
-
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<URoomItem> RoomItemClass;
 
 	UPROPERTY()
 		TArray<URoomItem*> RoomItemGroup;
+
+	//Room Create
+	UPROPERTY(Meta = (BindWidget))
+		UCanvasPanel* CanvasRoomCreate;
+
+	UPROPERTY(Meta = (BindWidget))
+		UEditableTextBox* EditableTextBox_RoomName;
+
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* Text_TipCreateRoom;
+
+	UPROPERTY(Meta = (BindWidget))
+		UButton* Button_SureCreateRoom;
 
 protected:
 

@@ -174,7 +174,7 @@ public:
 		TArray<FROOM_INFO> RoomList;
 };
 UCLASS()
-class KBENGINEPLUGINS_API UKBEventData_OnCreateRoom : public UKBEventData {
+class KBENGINEPLUGINS_API UKBEventData_OnReqCreateRoom : public UKBEventData {
 	GENERATED_BODY()
 public:
 	UPROPERTY()

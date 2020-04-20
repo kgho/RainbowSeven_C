@@ -40,5 +40,5 @@ protected:
 	void OnReqRoomList(const UKBEventData* EventData);
 
 	//创建房间回调函数
-	void OnCreateRoom(const UKBEventData* EventData);
+	void OnReqCreateRoom(const UKBEventData* EventData);
 };
