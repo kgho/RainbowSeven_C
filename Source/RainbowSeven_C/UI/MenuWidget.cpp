@@ -143,6 +143,9 @@ void UMenuWidget::ButtonRefreshRoomEvent()
 
 void UMenuWidget::OnReqRoomList(TArray<FROOM_INFO> RoomList)
 {
+	// 未选择房间隐藏 加入房间 按钮
+	Button_EnterRoom->SetVisibility(ESlateVisibility::Hidden);
+
 	//把旧的从列表移除
 	for (int i = 0; i < RoomItemGroup.Num(); ++i)
 	{
@@ -162,7 +165,7 @@ void UMenuWidget::OnReqRoomList(TArray<FROOM_INFO> RoomList)
 
 		// 设置房间信息
 		RoomItem->InitItem(RoomList[i]);
-		//RoomItem->RoomItemSelectDel.BindUObject(this, &UExRoomWidget::RoomItemSelect);
+		RoomItem->ItemSelectDel.BindUObject(this, &UMenuWidget::RoomItemSelect);
 
 		// 保存房间条目到本地数组
 		RoomItemGroup.Add(RoomItem);
@@ -180,10 +183,26 @@ void UMenuWidget::OnReqCreateRoom(FROOM_INFO RoomInfo)
 
 	// 设置房间信息
 	RoomItem->InitItem(RoomInfo);
-	//RoomItem->RoomItemSelectDel.BindUObject(this, &UExRoomWidget::RoomItemSelect);
+	RoomItem->ItemSelectDel.BindUObject(this, &UMenuWidget::RoomItemSelect);
 
 	// 保存房间条目到本地数组
 	RoomItemGroup.Add(RoomItem);
+
+	// 选中创建的房间
+	RoomItemSelect(RoomItem->RoomInfo.RoomId);
+}
+
+void UMenuWidget::RoomItemSelect(uint64 RoomId)
+{
+	for (int i = 0; i < RoomItemGroup.Num(); ++i)
+	{
+		if (RoomItemGroup[i]->RoomInfo.RoomId != RoomId)
+			RoomItemGroup[i]->ItemUnSelect();
+		else
+			RoomItemGroup[i]->ItemSelect();
+	}
+	SelectRoomID = RoomId;
+	Button_EnterRoom->SetVisibility(ESlateVisibility::Visible);
 }
 
 void UMenuWidget::ButtonCreatRoomEvent()
@@ -217,8 +236,12 @@ void UMenuWidget::ButtonCancelCreateRoom()
 	CanvasRoomCreate->SetVisibility(ESlateVisibility::Hidden);
 }
 
-void UMenuWidget::EnterRoomEvent()
+void UMenuWidget::ButtonEnterRoomEvent()
 {
+	UKBEventData_ReqEnterRoom* EventData = NewObject<UKBEventData_ReqEnterRoom>();
+	EventData->RoomId = SelectRoomID;
+	DDH::Debug() << "UMenuWidget::ButtonEnterRoomEvent RoomID-->" << EventData->RoomId << DDH::Endl();
+	KBENGINE_EVENT_FIRE("ReqEnterRoom", EventData);
 }
 
 void UMenuWidget::ReqRoomList()
@@ -231,9 +254,7 @@ void UMenuWidget::ReqRoomList()
 void UMenuWidget::RoleItemSelect(uint8 RoleType, bool IsUnlock)
 {
 	selectedRoleType = RoleType;
-	DDH::Debug() << "UMenuWidget::RoleItemSelect RoleType-->" << selectedRoleType << DDH::Endl();
 
-	DDH::Debug() << "UMenuWidget::RoleItemSelect IsUnlock-->" << IsUnlock << DDH::Endl();
 	if (IsUnlock)
 	{
 		CanvasRoleInfo->SetVisibility(ESlateVisibility::Visible);

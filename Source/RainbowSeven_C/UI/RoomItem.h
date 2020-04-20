@@ -10,7 +10,7 @@
 class UImage;
 class UTextBlock;
 
-DECLARE_DELEGATE_OneParam(FRoomItemSelect, uint64)
+DECLARE_DELEGATE_OneParam(FItemSelect, uint64)
 /**
  *
  */
@@ -41,7 +41,7 @@ public:
 	UPROPERTY()
 		FROOM_INFO RoomInfo;
 
-	FRoomItemSelect RoomItemSelectDel;
+	FItemSelect ItemSelectDel;
 
 	bool IsSelected;
 

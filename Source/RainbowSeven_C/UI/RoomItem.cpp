@@ -7,7 +7,7 @@
 
 void URoomItem::ItemButtonEvent()
 {
-	RoomItemSelectDel.ExecuteIfBound(RoomInfo.RoomId);
+	ItemSelectDel.ExecuteIfBound(RoomInfo.RoomId);
 }
 
 void URoomItem::InitItem(FROOM_INFO InRoomInfo)

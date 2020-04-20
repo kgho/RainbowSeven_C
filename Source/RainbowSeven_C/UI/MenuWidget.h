@@ -66,6 +66,8 @@ public:
 
 	void OnReqCreateRoom(FROOM_INFO RoomInfo);
 
+	void RoomItemSelect(uint64 RoomId);
+
 
 	UFUNCTION(BlueprintCallable)
 		void ButtonCreatRoomEvent();
@@ -77,7 +79,7 @@ public:
 		void ButtonCancelCreateRoom();
 
 	UFUNCTION(BlueprintCallable)
-		void EnterRoomEvent();
+		void ButtonEnterRoomEvent();
 
 public:
 	//Canvas Main
@@ -177,10 +179,16 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UButton* Button_SureCreateRoom;
 
+	//Room Enter
+	UPROPERTY(Meta = (BindWidget))
+		UButton* Button_EnterRoom;
+
 protected:
 
 	void RoleItemSelect(uint8 RoleType, bool IsUnlock);
 
 	FString GetTimeStr();
 
+	//选中的房间ID
+	uint64 SelectRoomID;
 };
