@@ -28,6 +28,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	void OnReqRoleList(const UKBEventData* EventData);
 
 	void OnReqAccountInfo(const UKBEventData* EventData);
@@ -36,9 +38,12 @@ protected:
 
 	void OnReqRoleInfo(const UKBEventData* EventData);
 
-	//请求房间列表回调函数
+	// 请求房间列表回调函数
 	void OnReqRoomList(const UKBEventData* EventData);
 
-	//创建房间回调函数
+	// 创建房间回调函数
 	void OnReqCreateRoom(const UKBEventData* EventData);
+
+	// 进入房间回调函数
+	void OnReqEnterRoom(const UKBEventData* EventData);
 };

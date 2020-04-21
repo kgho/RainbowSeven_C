@@ -19,6 +19,8 @@ void AMenuGameMode::InstallEvent()
 
 	KBENGINE_REGISTER_EVENT("OnReqRoomList", OnReqRoomList);
 	KBENGINE_REGISTER_EVENT("OnReqCreateRoom", OnReqCreateRoom);
+
+	KBENGINE_REGISTER_EVENT("OnReqEnterRoom", OnReqEnterRoom);
 }
 
 void AMenuGameMode::BeginPlay()
@@ -27,6 +29,13 @@ void AMenuGameMode::BeginPlay()
 	MenuWidget->AddToViewport();
 
 	Super::BeginPlay();
+}
+
+void AMenuGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	DDH::Debug() << "AMenuGameMode::EndPlay-->" << DDH::Endl();
+	KBENGINE_EVENT_FIRE("ReqLeaveRoom", NewObject<UKBEventData>());
 }
 
 void AMenuGameMode::OnReqRoleList(const UKBEventData* EventData)
@@ -70,5 +79,12 @@ void AMenuGameMode::OnReqCreateRoom(const UKBEventData* EventData)
 	const UKBEventData_OnReqCreateRoom* ServerData = Cast<UKBEventData_OnReqCreateRoom>(EventData);
 	DDH::Debug() << "AMenuGameMode::OnReqCreateRoom -->" << ServerData->RoomInfo.Name << DDH::Endl();
 	MenuWidget->OnReqCreateRoom(ServerData->RoomInfo);
+}
+
+void AMenuGameMode::OnReqEnterRoom(const UKBEventData* EventData)
+{
+	const UKBEventData_OnReqEnterRoom* ServerData = Cast<UKBEventData_OnReqEnterRoom>(EventData);
+	DDH::Debug() << "AMenuGameMode::OnReqEnterRoom PlayerListNum-->" << ServerData->PlayerList.Num() << DDH::Endl();
+	MenuWidget->OnReqEnterRoom(ServerData->PlayerList);
 }
 

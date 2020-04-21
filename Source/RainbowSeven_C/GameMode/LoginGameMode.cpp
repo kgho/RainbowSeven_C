@@ -46,6 +46,13 @@ void ALoginGameMode::BeginPlay()
 	}
 }
 
+void ALoginGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	//注销该对象注册的所有事件
+	KBENGINE_DEREGISTER_ALL_EVENT();
+}
+
 void ALoginGameMode::OnCreateAccountResult(const UKBEventData* pEventData)
 {
 	//转换为相应的参数结构体，然后打印信息

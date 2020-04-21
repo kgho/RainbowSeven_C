@@ -16,6 +16,8 @@ class UCanvasPanel;
 class UScrollBox;
 class URoomItem;
 class UEditableTextBox;
+class UPlayerItem;
+class UVerticalBox;
 /**
  *
  */
@@ -68,6 +70,8 @@ public:
 
 	void RoomItemSelect(uint64 RoomId);
 
+
+	void OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerList);
 
 	UFUNCTION(BlueprintCallable)
 		void ButtonCreatRoomEvent();
@@ -182,6 +186,26 @@ public:
 	//Room Enter
 	UPROPERTY(Meta = (BindWidget))
 		UButton* Button_EnterRoom;
+
+	// Room Combat
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UPlayerItem> PlayerItemClass;
+
+	UPROPERTY(Meta = (BindWidget))
+		UCanvasPanel* CanvasRoom;
+
+	UPROPERTY(Meta = (BindWidget))
+		UScrollBox* Scroll_Box_TeamBlue;
+
+	UPROPERTY(Meta = (BindWidget))
+		UScrollBox* Scroll_Box_TeamRed;
+
+	UPROPERTY()
+		TArray<UPlayerItem*> PlayerItemGroupBlue;
+
+	UPROPERTY()
+		TArray<UPlayerItem*> PlyaerItemGroupRed;
 
 protected:
 

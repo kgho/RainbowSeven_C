@@ -53,6 +53,11 @@ void KBEngine::Account::__init__()
 			pBaseEntityCall->ReqEnterRoom(ServerData->RoomId);
 		});
 
+	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqLeaveRoom", "ReqLeaveRoom", [this](const UKBEventData* EventData)
+		{
+			pBaseEntityCall->ReqLeaveRoom();
+		});
+
 	//用户实体创建说明登录成功，触发登录成功事件
 	UKBEventData_onLoginSuccessfully* EventData = NewObject<UKBEventData_onLoginSuccessfully>();
 	EventData->entity_uuid = KBEngineApp::getSingleton().entity_uuid();
@@ -150,14 +155,20 @@ void KBEngine::Account::OnReqCreateRoom(uint8 arg1, const ROOM_INFO& arg2)
 
 void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2)
 {
-	UKBEventData_OnReqRoleList* EventData = NewObject<UKBEventData_OnReqRoleList>();
+	UKBEventData_OnReqEnterRoom* EventData = NewObject<UKBEventData_OnReqEnterRoom>();
 	DDH::Debug() << "Account::OnReqEnterRoom--> Player Number:" << arg2.Value.Num() << DDH::Endl();
 
 	// 保存信息到回调函数参数，触发事件给GameMode
 	for (int i = 0; i < arg2.Value.Num(); i++)
 	{
+		FPLAYER_INFO PlayerInfo;
+		PlayerInfo.InitData(arg2.Value[i].Name, arg2.Value[i].Level, arg2.Value[i].State, arg2.Value[i].Avatar, arg2.Value[i].Master);
 		DDH::Debug() << "Account::OnReqEnterRoom--> Name:" << arg2.Value[i].Name << DDH::Endl();
 		DDH::Debug() << "Account::OnReqEnterRoom--> IsMaster:" << arg2.Value[i].Master << DDH::Endl();
+		EventData->PlayerList.Add(PlayerInfo);
 	}
+	KBENGINE_EVENT_FIRE("OnReqEnterRoom", EventData);
 }
+
+
 

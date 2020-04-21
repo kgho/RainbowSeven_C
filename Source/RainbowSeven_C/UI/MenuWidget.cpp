@@ -15,6 +15,8 @@
 #include "ScrollBoxSlot.h"
 #include "EditableTextBox.h"
 #include <ctime>
+#include "PlayerItem.h"
+#include "VerticalBoxSlot.h"
 
 void UMenuWidget::OnReqAccountInfo(uint16 level, uint64 exp, uint64 fame, uint64 coin)
 {
@@ -203,6 +205,26 @@ void UMenuWidget::RoomItemSelect(uint64 RoomId)
 	}
 	SelectRoomID = RoomId;
 	Button_EnterRoom->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UMenuWidget::OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerList)
+{
+	CanvasRoom->SetVisibility(ESlateVisibility::Visible);
+
+	for (int i = 0; i < PlayerList.Num(); ++i)
+	{
+		// 创建PlayerItem
+		UPlayerItem* PlayerItem = WidgetTree->ConstructWidget<UPlayerItem>(PlayerItemClass);
+		UScrollBoxSlot* PlayerItemSlot = Cast<UScrollBoxSlot>(Scroll_Box_TeamBlue->AddChild(PlayerItem));
+		PlayerItemSlot->SetPadding(FMargin(0.f, 5.f, 0.f, 5.f));
+
+		// 设置玩家信息
+		PlayerItem->RefreshItem(PlayerList[i]);
+		//PlayerItem->ItemSelectDel.BindUObject(this, &UMenuWidget::RoomItemSelect);
+
+		// 保存玩家条目到本地数组
+		PlayerItemGroupBlue.Add(PlayerItem);
+	}
 }
 
 void UMenuWidget::ButtonCreatRoomEvent()
