@@ -21,6 +21,7 @@ void AMenuGameMode::InstallEvent()
 	KBENGINE_REGISTER_EVENT("OnReqCreateRoom", OnReqCreateRoom);
 
 	KBENGINE_REGISTER_EVENT("OnReqEnterRoom", OnReqEnterRoom);
+	KBENGINE_REGISTER_EVENT("OnReqEnterRoomFailed", OnReqEnterRoomFailed);
 }
 
 void AMenuGameMode::BeginPlay()
@@ -86,5 +87,10 @@ void AMenuGameMode::OnReqEnterRoom(const UKBEventData* EventData)
 	const UKBEventData_OnReqEnterRoom* ServerData = Cast<UKBEventData_OnReqEnterRoom>(EventData);
 	DDH::Debug() << "AMenuGameMode::OnReqEnterRoom PlayerListNum-->" << ServerData->PlayerList.Num() << DDH::Endl();
 	MenuWidget->OnReqEnterRoom(ServerData->PlayerList);
+}
+
+void AMenuGameMode::OnReqEnterRoomFailed(const UKBEventData* EventData)
+{
+	MenuWidget->OnReqEnterRoomFailed();
 }
 

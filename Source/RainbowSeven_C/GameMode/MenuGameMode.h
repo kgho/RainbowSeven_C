@@ -46,4 +46,6 @@ protected:
 
 	// 进入房间回调函数
 	void OnReqEnterRoom(const UKBEventData* EventData);
+
+	void OnReqEnterRoomFailed(const UKBEventData* EventData);
 };

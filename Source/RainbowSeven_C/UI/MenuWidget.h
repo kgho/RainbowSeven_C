@@ -37,6 +37,8 @@ public:
 
 	void ReqRoomList();
 
+	void OnReqEnterRoomFailed();
+
 	//Main
 	UFUNCTION(BlueprintCallable)
 		void ButtonHomeEvent();
@@ -187,6 +189,9 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UButton* Button_EnterRoom;
 
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* Text_Room_Menu_Tip;
+	
 	// Room Combat
 
 	UPROPERTY(EditAnywhere)

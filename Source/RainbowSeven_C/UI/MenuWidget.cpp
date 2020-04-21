@@ -260,6 +260,7 @@ void UMenuWidget::ButtonCancelCreateRoom()
 
 void UMenuWidget::ButtonEnterRoomEvent()
 {
+	Text_Room_Menu_Tip->SetText(FText::FromString(TEXT("正在进入房间......")));
 	UKBEventData_ReqEnterRoom* EventData = NewObject<UKBEventData_ReqEnterRoom>();
 	EventData->RoomId = SelectRoomID;
 	DDH::Debug() << "UMenuWidget::ButtonEnterRoomEvent RoomID-->" << EventData->RoomId << DDH::Endl();
@@ -289,6 +290,11 @@ void UMenuWidget::RoleItemSelect(uint8 RoleType, bool IsUnlock)
 		CanvasRoleUnlock->SetVisibility(ESlateVisibility::Visible);
 	}
 
+}
+
+void UMenuWidget::OnReqEnterRoomFailed()
+{
+	Text_Room_Menu_Tip->SetText(FText::FromString(TEXT("进入失败，请稍后重试......")));
 }
 
 FString UMenuWidget::GetTimeStr()

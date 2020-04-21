@@ -155,19 +155,33 @@ void KBEngine::Account::OnReqCreateRoom(uint8 arg1, const ROOM_INFO& arg2)
 
 void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2)
 {
-	UKBEventData_OnReqEnterRoom* EventData = NewObject<UKBEventData_OnReqEnterRoom>();
-	DDH::Debug() << "Account::OnReqEnterRoom--> Player Number:" << arg2.Value.Num() << DDH::Endl();
-
-	// 保存信息到回调函数参数，触发事件给GameMode
-	for (int i = 0; i < arg2.Value.Num(); i++)
+	DDH::Debug() << "Account::OnReqEnterRoom--> arg1" << arg1 << DDH::Endl();
+	switch (arg1)
 	{
-		FPLAYER_INFO PlayerInfo;
-		PlayerInfo.InitData(arg2.Value[i].Name, arg2.Value[i].Level, arg2.Value[i].State, arg2.Value[i].Avatar, arg2.Value[i].Master);
-		DDH::Debug() << "Account::OnReqEnterRoom--> Name:" << arg2.Value[i].Name << DDH::Endl();
-		DDH::Debug() << "Account::OnReqEnterRoom--> IsMaster:" << arg2.Value[i].Master << DDH::Endl();
-		EventData->PlayerList.Add(PlayerInfo);
+	case 0:
+	{
+		UKBEventData_OnReqEnterRoom* EventData = NewObject<UKBEventData_OnReqEnterRoom>();
+		DDH::Debug() << "Account::OnReqEnterRoom--> Player Number:" << arg2.Value.Num() << DDH::Endl();
+
+		// 保存信息到回调函数参数，触发事件给GameMode
+		for (int i = 0; i < arg2.Value.Num(); i++)
+		{
+			FPLAYER_INFO PlayerInfo;
+			PlayerInfo.InitData(arg2.Value[i].Name, arg2.Value[i].Level, arg2.Value[i].State, arg2.Value[i].Avatar, arg2.Value[i].Master);
+			DDH::Debug() << "Account::OnReqEnterRoom--> Name:" << arg2.Value[i].Name << DDH::Endl();
+			DDH::Debug() << "Account::OnReqEnterRoom--> IsMaster:" << arg2.Value[i].Master << DDH::Endl();
+			EventData->PlayerList.Add(PlayerInfo);
+		}
+		KBENGINE_EVENT_FIRE("OnReqEnterRoom", EventData);
 	}
-	KBENGINE_EVENT_FIRE("OnReqEnterRoom", EventData);
+	break;
+
+	case 1:
+	{
+		KBENGINE_EVENT_FIRE("OnReqEnterRoomFailed", NewObject<UKBEventData>());
+	}
+	break;
+	}
 }
 
 
