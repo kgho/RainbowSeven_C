@@ -143,6 +143,12 @@ void UMenuWidget::ButtonRefreshRoomEvent()
 	ReqRoomList();
 }
 
+void UMenuWidget::ButtonLeaveRoomEvent()
+{
+	KBENGINE_EVENT_FIRE("ReqLeaveRoom", NewObject<UKBEventData>());
+	CanvasRoom->SetVisibility(ESlateVisibility::Hidden);
+}
+
 void UMenuWidget::OnReqRoomList(TArray<FROOM_INFO> RoomList)
 {
 	// 未选择房间隐藏 加入房间 按钮
@@ -295,6 +301,11 @@ void UMenuWidget::RoleItemSelect(uint8 RoleType, bool IsUnlock)
 void UMenuWidget::OnReqEnterRoomFailed()
 {
 	Text_Room_Menu_Tip->SetText(FText::FromString(TEXT("进入失败，请稍后重试......")));
+}
+
+void UMenuWidget::OnReqLeaveRoom()
+{
+	Text_Room_Menu_Tip->SetText(FText::FromString(TEXT("成功离开房间......")));
 }
 
 FString UMenuWidget::GetTimeStr()

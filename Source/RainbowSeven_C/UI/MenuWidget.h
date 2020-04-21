@@ -39,6 +39,8 @@ public:
 
 	void OnReqEnterRoomFailed();
 
+	void OnReqLeaveRoom();
+	
 	//Main
 	UFUNCTION(BlueprintCallable)
 		void ButtonHomeEvent();
@@ -51,6 +53,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void ButtonRefreshRoomEvent();
+
+	UFUNCTION(BlueprintCallable)
+		void ButtonLeaveRoomEvent();
 
 	//Role
 	UFUNCTION(BlueprintCallable)

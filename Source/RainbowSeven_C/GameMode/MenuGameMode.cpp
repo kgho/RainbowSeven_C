@@ -22,6 +22,8 @@ void AMenuGameMode::InstallEvent()
 
 	KBENGINE_REGISTER_EVENT("OnReqEnterRoom", OnReqEnterRoom);
 	KBENGINE_REGISTER_EVENT("OnReqEnterRoomFailed", OnReqEnterRoomFailed);
+
+	KBENGINE_REGISTER_EVENT("OnReqLeaveRoom", OnReqLeaveRoom);
 }
 
 void AMenuGameMode::BeginPlay()
@@ -36,7 +38,6 @@ void AMenuGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 	DDH::Debug() << "AMenuGameMode::EndPlay-->" << DDH::Endl();
-	KBENGINE_EVENT_FIRE("ReqLeaveRoom", NewObject<UKBEventData>());
 }
 
 void AMenuGameMode::OnReqRoleList(const UKBEventData* EventData)
@@ -92,5 +93,10 @@ void AMenuGameMode::OnReqEnterRoom(const UKBEventData* EventData)
 void AMenuGameMode::OnReqEnterRoomFailed(const UKBEventData* EventData)
 {
 	MenuWidget->OnReqEnterRoomFailed();
+}
+
+void AMenuGameMode::OnReqLeaveRoom(const UKBEventData* EventData)
+{
+	MenuWidget->OnReqLeaveRoom();
 }
 

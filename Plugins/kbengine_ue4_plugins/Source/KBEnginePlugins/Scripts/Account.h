@@ -31,6 +31,8 @@ namespace KBEngine
 
 		virtual void OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2) override;
 
+		virtual void OnReqLeaveRoom(uint8 arg1) override;
+
 	public:
 		//保存干员信息列表到本地
 		ROLE_LIST RoleList;

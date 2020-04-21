@@ -155,7 +155,7 @@ void KBEngine::Account::OnReqCreateRoom(uint8 arg1, const ROOM_INFO& arg2)
 
 void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2)
 {
-	DDH::Debug() << "Account::OnReqEnterRoom--> arg1" << arg1 << DDH::Endl();
+	DDH::Debug() << "Account::OnReqEnterRoom--> arg1:" << arg1 << DDH::Endl();
 	switch (arg1)
 	{
 	case 0:
@@ -183,6 +183,13 @@ void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2)
 	break;
 	}
 }
+
+void  KBEngine::Account::OnReqLeaveRoom(uint8 arg1)
+{
+	DDH::Debug() << "Account::OnReqLeaveRoom--> arg1:" << arg1 << DDH::Endl();
+	KBENGINE_EVENT_FIRE("OnReqLeaveRoom", NewObject<UKBEventData>());
+}
+
 
 
 

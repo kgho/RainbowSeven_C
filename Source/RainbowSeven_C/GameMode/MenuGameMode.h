@@ -48,4 +48,6 @@ protected:
 	void OnReqEnterRoom(const UKBEventData* EventData);
 
 	void OnReqEnterRoomFailed(const UKBEventData* EventData);
+
+	void OnReqLeaveRoom(const UKBEventData* EventData);
 };
