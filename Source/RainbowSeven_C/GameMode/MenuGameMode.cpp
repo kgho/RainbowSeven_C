@@ -38,7 +38,6 @@ void AMenuGameMode::BeginPlay()
 void AMenuGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
-	DDH::Debug() << "AMenuGameMode::EndPlay-->" << DDH::Endl();
 }
 
 void AMenuGameMode::OnReqRoleList(const UKBEventData* EventData)
@@ -51,9 +50,7 @@ void AMenuGameMode::OnReqRoleList(const UKBEventData* EventData)
 void AMenuGameMode::OnReqAccountInfo(const UKBEventData* EventData)
 {
 	const UKBEventData_OnReqAccountInfo* ServerData = Cast<UKBEventData_OnReqAccountInfo>(EventData);
-
-	DDH::Debug() << "AMenuGameMode::OnReqAccountInfo Coin-->" << ServerData->Coin << DDH::Endl();
-	MenuWidget->OnReqAccountInfo(ServerData->Level, ServerData->Exp, ServerData->Fame, ServerData->Coin);
+	MenuWidget->OnReqAccountInfo(ServerData->Name, ServerData->Level, ServerData->Exp, ServerData->Fame, ServerData->Coin);
 }
 
 void AMenuGameMode::OnReqUnlockRole(const UKBEventData* EventData)
@@ -66,7 +63,6 @@ void AMenuGameMode::OnReqUnlockRole(const UKBEventData* EventData)
 void AMenuGameMode::OnReqRoleInfo(const UKBEventData* EventData)
 {
 	const UKBEventData_OnReqRoleInfo* ServerData = Cast<UKBEventData_OnReqRoleInfo>(EventData);
-	DDH::Debug() << "AMenuGameMode::OnReqRoleInfo Kill-->" << uint64(ServerData->RoleInfo.Kill) << DDH::Endl();
 	MenuWidget->RefreshRoleInfo(ServerData->RoleInfo);
 }
 

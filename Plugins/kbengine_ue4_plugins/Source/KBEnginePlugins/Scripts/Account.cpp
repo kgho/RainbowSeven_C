@@ -20,13 +20,7 @@ void KBEngine::Account::__init__()
 		return;
 	}
 
-	DDH::Debug() << "Account::Init-->" << DDH::Endl();
-
-	//向服务端请求账户信息
-	pBaseEntityCall->ReqAccountInfo();
-
-	//向服务端请求干员信息列表
-	pBaseEntityCall->ReqRoleList();
+	DDH::Debug() << "Account::Init-->" << id() << DDH::Endl();
 
 	// 注册事件
 	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqRoleInfo", "ReqRoleInfo", [this](const UKBEventData* EventData) {
@@ -77,6 +71,11 @@ void KBEngine::Account::__init__()
 	EventData->entity_id = id();
 	KBENGINE_EVENT_FIRE("onLoginSuccessfully", EventData);
 
+	//向服务端请求账户信息
+	pBaseEntityCall->ReqAccountInfo();
+
+	//向服务端请求干员信息列表
+	pBaseEntityCall->ReqRoleList();
 }
 
 void KBEngine::Account::onDestroy()
@@ -85,15 +84,16 @@ void KBEngine::Account::onDestroy()
 	KBENGINE_DEREGISTER_ALL_EVENT();
 }
 
-void KBEngine::Account::OnReqAccountInfo(uint16 arg1, uint64 arg2, uint64 arg3, uint64 arg4)
+void KBEngine::Account::OnReqAccountInfo(const FString& arg1, uint16 arg2, uint64 arg3, uint64 arg4, uint64 arg5)
 {
 	UKBEventData_OnReqAccountInfo* EventData = NewObject<UKBEventData_OnReqAccountInfo>();
-	DDH::Debug() << "Account::OnReqAccountInfo--> Level = " << arg1 << ", Exp = " << arg2 << ", Fame = " << arg3 << ", Coin = " << arg4 << DDH::Endl();
+	DDH::Debug() << "Account::OnReqAccountInfo--> Name = " << arg1 << ", Level = " << arg2 << ", Exp = " << arg3 << ", Fame = " << arg4 << ", Coin = " << arg5 << DDH::Endl();
 
-	EventData->Level = arg1;
-	EventData->Exp = arg2;
-	EventData->Fame = arg3;
-	EventData->Coin = arg4;
+	EventData->Name = arg1;
+	EventData->Level = arg2;
+	EventData->Exp = arg3;
+	EventData->Fame = arg4;
+	EventData->Coin = arg5;
 
 	KBENGINE_EVENT_FIRE("OnReqAccountInfo", EventData);
 }
@@ -104,8 +104,6 @@ void KBEngine::Account::OnReqRoleInfo(const ROLE_INFO& arg1)
 	FROLE_INFO RoleInfo;
 	RoleInfo.InitData(arg1.Dbid, arg1.RoleType, arg1.IsLock, arg1.Kill, arg1.Death, arg1.Assist, arg1.Point, arg1.PlayCount);
 	EventData->RoleInfo = RoleInfo;
-
-	DDH::Debug() << "Account::OnReqRoleInfo--> Kill:" << uint64(arg1.Kill) << DDH::Endl();
 
 	KBENGINE_EVENT_FIRE("OnReqRoleInfo", EventData);
 }
@@ -212,7 +210,6 @@ void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2, cons
 
 void  KBEngine::Account::OnReqLeaveRoom(uint8 arg1)
 {
-	DDH::Debug() << "Account::OnReqLeaveRoom--> arg1:" << arg1 << DDH::Endl();
 	KBENGINE_EVENT_FIRE("OnReqLeaveRoom", NewObject<UKBEventData>());
 }
 

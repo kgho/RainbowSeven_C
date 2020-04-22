@@ -18,9 +18,9 @@
 #include "PlayerItem.h"
 #include "VerticalBoxSlot.h"
 
-void UMenuWidget::OnReqAccountInfo(uint16 level, uint64 exp, uint64 fame, uint64 coin)
+void UMenuWidget::OnReqAccountInfo(FString name, uint16 level, uint64 exp, uint64 fame, uint64 coin)
 {
-	DDH::Debug() << "UMenuWidget::OnReqAccountInfo Coin-->" << coin << DDH::Endl();
+	Text_Username->SetText(FText::FromString(name));
 	Text_Level->SetText(FText::FromString(FString::FromInt(level)));
 	Text_Exp_Current->SetText(FText::FromString(FString::FromInt(exp)));
 	Text_Exp_Total->SetText(FText::FromString(FString::FromInt(level * 100)));
@@ -30,19 +30,15 @@ void UMenuWidget::OnReqAccountInfo(uint16 level, uint64 exp, uint64 fame, uint64
 
 	for (size_t i = 0; i < RoleItemArray.Num(); i++)
 	{
-		DDH::Debug() << "UMenuWidget::OnReqAccountInfo RoleItemIndex-->" << i << DDH::Endl();
 		RoleItemArray[i]->RoleItemSelectDel.BindUObject(this, &UMenuWidget::RoleItemSelect);
 	}
 }
 
 void UMenuWidget::OnReqRoleList(TArray<FROLE_INFO> RoleList)
 {
-	DDH::Debug() << "UMenuWidget::OnReqAccountInfo RoleList.Num():-->" << RoleList.Num() << DDH::Endl();
 	for (int32 i = 0; i < RoleList.Num(); i++)
 	{
 		uint8 RoleIndex = RoleList[i].RoleType - 1;
-		DDH::Debug() << "UMenuWidget::OnReqAccountInfo I:-->" << i << ", isLock:" << RoleList[i].IsLock << DDH::Endl();
-		DDH::Debug() << "UMenuWidget::OnReqAccountInfo RoleItemList:-->" << RoleItemArray.Num() << DDH::Endl();
 		RoleItemArray[RoleIndex]->RefreshItem(RoleList[i].RoleType, RoleList[i].IsLock);
 	}
 }
@@ -81,7 +77,6 @@ void UMenuWidget::RefreshRoleInfo(FROLE_INFO RoleInfo)
 
 void UMenuWidget::OnReqUnlockRole(uint8 result)
 {
-	DDH::Debug() << "UMenuWidget::OnReqUnlockRole--> Result:" << result << DDH::Endl();
 	if (result == 0)
 	{
 		CanvasRoleUnlockSuccessful->SetVisibility(ESlateVisibility::Visible);
@@ -97,7 +92,6 @@ void UMenuWidget::UnlockRoleSure()
 {
 	UKBEventData_ReqUnlockRole* EventData = NewObject<UKBEventData_ReqUnlockRole>();
 	EventData->RoleType = selectedRoleType;
-	DDH::Debug() << "UMenuWidget::UnlockRoleSure EventData->RoleType-->" << EventData->RoleType << DDH::Endl();
 	KBENGINE_EVENT_FIRE("ReqUnlockRole", EventData);
 }
 
@@ -244,7 +238,6 @@ void UMenuWidget::OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerListBlue, TArray<FPL
 		// 保存玩家条目到本地数组
 		PlayerItemGroupBlue.Add(PlayerItem);
 	}
-	DDH::Debug() << "UMenuWidget::OnReqEnterRoom--> PlayerListBlue.Num:" << PlayerListBlue.Num() << DDH::Endl();
 
 	//红队
 	for (int i = 0; i < PlayerItemGroupRed.Num(); ++i)
@@ -263,7 +256,6 @@ void UMenuWidget::OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerListBlue, TArray<FPL
 		//PlayerItem->ItemSelectDel.BindUObject(this, &UMenuWidget::RoomItemSelect);
 		PlayerItemGroupRed.Add(PlayerItem);
 	}
-	DDH::Debug() << "UMenuWidget::OnReqEnterRoom--> PlayerListRed.Num:" << PlayerListRed.Num() << DDH::Endl();
 }
 
 void UMenuWidget::ButtonCreatRoomEvent()
@@ -299,10 +291,9 @@ void UMenuWidget::ButtonCancelCreateRoom()
 
 void UMenuWidget::ButtonEnterRoomEvent()
 {
-	Text_Room_Menu_Tip->SetText(FText::FromString(TEXT("已进入房间......")));
+	Text_Room_Menu_Tip->SetText(FText::FromString(TEXT("正在进入房间......")));
 	UKBEventData_ReqEnterRoom* EventData = NewObject<UKBEventData_ReqEnterRoom>();
 	EventData->RoomId = SelectRoomID;
-	DDH::Debug() << "UMenuWidget::ButtonEnterRoomEvent RoomID-->" << EventData->RoomId << DDH::Endl();
 	KBENGINE_EVENT_FIRE("ReqEnterRoom", EventData);
 }
 
@@ -310,8 +301,6 @@ void UMenuWidget::ReqRoomList()
 {
 	KBENGINE_EVENT_FIRE("ReqRoomList", NewObject<UKBEventData>());
 }
-
-
 
 void UMenuWidget::RoleItemSelect(uint8 RoleType, bool IsUnlock)
 {
@@ -381,7 +370,6 @@ FString UMenuWidget::GetTimeStr()
 	// 秒
 	FString second = FString::FromInt(ltm->tm_sec);
 	second = second.Len() == 1 ? "0" + second : second;
-
 
 	FString timeStr = year + "/" + month + "/" + day + "	" + hour + ":" + minute + ":" + second;
 

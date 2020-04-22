@@ -27,7 +27,7 @@ class RAINBOWSEVEN_C_API UMenuWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	void OnReqAccountInfo(uint16 level, uint64 exp, uint64 fame, uint64 coin);
+	void OnReqAccountInfo(FString name, uint16 level, uint64 exp, uint64 fame, uint64 coin);
 
 	void OnReqRoleList(TArray<FROLE_INFO> RoleList);
 
@@ -96,6 +96,9 @@ public:
 
 public:
 	//Canvas Main
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* Text_Username;
+
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* Text_Level;
 
@@ -221,7 +224,7 @@ public:
 
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* Text_Room_Tip;
-	
+
 protected:
 
 	void RoleItemSelect(uint8 RoleType, bool IsUnlock);

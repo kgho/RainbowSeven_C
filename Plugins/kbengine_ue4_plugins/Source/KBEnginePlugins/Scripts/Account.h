@@ -17,7 +17,7 @@ namespace KBEngine
 
 		virtual void onDestroy() override;
 
-		virtual void OnReqAccountInfo(uint16 arg1, uint64 arg2, uint64 arg3, uint64 arg4) override;
+		virtual void OnReqAccountInfo(const FString& arg1, uint16 arg2, uint64 arg3, uint64 arg4, uint64 arg5) override;
 
 		virtual void OnReqRoleInfo(const ROLE_INFO& arg1) override;
 

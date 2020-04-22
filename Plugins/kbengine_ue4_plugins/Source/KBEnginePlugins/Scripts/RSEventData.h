@@ -59,6 +59,8 @@ class KBENGINEPLUGINS_API UKBEventData_OnReqAccountInfo :public UKBEventData
 
 public:
 	UPROPERTY()
+		FString Name;
+	UPROPERTY()
 		uint16 Level;
 	UPROPERTY()
 		uint64 Exp;
