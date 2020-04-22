@@ -258,6 +258,31 @@ void UMenuWidget::OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerListBlue, TArray<FPL
 	}
 }
 
+void UMenuWidget::OnReqChangeState(uint8 state)
+{
+	if (state == 1)
+	{
+		isReady = true;
+		Text_Button_Ready->SetText(FText::FromString(TEXT("取消")));
+	}
+	else
+	{
+		isReady = false;
+		Text_Button_Ready->SetText(FText::FromString(TEXT("准备")));
+	}
+}
+
+void UMenuWidget::OnAllReady(uint8 allReady)
+{
+	if (allReady == 0)
+	{
+		Button_StartGame->SetVisibility(ESlateVisibility::Visible);
+	}
+	else {
+		Button_StartGame->SetVisibility(ESlateVisibility::Hidden);
+	}
+}
+
 void UMenuWidget::ButtonCreatRoomEvent()
 {
 	CanvasRoomCreate->SetVisibility(ESlateVisibility::Visible);
@@ -297,6 +322,30 @@ void UMenuWidget::ButtonEnterRoomEvent()
 	KBENGINE_EVENT_FIRE("ReqEnterRoom", EventData);
 }
 
+void UMenuWidget::ButtonReadyEvent()
+{
+	if (isReady)
+	{
+		Text_Room_Tip->SetText(FText::FromString(TEXT("正在请求取消准备......")));
+	}
+	else
+	{
+		Text_Room_Tip->SetText(FText::FromString(TEXT("正在请求进入准备......")));
+	}
+	ReqChangeState();
+}
+
+void UMenuWidget::ButtonStartGameEvent()
+{
+	ReqStartGame();
+}
+
+void UMenuWidget::ReqStartGame()
+{
+	KBENGINE_EVENT_FIRE("ReqStartGame", NewObject<UKBEventData>());
+}
+
+
 void UMenuWidget::ReqRoomList()
 {
 	KBENGINE_EVENT_FIRE("ReqRoomList", NewObject<UKBEventData>());
@@ -334,6 +383,14 @@ void UMenuWidget::OnReqLeaveRoom()
 {
 	Text_Room_Menu_Tip->SetText(FText::FromString(TEXT("成功离开房间......")));
 	CanvasRoom->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UMenuWidget::ReqChangeState()
+{
+
+	UKBEventData_ReqChangeState* EventData = NewObject<UKBEventData_ReqChangeState>();
+	EventData->State = isReady ? 0 : 1;
+	KBENGINE_EVENT_FIRE("ReqChangeState", EventData);
 }
 
 FString UMenuWidget::GetTimeStr()

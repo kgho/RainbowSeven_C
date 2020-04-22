@@ -25,6 +25,10 @@ void AMenuGameMode::InstallEvent()
 	KBENGINE_REGISTER_EVENT("OnReqEnterRoomFull", OnReqEnterRoomFull);
 
 	KBENGINE_REGISTER_EVENT("OnReqLeaveRoom", OnReqLeaveRoom);
+
+	KBENGINE_REGISTER_EVENT("OnReqChangeState", OnReqChangeState);
+
+	KBENGINE_REGISTER_EVENT("OnAllReady", OnAllReady);
 }
 
 void AMenuGameMode::BeginPlay()
@@ -100,5 +104,17 @@ void AMenuGameMode::OnReqEnterRoomFull(const UKBEventData* EventData)
 void AMenuGameMode::OnReqLeaveRoom(const UKBEventData* EventData)
 {
 	MenuWidget->OnReqLeaveRoom();
+}
+
+void AMenuGameMode::OnReqChangeState(const UKBEventData* EventData)
+{
+	const UKBEventData_OnReqChangeState* ServerData = Cast<UKBEventData_OnReqChangeState>(EventData);
+	MenuWidget->OnReqChangeState(ServerData->State);
+}
+
+void AMenuGameMode::OnAllReady(const UKBEventData* EventData)
+{
+	const UKBEventData_OnAllReady* ServerData = Cast<UKBEventData_OnAllReady>(EventData);
+	MenuWidget->OnAllReady(ServerData->AllReady);
 }
 

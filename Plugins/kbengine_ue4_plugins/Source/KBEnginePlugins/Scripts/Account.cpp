@@ -65,6 +65,20 @@ void KBEngine::Account::__init__()
 			pBaseEntityCall->ReqLeaveRoom();
 		});
 
+
+	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqChangeState", "ReqChangeState", [this](const UKBEventData* EventData)
+		{
+
+			const UKBEventData_ReqChangeState* ServerData = Cast<UKBEventData_ReqChangeState>(EventData);
+			DDH::Debug() << "UMenuWidget::ReqChangeState" << ServerData->State << DDH::Endl();
+			pBaseEntityCall->ReqChangeState(ServerData->State);
+		});
+
+	/*KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqStartGame", "ReqStartGame", [this](const UKBEventData* EventData)
+		{
+			pBaseEntityCall->ReqStartGame();
+		});*/
+
 	//用户实体创建说明登录成功，触发登录成功事件
 	UKBEventData_onLoginSuccessfully* EventData = NewObject<UKBEventData_onLoginSuccessfully>();
 	EventData->entity_uuid = KBEngineApp::getSingleton().entity_uuid();
@@ -94,6 +108,8 @@ void KBEngine::Account::OnReqAccountInfo(const FString& arg1, uint16 arg2, uint6
 	EventData->Exp = arg3;
 	EventData->Fame = arg4;
 	EventData->Coin = arg5;
+
+	accountName = arg1;
 
 	KBENGINE_EVENT_FIRE("OnReqAccountInfo", EventData);
 }
@@ -211,6 +227,22 @@ void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2, cons
 void  KBEngine::Account::OnReqLeaveRoom(uint8 arg1)
 {
 	KBENGINE_EVENT_FIRE("OnReqLeaveRoom", NewObject<UKBEventData>());
+}
+
+void KBEngine::Account::OnReqChangeState(uint8 arg1)
+{
+	DDH::Debug() << "Account::OnStartGame--> State:" << arg1 << DDH::Endl();
+	UKBEventData_OnReqChangeState* EventData = NewObject<UKBEventData_OnReqChangeState>();
+	EventData->State = arg1;
+	KBENGINE_EVENT_FIRE("OnReqChangeState", EventData);
+}
+
+void KBEngine::Account::OnAllReady(uint8 arg1)
+{
+	DDH::Debug() << "Account::OnStartGame--> All Ready ? : " << arg1 << DDH::Endl();
+	UKBEventData_OnAllReady* EventData = NewObject<UKBEventData_OnAllReady>();
+	EventData->AllReady = arg1;
+	KBENGINE_EVENT_FIRE("OnAllReady", EventData);
 }
 
 

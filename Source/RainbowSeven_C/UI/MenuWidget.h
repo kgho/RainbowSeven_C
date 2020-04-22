@@ -43,6 +43,8 @@ public:
 
 	void OnReqLeaveRoom();
 
+	void ReqChangeState();
+
 	//Main
 	UFUNCTION(BlueprintCallable)
 		void ButtonHomeEvent();
@@ -82,6 +84,12 @@ public:
 
 	void OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerListBlue, TArray<FPLAYER_INFO> PlayerListRed);
 
+	void OnReqChangeState(uint8 state);
+
+	void OnAllReady(uint8 allReady);
+
+	void ReqStartGame();
+
 	UFUNCTION(BlueprintCallable)
 		void ButtonCreatRoomEvent();
 
@@ -93,6 +101,14 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void ButtonEnterRoomEvent();
+
+	UFUNCTION(BlueprintCallable)
+		void ButtonReadyEvent();
+
+	UFUNCTION(BlueprintCallable)
+		void ButtonStartGameEvent();
+
+	
 
 public:
 	//Canvas Main
@@ -225,6 +241,12 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* Text_Room_Tip;
 
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* Text_Button_Ready;
+
+	UPROPERTY(Meta = (BindWidget))
+		UButton* Button_StartGame;
+
 protected:
 
 	void RoleItemSelect(uint8 RoleType, bool IsUnlock);
@@ -233,4 +255,7 @@ protected:
 
 	//选中的房间ID
 	uint64 SelectRoomID;
+
+	// 是否准备
+	bool isReady;
 };

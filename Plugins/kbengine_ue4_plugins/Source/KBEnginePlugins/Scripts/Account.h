@@ -33,9 +33,15 @@ namespace KBEngine
 
 		virtual void OnReqLeaveRoom(uint8 arg1) override;
 
+		virtual void OnReqChangeState(uint8 arg1) override;
+
+		virtual void OnAllReady(uint8 arg1) override;
+
 	public:
 		//保存干员信息列表到本地
 		ROLE_LIST RoleList;
 
+		// 名称
+		FString accountName;
 	};
 }

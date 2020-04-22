@@ -50,6 +50,10 @@ protected:
 	void OnReqEnterRoomFailed(const UKBEventData* EventData);
 
 	void OnReqEnterRoomFull(const UKBEventData* EventData);
-	
+
 	void OnReqLeaveRoom(const UKBEventData* EventData);
+
+	void OnReqChangeState(const UKBEventData* EventData);
+
+	void OnAllReady(const UKBEventData* EventData);
 };

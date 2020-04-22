@@ -221,6 +221,36 @@ public:
 		TArray<FPLAYER_INFO> PlayerListRed;
 };
 
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_ReqChangeState : public UKBEventData {
+	GENERATED_BODY()
+
+public:
+	// 0：取消准备， 1：准备
+	UPROPERTY()
+		uint8 State;
+};
+
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_OnReqChangeState : public UKBEventData {
+	GENERATED_BODY()
+
+public:
+	// 0：未准备， 1：已准备
+	UPROPERTY()
+		uint8 State;
+};
+
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_OnAllReady : public UKBEventData {
+	GENERATED_BODY()
+
+public:
+	// 0：全部准备，1：否 
+	UPROPERTY()
+		uint8 AllReady;
+};
+
 /**
  *
  */
