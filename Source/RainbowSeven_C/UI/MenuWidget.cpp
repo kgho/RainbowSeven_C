@@ -146,7 +146,7 @@ void UMenuWidget::ButtonRefreshRoomEvent()
 void UMenuWidget::ButtonLeaveRoomEvent()
 {
 	KBENGINE_EVENT_FIRE("ReqLeaveRoom", NewObject<UKBEventData>());
-	CanvasRoom->SetVisibility(ESlateVisibility::Hidden);
+	Text_Room_Tip->SetText(FText::FromString(TEXT("正在离开房间......")));
 }
 
 void UMenuWidget::OnReqRoomList(TArray<FROOM_INFO> RoomList)
@@ -215,6 +215,7 @@ void UMenuWidget::RoomItemSelect(uint64 RoomId)
 
 void UMenuWidget::OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerListBlue, TArray<FPLAYER_INFO> PlayerListRed)
 {
+	Text_Room_Tip->SetText(FText::FromString(TEXT("")));
 	CanvasRoom->SetVisibility(ESlateVisibility::Visible);
 
 	//蓝队
@@ -243,6 +244,7 @@ void UMenuWidget::OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerListBlue, TArray<FPL
 		// 保存玩家条目到本地数组
 		PlayerItemGroupBlue.Add(PlayerItem);
 	}
+	DDH::Debug() << "UMenuWidget::OnReqEnterRoom--> PlayerListBlue.Num:" << PlayerListBlue.Num() << DDH::Endl();
 
 	//红队
 	for (int i = 0; i < PlayerItemGroupRed.Num(); ++i)
@@ -261,6 +263,7 @@ void UMenuWidget::OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerListBlue, TArray<FPL
 		//PlayerItem->ItemSelectDel.BindUObject(this, &UMenuWidget::RoomItemSelect);
 		PlayerItemGroupRed.Add(PlayerItem);
 	}
+	DDH::Debug() << "UMenuWidget::OnReqEnterRoom--> PlayerListRed.Num:" << PlayerListRed.Num() << DDH::Endl();
 }
 
 void UMenuWidget::ButtonCreatRoomEvent()
@@ -296,7 +299,7 @@ void UMenuWidget::ButtonCancelCreateRoom()
 
 void UMenuWidget::ButtonEnterRoomEvent()
 {
-	Text_Room_Menu_Tip->SetText(FText::FromString(TEXT("正在进入房间......")));
+	Text_Room_Menu_Tip->SetText(FText::FromString(TEXT("已进入房间......")));
 	UKBEventData_ReqEnterRoom* EventData = NewObject<UKBEventData_ReqEnterRoom>();
 	EventData->RoomId = SelectRoomID;
 	DDH::Debug() << "UMenuWidget::ButtonEnterRoomEvent RoomID-->" << EventData->RoomId << DDH::Endl();
@@ -341,6 +344,7 @@ void UMenuWidget::OnReqEnterRoomFull()
 void UMenuWidget::OnReqLeaveRoom()
 {
 	Text_Room_Menu_Tip->SetText(FText::FromString(TEXT("成功离开房间......")));
+	CanvasRoom->SetVisibility(ESlateVisibility::Hidden);
 }
 
 FString UMenuWidget::GetTimeStr()

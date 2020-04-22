@@ -219,6 +219,9 @@ public:
 	UPROPERTY()
 		TArray<UPlayerItem*> PlayerItemGroupRed;
 
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* Text_Room_Tip;
+	
 protected:
 
 	void RoleItemSelect(uint8 RoleType, bool IsUnlock);

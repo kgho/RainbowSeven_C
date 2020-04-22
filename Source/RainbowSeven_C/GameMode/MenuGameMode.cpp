@@ -87,7 +87,7 @@ void AMenuGameMode::OnReqCreateRoom(const UKBEventData* EventData)
 void AMenuGameMode::OnReqEnterRoom(const UKBEventData* EventData)
 {
 	const UKBEventData_OnReqEnterRoom* ServerData = Cast<UKBEventData_OnReqEnterRoom>(EventData);
-	DDH::Debug() << "AMenuGameMode::OnReqEnterRoom PlayerBlueNum-->" << ServerData->PlayerListBlue.Num() << ", PlayerBlueNum-->" << ServerData->PlayerListRed.Num() << DDH::Endl();
+	DDH::Debug() << "AMenuGameMode::OnReqEnterRoom PlayerBlueNum-->" << ServerData->PlayerListBlue.Num() << ", PlayerRedNum-->" << ServerData->PlayerListRed.Num() << DDH::Endl();
 	MenuWidget->OnReqEnterRoom(ServerData->PlayerListBlue, ServerData->PlayerListRed);
 }
 

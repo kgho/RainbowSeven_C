@@ -181,7 +181,7 @@ void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2, cons
 			EventData->PlayerListBlue.Add(PlayerInfo);
 		}
 
-		DDH::Debug() << "Account::OnReqEnterRoom--> PlayerRed Number:" << arg2.Value.Num() << DDH::Endl();
+		DDH::Debug() << "Account::OnReqEnterRoom--> PlayerRed Number:" << arg3.Value.Num() << DDH::Endl();
 		// ºì¶Ó
 		for (int i = 0; i < arg3.Value.Num(); i++)
 		{
