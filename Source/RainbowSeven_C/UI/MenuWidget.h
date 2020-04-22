@@ -39,8 +39,10 @@ public:
 
 	void OnReqEnterRoomFailed();
 
+	void OnReqEnterRoomFull();
+
 	void OnReqLeaveRoom();
-	
+
 	//Main
 	UFUNCTION(BlueprintCallable)
 		void ButtonHomeEvent();
@@ -78,7 +80,7 @@ public:
 	void RoomItemSelect(uint64 RoomId);
 
 
-	void OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerList);
+	void OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerListBlue, TArray<FPLAYER_INFO> PlayerListRed);
 
 	UFUNCTION(BlueprintCallable)
 		void ButtonCreatRoomEvent();
@@ -196,7 +198,7 @@ public:
 
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* Text_Room_Menu_Tip;
-	
+
 	// Room Combat
 
 	UPROPERTY(EditAnywhere)
@@ -215,7 +217,7 @@ public:
 		TArray<UPlayerItem*> PlayerItemGroupBlue;
 
 	UPROPERTY()
-		TArray<UPlayerItem*> PlyaerItemGroupRed;
+		TArray<UPlayerItem*> PlayerItemGroupRed;
 
 protected:
 

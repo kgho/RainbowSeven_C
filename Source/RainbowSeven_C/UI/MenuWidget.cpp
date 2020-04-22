@@ -213,11 +213,23 @@ void UMenuWidget::RoomItemSelect(uint64 RoomId)
 	Button_EnterRoom->SetVisibility(ESlateVisibility::Visible);
 }
 
-void UMenuWidget::OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerList)
+void UMenuWidget::OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerListBlue, TArray<FPLAYER_INFO> PlayerListRed)
 {
 	CanvasRoom->SetVisibility(ESlateVisibility::Visible);
 
-	for (int i = 0; i < PlayerList.Num(); ++i)
+	//蓝队
+	//把旧的从列表移除
+	for (int i = 0; i < PlayerItemGroupBlue.Num(); ++i)
+	{
+		PlayerItemGroupBlue[i]->RemoveFromParent();
+		PlayerItemGroupBlue[i]->ConditionalBeginDestroy();
+	}
+	//清空数组
+	PlayerItemGroupBlue.Empty();
+
+	Scroll_Box_TeamBlue->ClearChildren();
+
+	for (int i = 0; i < PlayerListBlue.Num(); ++i)
 	{
 		// 创建PlayerItem
 		UPlayerItem* PlayerItem = WidgetTree->ConstructWidget<UPlayerItem>(PlayerItemClass);
@@ -225,11 +237,29 @@ void UMenuWidget::OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerList)
 		PlayerItemSlot->SetPadding(FMargin(0.f, 5.f, 0.f, 5.f));
 
 		// 设置玩家信息
-		PlayerItem->RefreshItem(PlayerList[i]);
+		PlayerItem->RefreshItem(PlayerListBlue[i]);
 		//PlayerItem->ItemSelectDel.BindUObject(this, &UMenuWidget::RoomItemSelect);
 
 		// 保存玩家条目到本地数组
 		PlayerItemGroupBlue.Add(PlayerItem);
+	}
+
+	//红队
+	for (int i = 0; i < PlayerItemGroupRed.Num(); ++i)
+	{
+		PlayerItemGroupRed[i]->RemoveFromParent();
+		PlayerItemGroupRed[i]->ConditionalBeginDestroy();
+	}
+	PlayerItemGroupRed.Empty();
+	Scroll_Box_TeamRed->ClearChildren();
+	for (int i = 0; i < PlayerListRed.Num(); ++i)
+	{
+		UPlayerItem* PlayerItem = WidgetTree->ConstructWidget<UPlayerItem>(PlayerItemClass);
+		UScrollBoxSlot* PlayerItemSlot = Cast<UScrollBoxSlot>(Scroll_Box_TeamRed->AddChild(PlayerItem));
+		PlayerItemSlot->SetPadding(FMargin(0.f, 5.f, 0.f, 5.f));
+		PlayerItem->RefreshItem(PlayerListRed[i]);
+		//PlayerItem->ItemSelectDel.BindUObject(this, &UMenuWidget::RoomItemSelect);
+		PlayerItemGroupRed.Add(PlayerItem);
 	}
 }
 
@@ -301,6 +331,11 @@ void UMenuWidget::RoleItemSelect(uint8 RoleType, bool IsUnlock)
 void UMenuWidget::OnReqEnterRoomFailed()
 {
 	Text_Room_Menu_Tip->SetText(FText::FromString(TEXT("进入失败，请稍后重试......")));
+}
+
+void UMenuWidget::OnReqEnterRoomFull()
+{
+	Text_Room_Menu_Tip->SetText(FText::FromString(TEXT("房间人数已满，请选择其它房间进入......")));
 }
 
 void UMenuWidget::OnReqLeaveRoom()

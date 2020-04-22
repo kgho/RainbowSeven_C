@@ -213,7 +213,10 @@ class KBENGINEPLUGINS_API UKBEventData_OnReqEnterRoom : public UKBEventData {
 	GENERATED_BODY()
 public:
 	UPROPERTY()
-		TArray<FPLAYER_INFO> PlayerList;
+		TArray<FPLAYER_INFO> PlayerListBlue;
+
+	UPROPERTY()
+		TArray<FPLAYER_INFO> PlayerListRed;
 };
 
 /**

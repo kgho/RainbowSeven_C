@@ -15,6 +15,19 @@ KBEngine::Account::~Account()
 //登录成功就会创建Account，然后执行该函数
 void KBEngine::Account::__init__()
 {
+	if (!isPlayer()) {
+		DDH::Debug() << "Account::Init Other:-->" << id() << DDH::Endl();
+		return;
+	}
+
+	DDH::Debug() << "Account::Init-->" << DDH::Endl();
+
+	//向服务端请求账户信息
+	pBaseEntityCall->ReqAccountInfo();
+
+	//向服务端请求干员信息列表
+	pBaseEntityCall->ReqRoleList();
+
 	// 注册事件
 	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqRoleInfo", "ReqRoleInfo", [this](const UKBEventData* EventData) {
 		const UKBEventData_ReqRoleInfo* ServerData = Cast<UKBEventData_ReqRoleInfo>(EventData);
@@ -64,11 +77,6 @@ void KBEngine::Account::__init__()
 	EventData->entity_id = id();
 	KBENGINE_EVENT_FIRE("onLoginSuccessfully", EventData);
 
-	// 向服务端请求账户信息
-	pBaseEntityCall->ReqAccountInfo();
-
-	// 向服务端请求干员信息列表
-	pBaseEntityCall->ReqRoleList();
 }
 
 void KBEngine::Account::onDestroy()
@@ -153,25 +161,36 @@ void KBEngine::Account::OnReqCreateRoom(uint8 arg1, const ROOM_INFO& arg2)
 	KBENGINE_EVENT_FIRE("OnReqCreateRoom", EventData);
 }
 
-void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2)
+void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2, const PLAYER_LIST& arg3)
 {
 	DDH::Debug() << "Account::OnReqEnterRoom--> arg1:" << arg1 << DDH::Endl();
 	switch (arg1)
 	{
+
 	case 0:
 	{
 		UKBEventData_OnReqEnterRoom* EventData = NewObject<UKBEventData_OnReqEnterRoom>();
-		DDH::Debug() << "Account::OnReqEnterRoom--> Player Number:" << arg2.Value.Num() << DDH::Endl();
+		DDH::Debug() << "Account::OnReqEnterRoom--> PlayerBlue Number:" << arg2.Value.Num() << DDH::Endl();
 
-		// 保存信息到回调函数参数，触发事件给GameMode
+		// 蓝队
 		for (int i = 0; i < arg2.Value.Num(); i++)
 		{
 			FPLAYER_INFO PlayerInfo;
 			PlayerInfo.InitData(arg2.Value[i].Name, arg2.Value[i].Level, arg2.Value[i].State, arg2.Value[i].Avatar, arg2.Value[i].Master);
-			DDH::Debug() << "Account::OnReqEnterRoom--> Name:" << arg2.Value[i].Name << DDH::Endl();
-			DDH::Debug() << "Account::OnReqEnterRoom--> IsMaster:" << arg2.Value[i].Master << DDH::Endl();
-			EventData->PlayerList.Add(PlayerInfo);
+			DDH::Debug() << "Account::OnReqEnterRoom--> Name:" << arg2.Value[i].Name << "IsMaster:" << arg2.Value[i].Master << DDH::Endl();
+			EventData->PlayerListBlue.Add(PlayerInfo);
 		}
+
+		DDH::Debug() << "Account::OnReqEnterRoom--> PlayerRed Number:" << arg2.Value.Num() << DDH::Endl();
+		// 红队
+		for (int i = 0; i < arg3.Value.Num(); i++)
+		{
+			FPLAYER_INFO PlayerInfo;
+			PlayerInfo.InitData(arg3.Value[i].Name, arg3.Value[i].Level, arg3.Value[i].State, arg3.Value[i].Avatar, arg3.Value[i].Master);
+			DDH::Debug() << "Account::OnReqEnterRoom--> Name:" << arg3.Value[i].Name << "IsMaster:" << arg3.Value[i].Master << DDH::Endl();
+			EventData->PlayerListRed.Add(PlayerInfo);
+		}
+
 		KBENGINE_EVENT_FIRE("OnReqEnterRoom", EventData);
 	}
 	break;
@@ -181,6 +200,13 @@ void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2)
 		KBENGINE_EVENT_FIRE("OnReqEnterRoomFailed", NewObject<UKBEventData>());
 	}
 	break;
+
+	case 2:
+	{
+		KBENGINE_EVENT_FIRE("OnReqEnterRoomFull", NewObject<UKBEventData>());
+	}
+	break;
+
 	}
 }
 

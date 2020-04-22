@@ -29,7 +29,7 @@ namespace KBEngine
 
 		void OnReqCreateRoom(uint8 arg1, const ROOM_INFO& arg2) override;
 
-		virtual void OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2) override;
+		virtual void OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2, const PLAYER_LIST& arg3)  override;
 
 		virtual void OnReqLeaveRoom(uint8 arg1) override;
 
