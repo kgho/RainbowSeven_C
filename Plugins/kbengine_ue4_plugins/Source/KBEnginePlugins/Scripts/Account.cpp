@@ -161,7 +161,7 @@ void KBEngine::Account::OnReqCreateRoom(uint8 arg1, const ROOM_INFO& arg2)
 
 void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2, const PLAYER_LIST& arg3)
 {
-	DDH::Debug() << "Account::OnReqEnterRoom--> arg1:" << arg1 << DDH::Endl();
+	DDH::Debug() << "Account::OnReqEnterRoom--> arg1: " << arg1 << DDH::Endl();
 	switch (arg1)
 	{
 

@@ -30,5 +30,6 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* Text_Level;
 
-	
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* Text_Master;
 };
