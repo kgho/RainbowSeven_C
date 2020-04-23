@@ -5,17 +5,17 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "SlateTypes.h"
-#include "RoleItem.generated.h"
+#include "RoomRoleItem.generated.h"
 
 class UTextBlock;
 class UButton;
 
-DECLARE_DELEGATE_TwoParams(FRoleItemSelect, uint8, bool)
+//DECLARE_DELEGATE_TwoParams(FItemSelect, uint8, bool)
 /**
- *
+ * 在房间中选择角色的 item
  */
 UCLASS()
-class RAINBOWSEVEN_C_API URoleItem : public UUserWidget
+class RAINBOWSEVEN_C_API URoomRoleItem : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -35,14 +35,6 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		bool isUnlock;
 
-	// 需要多少声望解锁
-	UPROPERTY(EditAnywhere)
-		uint16 Fame;
-
-	// 需要多少金币解锁
-	UPROPERTY(EditAnywhere)
-		uint16 Coin;
-
 	UPROPERTY(Meta = (BindWidget))
 		UButton* Button;
 
@@ -50,7 +42,7 @@ public:
 		UTextBlock* Text_IsUnlock;
 
 	UPROPERTY(EditAnywhere)
-		FButtonStyle RoleStyle;
+		FButtonStyle ButtonStyle;
 
-	FRoleItemSelect RoleItemSelectDel;
+	//FItemSelect ItemSelectDel;
 };

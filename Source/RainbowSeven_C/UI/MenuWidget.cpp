@@ -17,6 +17,7 @@
 #include <ctime>
 #include "PlayerItem.h"
 #include "VerticalBoxSlot.h"
+#include "RoomRoleItem.h"
 
 void UMenuWidget::OnReqAccountInfo(FString name, uint16 level, uint64 exp, uint64 fame, uint64 coin)
 {
@@ -34,12 +35,13 @@ void UMenuWidget::OnReqAccountInfo(FString name, uint16 level, uint64 exp, uint6
 	}
 }
 
-void UMenuWidget::OnReqRoleList(TArray<FROLE_INFO> RoleList)
+void UMenuWidget::OnReqRoleList(TArray<FROLE_INFO> InRoleList)
 {
-	for (int32 i = 0; i < RoleList.Num(); i++)
+	RoleList = InRoleList;
+	for (int32 i = 0; i < InRoleList.Num(); i++)
 	{
-		uint8 RoleIndex = RoleList[i].RoleType - 1;
-		RoleItemArray[RoleIndex]->RefreshItem(RoleList[i].RoleType, RoleList[i].IsLock);
+		uint8 RoleIndex = InRoleList[i].RoleType - 1;
+		RoleItemArray[RoleIndex]->RefreshItem(InRoleList[i].RoleType, InRoleList[i].IsLock);
 	}
 }
 
@@ -147,6 +149,14 @@ void UMenuWidget::ButtonCombatEvent()
 	CanvasHome->SetVisibility(ESlateVisibility::Hidden);
 	CanvasRole->SetVisibility(ESlateVisibility::Hidden);
 	CanvasRoomMenu->SetVisibility(ESlateVisibility::Visible);
+
+	// 更新干员按钮
+	for (size_t i = 0; i < RoleList.Num(); i++)
+	{
+		uint8 RoleIndex = RoleList[i].RoleType - 1;
+		RoomRoleItemArray[RoleIndex]->RefreshItem(RoleList[i].RoleType, RoleList[i].IsLock);
+	}
+
 	if (isInRoom)
 	{
 		CanvasRoom->SetVisibility(ESlateVisibility::Visible);
@@ -353,6 +363,7 @@ void UMenuWidget::ButtonEnterRoomEvent()
 	Text_Room_Menu_Tip->SetText(FText::FromString(TEXT("正在进入房间......")));
 	UKBEventData_ReqEnterRoom* EventData = NewObject<UKBEventData_ReqEnterRoom>();
 	EventData->RoomId = SelectRoomID;
+
 	KBENGINE_EVENT_FIRE("ReqEnterRoom", EventData);
 }
 

@@ -18,6 +18,7 @@ class URoomItem;
 class UEditableTextBox;
 class UPlayerItem;
 class UVerticalBox;
+class URoomRoleItem;
 /**
  *
  */
@@ -29,7 +30,7 @@ class RAINBOWSEVEN_C_API UMenuWidget : public UUserWidget
 public:
 	void OnReqAccountInfo(FString name, uint16 level, uint64 exp, uint64 fame, uint64 coin);
 
-	void OnReqRoleList(TArray<FROLE_INFO> RoleList);
+	void OnReqRoleList(TArray<FROLE_INFO> InRoleList);
 
 	void RefreshRoleInfo(FROLE_INFO RoleInfo);
 
@@ -133,8 +134,13 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* Text_Coin;
 
+	// 干员界面的item
 	UPROPERTY(BlueprintReadWrite)
 		TArray<URoleItem*> RoleItemArray;
+
+	// 在房间中的 item
+	UPROPERTY(BlueprintReadWrite)
+		TArray<URoomRoleItem*> RoomRoleItemArray;
 
 	//当前选择的干员类型
 	uint8 selectedRoleType;
@@ -261,4 +267,7 @@ protected:
 
 	// 是否在房间中
 	bool isInRoom;
+
+	//将角色信息保存到本地
+	TArray<FROLE_INFO> RoleList;
 };
