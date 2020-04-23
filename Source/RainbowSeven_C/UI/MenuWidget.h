@@ -28,6 +28,8 @@ class RAINBOWSEVEN_C_API UMenuWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	virtual void NativeConstruct();
+
 	void OnReqAccountInfo(FString name, uint16 level, uint64 exp, uint64 fame, uint64 coin);
 
 	void OnReqRoleList(TArray<FROLE_INFO> InRoleList);
@@ -86,6 +88,8 @@ public:
 	void OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerListBlue, TArray<FPLAYER_INFO> PlayerListRed);
 
 	void OnReqChangeState(uint8 state);
+
+	void OnReqSelectRole(uint8 roleType);
 
 	void OnAllReady(uint8 allReady);
 
@@ -253,9 +257,15 @@ public:
 	UPROPERTY(Meta = (BindWidget))
 		UButton* Button_StartGame;
 
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* Text_Select_Role_Name;
+	
 protected:
-
+	// 干员界面 按钮
 	void RoleItemSelect(uint8 RoleType, bool IsUnlock);
+
+	// 房间界面 干员 
+	void RoomRoleItemSelect(uint8 RoleType, bool IsUnlock);
 
 	FString GetTimeStr();
 

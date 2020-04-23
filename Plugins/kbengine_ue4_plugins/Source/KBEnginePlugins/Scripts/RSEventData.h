@@ -242,6 +242,30 @@ public:
 };
 
 UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_ReqSelectRole : public UKBEventData {
+	GENERATED_BODY()
+
+public:
+	// 请求选择的干员类型
+	UPROPERTY()
+		uint8 RoleType;
+};
+
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_OnReqSelectRole : public UKBEventData {
+	GENERATED_BODY()
+
+public:
+	// 消息码
+	UPROPERTY()
+		uint8 State;
+
+	// 返回成功选中的干员类型
+	UPROPERTY()
+		uint8 RoleType;
+};
+
+UCLASS()
 class KBENGINEPLUGINS_API UKBEventData_OnAllReady : public UKBEventData {
 	GENERATED_BODY()
 

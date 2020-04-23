@@ -55,5 +55,7 @@ protected:
 
 	void OnReqChangeState(const UKBEventData* EventData);
 
+	void OnReqSelectRole(const UKBEventData* EventData);
+
 	void OnAllReady(const UKBEventData* EventData);
 };

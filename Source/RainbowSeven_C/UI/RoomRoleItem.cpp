@@ -4,6 +4,7 @@
 #include "RoomRoleItem.h"
 #include "Button.h"
 #include "TextBlock.h"
+#include "Image.h"
 
 void URoomRoleItem::RefreshItem(uint8 RoleID, uint8 isLock)
 {
@@ -31,5 +32,17 @@ void URoomRoleItem::InitItemStyle()
 
 void URoomRoleItem::ButtonReleasedEvent()
 {
-	//ItemSelectDel.ExecuteIfBound(RoleType, isUnlock);
+	ItemSelectDel.ExecuteIfBound(RoleType, isUnlock);
+}
+
+void URoomRoleItem::ItemSelect()
+{
+	IsSelected = true;
+	Image_Outline->SetVisibility(ESlateVisibility::Visible);
+}
+
+void URoomRoleItem::ItemUnSelect()
+{
+	IsSelected = false;
+	Image_Outline->SetVisibility(ESlateVisibility::Hidden);
 }

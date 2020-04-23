@@ -19,6 +19,21 @@
 #include "VerticalBoxSlot.h"
 #include "RoomRoleItem.h"
 
+void UMenuWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	DDH::Debug() << "UMenuWidget::NativeConstruct()" << DDH::Endl();
+	for (size_t i = 0; i < RoleItemArray.Num(); i++)
+	{
+		RoleItemArray[i]->RoleItemSelectDel.BindUObject(this, &UMenuWidget::RoleItemSelect);
+	}
+	for (size_t i = 0; i < RoomRoleItemArray.Num(); i++)
+	{
+		RoomRoleItemArray[i]->ItemSelectDel.BindUObject(this, &UMenuWidget::RoomRoleItemSelect);
+	}
+}
+
 void UMenuWidget::OnReqAccountInfo(FString name, uint16 level, uint64 exp, uint64 fame, uint64 coin)
 {
 	Text_Username->SetText(FText::FromString(name));
@@ -28,11 +43,6 @@ void UMenuWidget::OnReqAccountInfo(FString name, uint16 level, uint64 exp, uint6
 	Text_Fame->SetText(FText::FromString(FString::FromInt(fame)));
 	Text_Coin->SetText(FText::FromString(FString::FromInt(coin)));
 	ProgressBar_Exp->SetPercent(exp / level * 100);
-
-	for (size_t i = 0; i < RoleItemArray.Num(); i++)
-	{
-		RoleItemArray[i]->RoleItemSelectDel.BindUObject(this, &UMenuWidget::RoleItemSelect);
-	}
 }
 
 void UMenuWidget::OnReqRoleList(TArray<FROLE_INFO> InRoleList)
@@ -300,6 +310,11 @@ void UMenuWidget::OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerListBlue, TArray<FPL
 		//PlayerItem->ItemSelectDel.BindUObject(this, &UMenuWidget::RoomItemSelect);
 		PlayerItemGroupRed.Add(PlayerItem);
 	}
+
+	//进入放进后自动选择第一个干员
+	UKBEventData_ReqSelectRole* EventData = NewObject<UKBEventData_ReqSelectRole>();
+	EventData->RoleType = 1;
+	KBENGINE_EVENT_FIRE("ReqSelectRole", EventData);
 }
 
 void UMenuWidget::OnReqChangeState(uint8 state)
@@ -313,6 +328,18 @@ void UMenuWidget::OnReqChangeState(uint8 state)
 	{
 		isReady = false;
 		Text_Button_Ready->SetText(FText::FromString(TEXT("准备")));
+	}
+}
+
+void UMenuWidget::OnReqSelectRole(uint8 roleType)
+{
+	Text_Select_Role_Name->SetText(FText::FromString(TEXT("干员：") + FString::FromInt(roleType)));
+	for (int i = 0; i < RoomRoleItemArray.Num(); ++i)
+	{
+		if (RoomRoleItemArray[i]->RoleType != roleType)
+			RoomRoleItemArray[i]->ItemUnSelect();
+		else
+			RoomRoleItemArray[i]->ItemSelect();
 	}
 }
 
@@ -390,7 +417,6 @@ void UMenuWidget::ReqStartGame()
 	KBENGINE_EVENT_FIRE("ReqStartGame", NewObject<UKBEventData>());
 }
 
-
 void UMenuWidget::ReqRoomList()
 {
 	KBENGINE_EVENT_FIRE("ReqRoomList", NewObject<UKBEventData>());
@@ -411,7 +437,6 @@ void UMenuWidget::RoleItemSelect(uint8 RoleType, bool IsUnlock)
 	{
 		CanvasRoleUnlock->SetVisibility(ESlateVisibility::Visible);
 	}
-
 }
 
 void UMenuWidget::OnReqEnterRoomFailed()
@@ -437,6 +462,21 @@ void UMenuWidget::ReqChangeState()
 	UKBEventData_ReqChangeState* EventData = NewObject<UKBEventData_ReqChangeState>();
 	EventData->State = isReady ? 0 : 1;
 	KBENGINE_EVENT_FIRE("ReqChangeState", EventData);
+}
+
+void UMenuWidget::RoomRoleItemSelect(uint8 RoleType, bool IsUnlock)
+{
+	DDH::Debug() << "UMenuWidget::RoomRoleItemSelect--> RoleType:" << RoleType << DDH::Endl();
+	if (IsUnlock)
+	{
+		UKBEventData_ReqSelectRole* EventData = NewObject<UKBEventData_ReqSelectRole>();
+		EventData->RoleType = RoleType;
+		KBENGINE_EVENT_FIRE("ReqSelectRole", EventData);
+	}
+	else
+	{
+		Text_Room_Tip->SetText(FText::FromString(TEXT("该干员未解锁！")));
+	}
 }
 
 FString UMenuWidget::GetTimeStr()

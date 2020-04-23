@@ -74,12 +74,20 @@ void KBEngine::Account::__init__()
 			pBaseEntityCall->ReqChangeState(ServerData->State);
 		});
 
+	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqSelectRole", "ReqSelectRole", [this](const UKBEventData* EventData)
+		{
+
+			const UKBEventData_ReqSelectRole* ServerData = Cast<UKBEventData_ReqSelectRole>(EventData);
+			DDH::Debug() << "UMenuWidget::ReqSelectRole" << ServerData->RoleType << DDH::Endl();
+			pBaseEntityCall->ReqSelectRole(ServerData->RoleType);
+		});
+
 	/*KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqStartGame", "ReqStartGame", [this](const UKBEventData* EventData)
 		{
 			pBaseEntityCall->ReqStartGame();
 		});*/
 
-	//用户实体创建说明登录成功，触发登录成功事件
+		//用户实体创建说明登录成功，触发登录成功事件
 	UKBEventData_onLoginSuccessfully* EventData = NewObject<UKBEventData_onLoginSuccessfully>();
 	EventData->entity_uuid = KBEngineApp::getSingleton().entity_uuid();
 	EventData->entity_id = id();
@@ -235,6 +243,15 @@ void KBEngine::Account::OnReqChangeState(uint8 arg1)
 	UKBEventData_OnReqChangeState* EventData = NewObject<UKBEventData_OnReqChangeState>();
 	EventData->State = arg1;
 	KBENGINE_EVENT_FIRE("OnReqChangeState", EventData);
+}
+
+void KBEngine::Account::OnReqSelectRole(uint8 arg1, uint8 arg2)
+{
+	DDH::Debug() << "Account::OnReqSelectRole--> RoleType:" << arg2 << DDH::Endl();
+	UKBEventData_OnReqSelectRole* EventData = NewObject<UKBEventData_OnReqSelectRole>();
+	EventData->State = arg1;
+	EventData->RoleType = arg2;
+	KBENGINE_EVENT_FIRE("OnReqSelectRole", EventData);
 }
 
 void KBEngine::Account::OnAllReady(uint8 arg1)

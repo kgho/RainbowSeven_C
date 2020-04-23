@@ -28,6 +28,8 @@ void AMenuGameMode::InstallEvent()
 
 	KBENGINE_REGISTER_EVENT("OnReqChangeState", OnReqChangeState);
 
+	KBENGINE_REGISTER_EVENT("OnReqSelectRole", OnReqSelectRole);
+
 	KBENGINE_REGISTER_EVENT("OnAllReady", OnAllReady);
 }
 
@@ -110,6 +112,12 @@ void AMenuGameMode::OnReqChangeState(const UKBEventData* EventData)
 {
 	const UKBEventData_OnReqChangeState* ServerData = Cast<UKBEventData_OnReqChangeState>(EventData);
 	MenuWidget->OnReqChangeState(ServerData->State);
+}
+
+void AMenuGameMode::OnReqSelectRole(const UKBEventData* EventData)
+{
+	const UKBEventData_OnReqSelectRole* ServerData = Cast<UKBEventData_OnReqSelectRole>(EventData);
+	MenuWidget->OnReqSelectRole(ServerData->RoleType);
 }
 
 void AMenuGameMode::OnAllReady(const UKBEventData* EventData)

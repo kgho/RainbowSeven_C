@@ -35,6 +35,8 @@ namespace KBEngine
 
 		virtual void OnReqChangeState(uint8 arg1) override;
 
+		virtual void OnReqSelectRole(uint8 arg1, uint8 arg2) override;
+
 		virtual void OnAllReady(uint8 arg1) override;
 
 	public:

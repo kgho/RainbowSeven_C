@@ -9,8 +9,9 @@
 
 class UTextBlock;
 class UButton;
+class UImage;
 
-//DECLARE_DELEGATE_TwoParams(FItemSelect, uint8, bool)
+DECLARE_DELEGATE_TwoParams(FRoomRoleItemSelect, uint8, bool)
 /**
  * 在房间中选择角色的 item
  */
@@ -28,6 +29,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void ButtonReleasedEvent();
 
+	void ItemSelect();
+
+	void ItemUnSelect();
+
 public:
 	UPROPERTY(EditAnywhere)
 		uint8 RoleType;
@@ -44,5 +49,10 @@ public:
 	UPROPERTY(EditAnywhere)
 		FButtonStyle ButtonStyle;
 
-	//FItemSelect ItemSelectDel;
+	UPROPERTY(Meta = (BindWidget))
+		UImage* Image_Outline;
+
+	bool IsSelected;
+
+	FRoomRoleItemSelect ItemSelectDel;
 };
