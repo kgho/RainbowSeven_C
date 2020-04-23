@@ -82,12 +82,12 @@ void KBEngine::Account::__init__()
 			pBaseEntityCall->ReqSelectRole(ServerData->RoleType);
 		});
 
-	/*KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqStartGame", "ReqStartGame", [this](const UKBEventData* EventData)
+	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqStartGame", "ReqStartGame", [this](const UKBEventData* EventData)
 		{
-			pBaseEntityCall->ReqStartGame();
-		});*/
+			pBaseEntityCall->ReqStartGame(0);
+		});
 
-		//用户实体创建说明登录成功，触发登录成功事件
+	//用户实体创建说明登录成功，触发登录成功事件
 	UKBEventData_onLoginSuccessfully* EventData = NewObject<UKBEventData_onLoginSuccessfully>();
 	EventData->entity_uuid = KBEngineApp::getSingleton().entity_uuid();
 	EventData->entity_id = id();
@@ -260,6 +260,20 @@ void KBEngine::Account::OnAllReady(uint8 arg1)
 	UKBEventData_OnAllReady* EventData = NewObject<UKBEventData_OnAllReady>();
 	EventData->AllReady = arg1;
 	KBENGINE_EVENT_FIRE("OnAllReady", EventData);
+}
+
+void KBEngine::Account::OnReqEnterGame(uint8 arg1)
+{
+	DDH::Debug() << "Account::OnReqEnterGame--> " << arg1 << DDH::Endl();
+}
+
+void KBEngine::Account::OnReqStartGame(uint8 arg1)
+{
+	if (isPlayer())
+	{
+		DDH::Debug() << "Account::OnReqStartGame--> " << arg1 << DDH::Endl();
+		pBaseEntityCall->ReqEnterGame(0);
+	}
 }
 
 

@@ -322,7 +322,7 @@ void UMenuWidget::OnReqChangeState(uint8 state)
 	if (state == 1)
 	{
 		isReady = true;
-		Text_Button_Ready->SetText(FText::FromString(TEXT("取消")));
+		Text_Button_Ready->SetText(FText::FromString(TEXT("取消准备")));
 	}
 	else
 	{
@@ -341,6 +341,7 @@ void UMenuWidget::OnReqSelectRole(uint8 roleType)
 		else
 			RoomRoleItemArray[i]->ItemSelect();
 	}
+	Text_Room_Tip->SetText(FText::FromString(TEXT("已选择干员：") + FString::FromInt(roleType)));
 }
 
 void UMenuWidget::OnAllReady(uint8 allReady)
@@ -357,8 +358,7 @@ void UMenuWidget::OnAllReady(uint8 allReady)
 void UMenuWidget::ButtonCreatRoomEvent()
 {
 	CanvasRoomCreate->SetVisibility(ESlateVisibility::Visible);
-
-
+	Text_TipCreateRoom->SetText(FText::FromString(TEXT("")));
 	EditableTextBox_RoomName->SetText(FText::FromString(TEXT("肃清模式--木屋  ") + GetTimeStr()));
 }
 
