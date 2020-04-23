@@ -6,6 +6,7 @@
 #include "Scripts/RSEventData.h"
 #include "UI/MenuWidget.h"
 #include "Scripts/ExCommon.h"
+#include "Kismet/GameplayStatics.h"
 
 void AMenuGameMode::InstallEvent()
 {
@@ -31,6 +32,9 @@ void AMenuGameMode::InstallEvent()
 	KBENGINE_REGISTER_EVENT("OnReqSelectRole", OnReqSelectRole);
 
 	KBENGINE_REGISTER_EVENT("OnAllReady", OnAllReady);
+
+	// 进入游戏地图
+	KBENGINE_REGISTER_EVENT("addSpaceGeometryMapping", AddSpaceGeometryMapping);
 }
 
 void AMenuGameMode::BeginPlay()
@@ -124,5 +128,16 @@ void AMenuGameMode::OnAllReady(const UKBEventData* EventData)
 {
 	const UKBEventData_OnAllReady* ServerData = Cast<UKBEventData_OnAllReady>(EventData);
 	MenuWidget->OnAllReady(ServerData->AllReady);
+}
+
+void AMenuGameMode::AddSpaceGeometryMapping(const UKBEventData* EventData)
+{
+	const UKBEventData_addSpaceGeometryMapping* ServerData = Cast<UKBEventData_addSpaceGeometryMapping>(EventData);
+
+	FString MapName; // GameMap
+	FString TempStr;
+	ServerData->spaceResPath.Split("/", &TempStr, &MapName);
+
+	UGameplayStatics::OpenLevel(GetWorld(), FName(*MapName));
 }
 
