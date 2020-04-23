@@ -108,7 +108,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void ButtonStartGameEvent();
 
-	
+
 
 public:
 	//Canvas Main
@@ -258,4 +258,7 @@ protected:
 
 	// 是否准备
 	bool isReady;
+
+	// 是否在房间中
+	bool isInRoom;
 };

@@ -113,14 +113,32 @@ void UMenuWidget::ButtonHomeEvent()
 {
 	CanvasHome->SetVisibility(ESlateVisibility::Visible);
 	CanvasRole->SetVisibility(ESlateVisibility::Hidden);
-	CanvasRoomMenu->SetVisibility(ESlateVisibility::Hidden);
+
+	if (isInRoom)
+	{
+		CanvasRoomMenu->SetVisibility(ESlateVisibility::Hidden);
+		CanvasRoom->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else {
+		CanvasRoomMenu->SetVisibility(ESlateVisibility::Hidden);
+	}
+
 }
 
 void UMenuWidget::ButtonRoleEvent()
 {
 	CanvasHome->SetVisibility(ESlateVisibility::Hidden);
 	CanvasRole->SetVisibility(ESlateVisibility::Visible);
-	CanvasRoomMenu->SetVisibility(ESlateVisibility::Hidden);
+
+	if (isInRoom)
+	{
+		CanvasRoomMenu->SetVisibility(ESlateVisibility::Hidden);
+		CanvasRoom->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else
+	{
+		CanvasRoomMenu->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 void UMenuWidget::ButtonCombatEvent()
@@ -129,7 +147,14 @@ void UMenuWidget::ButtonCombatEvent()
 	CanvasHome->SetVisibility(ESlateVisibility::Hidden);
 	CanvasRole->SetVisibility(ESlateVisibility::Hidden);
 	CanvasRoomMenu->SetVisibility(ESlateVisibility::Visible);
-	ReqRoomList();
+	if (isInRoom)
+	{
+		CanvasRoom->SetVisibility(ESlateVisibility::Visible);
+	}
+	else
+	{
+		ReqRoomList();
+	}
 }
 
 void UMenuWidget::ButtonRefreshRoomEvent()
@@ -139,8 +164,15 @@ void UMenuWidget::ButtonRefreshRoomEvent()
 
 void UMenuWidget::ButtonLeaveRoomEvent()
 {
-	KBENGINE_EVENT_FIRE("ReqLeaveRoom", NewObject<UKBEventData>());
-	Text_Room_Tip->SetText(FText::FromString(TEXT("正在离开房间......")));
+	if (isReady)
+	{
+		Text_Room_Tip->SetText(FText::FromString(TEXT("请先取消准备后离开房间！")));
+	}
+	else
+	{
+		KBENGINE_EVENT_FIRE("ReqLeaveRoom", NewObject<UKBEventData>());
+		Text_Room_Tip->SetText(FText::FromString(TEXT("正在离开房间......")));
+	}
 }
 
 void UMenuWidget::OnReqRoomList(TArray<FROOM_INFO> RoomList)
@@ -211,6 +243,8 @@ void UMenuWidget::OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerListBlue, TArray<FPL
 {
 	Text_Room_Tip->SetText(FText::FromString(TEXT("")));
 	CanvasRoom->SetVisibility(ESlateVisibility::Visible);
+
+	isInRoom = true;
 
 	//蓝队
 	//把旧的从列表移除
@@ -383,6 +417,7 @@ void UMenuWidget::OnReqLeaveRoom()
 {
 	Text_Room_Menu_Tip->SetText(FText::FromString(TEXT("成功离开房间......")));
 	CanvasRoom->SetVisibility(ESlateVisibility::Hidden);
+	isInRoom = false;
 }
 
 void UMenuWidget::ReqChangeState()
