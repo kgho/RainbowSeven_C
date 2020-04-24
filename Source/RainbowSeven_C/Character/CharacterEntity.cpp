@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 
 #include "CharacterEntity.h"
@@ -23,10 +23,11 @@ void ACharacterEntity::BeginPlay()
 	if (!IsPlayer && CombatGameMode)
 		CombatGameMode->CharacterMap.Add(EntityId, this);
 
-	//³õÊ¼Êý¾Ý
+	//åˆå§‹æ•°æ®
 	LastUpdatePositionTime = GetWorld()->TimeSeconds;
+	LastUpdateAnimTime = GetWorld()->TimeSeconds;
 
-	//Ë¢ÐÂÒ»´ÎÊµÌåÊý¾Ýµ½UE4¶ÔÏó
+	//åˆ·æ–°ä¸€æ¬¡å®žä½“æ•°æ®åˆ°UE4å¯¹è±¡
 	KBEngine::Entity* EntityInst = KBEngine::KBEngineApp::getSingleton().findEntity(EntityId);
 	if (EntityInst)
 		EntityInst->callPropertysSetMethods();
@@ -45,17 +46,32 @@ void ACharacterEntity::SetTargetPosition(FVector InPos)
 {
 	TargetPosition = InPos;
 
-	//»ñÈ¡¸üÐÂÊ±¼ä¼ä¸ô
+	//èŽ·å–æ›´æ–°æ—¶é—´é—´éš”
 	float UpdatePositionSpaceTime = GetWorld()->TimeSeconds - LastUpdatePositionTime;
-	//±£´æµ±Ç°Ê±¼ä
+	//ä¿å­˜å½“å‰æ—¶é—´
 	LastUpdatePositionTime = GetWorld()->TimeSeconds;
-	//»ñÈ¡¾àÀë
+	//èŽ·å–è·ç¦»
 	float Distance = FVector::Dist(TargetPosition, GetActorLocation());
-	//¼ÆËã³öÊµÊ±ËÙ¶È
+	//è®¡ç®—å‡ºå®žæ—¶é€Ÿåº¦
 	MoveSpeed = Distance / UpdatePositionSpaceTime;
 }
 
 void ACharacterEntity::SetTargetRotator(FRotator InRot)
 {
 	TargetRotator = InRot;
+}
+
+void ACharacterEntity::SetTargetAnim(float Speed, float Direction)
+{
+	//èŽ·å–æ’å€¼å¤´å°¾çŠ¶æ€
+	TargetSpeed = Speed;
+	TargetDirection = Direction;
+	LastSpeed = AnimSpeed;
+	LastDirection = AnimDirection;
+
+	//èŽ·å–æ—¶é—´é—´éš”
+	UpdateAnimSpaceTime = GetWorld()->TimeSeconds - LastUpdateAnimTime;
+	RemainAnimSpaceTime = UpdateAnimSpaceTime;
+	//ä¿ç•™ä¸Šä¸€æ¬¡æ›´æ–°çš„æ—¶é—´
+	LastUpdateAnimTime = GetWorld()->TimeSeconds;
 }

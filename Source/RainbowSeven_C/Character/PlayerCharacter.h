@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+﻿// Author : Kgho	Github : https://github.com/kgho
 
 #pragma once
 
@@ -10,7 +10,7 @@ class ACombatController;
 class USpringArmComponent;
 class UCameraComponent;
 /**
- * ������ҽ�ɫ��
+ * 本地玩家角色类
  */
 UCLASS()
 class RAINBOWSEVEN_C_API APlayerCharacter : public ACharacterEntity
@@ -20,10 +20,12 @@ class RAINBOWSEVEN_C_API APlayerCharacter : public ACharacterEntity
 public:
 	APlayerCharacter();
 
-	// ����� Character �� possess �ǻ�õ� controller
+	// 当这个 Character 被 possess 是会得到 controller
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual void Tick(float DeltaSeconds) override;
+
+	virtual void Destroyed() override;
 
 public:
 	ACombatController* CombatController;
@@ -50,6 +52,8 @@ protected:
 
 	void LookUp(float Value);
 
+	// 定时器绑定的方法
+	void AnimUpdate();
 
 protected:
 	UPROPERTY(EditAnywhere)
@@ -57,4 +61,7 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 		UCameraComponent* FollowCamera;
+
+	//更新动作到服务端定时器句柄，在 begin 中启动，在 destroyed 取消
+	FTimerHandle AnimUpdateHandle;
 };

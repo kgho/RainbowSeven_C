@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 
 #include "RemoteCharacter.h"
@@ -12,7 +12,7 @@ void ARemoteCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//Î»ÖÃ¸üÐÂ
+	//ä½ç½®æ›´æ–°
 	FVector CurrentPosition = GetActorLocation();
 
 	FVector MoveDirection = TargetPosition - CurrentPosition;
@@ -21,17 +21,23 @@ void ARemoteCharacter::Tick(float DeltaTime)
 
 	float Distance = MoveDirection.Size();
 
-	//¾àÀëÌ«´ó»òÕßÌ«Ð¡Ö±½ÓÉèÖÃµ½Ä¿±êÎ»ÖÃ
+	//è·ç¦»å¤ªå¤§æˆ–è€…å¤ªå°ç›´æŽ¥è®¾ç½®åˆ°ç›®æ ‡ä½ç½®
 	if (Distance > 100.f || Distance < DeltaSpace)
 		SetActorLocation(TargetPosition);
 	else
 	{
-		//ÒÆ¶¯Î»ÖÃ
+		//ç§»åŠ¨ä½ç½®
 		MoveDirection.Normalize();
 		SetActorLocation(CurrentPosition + MoveDirection * DeltaSpace);
 	}
 
-	//Ðý×ª¸üÐÂ
+	//æ—‹è½¬æ›´æ–°
 	FRotator CurrentRotation = FMath::RInterpTo(GetActorRotation(), TargetRotator, DeltaTime, 5.f);
 	FaceRotation(CurrentRotation);
+
+	// æ›´æ–°åŠ¨ç”»ï¼Œ* 5åŠ å¿«åŠ¨ä½œçš„åˆ‡æ¢
+	RemainAnimSpaceTime -= DeltaTime * 5;
+	float AnimLerpPercent = FMath::Clamp(RemainAnimSpaceTime / UpdateAnimSpaceTime, 0.f, 1.f);
+	AnimSpeed = FMath::Lerp(TargetSpeed, LastSpeed, AnimLerpPercent);
+	AnimDirection = FMath::Lerp(TargetDirection, LastDirection, AnimLerpPercent);
 }

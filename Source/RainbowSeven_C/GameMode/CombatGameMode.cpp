@@ -206,6 +206,7 @@ void ACombatGameMode::OnAnimUpdate(const UKBEventData* EventData)
 	if (CharacterMap.Contains(ServerData->EntityId))
 	{
 		ACharacterEntity* CharacterEntity = *CharacterMap.Find(ServerData->EntityId);
+		CharacterEntity->SetTargetAnim(ServerData->Speed, ServerData->Direction);
 	}
 }
 

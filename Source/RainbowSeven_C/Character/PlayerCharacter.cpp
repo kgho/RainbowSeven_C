@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 
 #include "PlayerCharacter.h"
@@ -7,18 +7,20 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Engine/KBEngine.h"
+#include "Scripts/RSEventData.h"
 
 APlayerCharacter::APlayerCharacter()
 {
 	TurnRate = 30.f;
 	LookUpRate = 3.f;
 
-	// ¸úËæ¿ØÖÆÆ÷Ðý×ªµÄÉèÖÃ£¬characterÖ»¸úËæcontroller µÄ yaw Ðý×ª
+	// è·ŸéšæŽ§åˆ¶å™¨æ—‹è½¬çš„è®¾ç½®ï¼Œcharacteråªè·Ÿéšcontroller çš„ yaw æ—‹è½¬
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationRoll = false;
 
-	// ÉèÖÃÄ£ÐÍÎ»ÖÃ
+	// è®¾ç½®æ¨¡åž‹ä½ç½®
 	GetMesh()->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
@@ -31,7 +33,7 @@ APlayerCharacter::APlayerCharacter()
 	CameraSpringArm->TargetArmLength = 600.0f; // The camera follows at this distance behind the character	
 	CameraSpringArm->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 	CameraSpringArm->SetRelativeLocation(FVector(0.f, 0.f, 120.f));
-	// È¡ÏûÊÖ±ÛÕÚµ²
+	// å–æ¶ˆæ‰‹è‡‚é®æŒ¡
 	CameraSpringArm->bDoCollisionTest = false;
 
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -57,11 +59,11 @@ void APlayerCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	//»ñÈ¡¶¯×÷À¶Í¼²ÎÊý
+	//èŽ·å–åŠ¨ä½œè“å›¾å‚æ•°
 	AnimSpeed = GetVelocity().Size();
 	AnimIsInAir = GetMovementComponent()->IsFalling();
 
-	//»ñÈ¡ÒÆ¶¯½Ç¶È
+	//èŽ·å–ç§»åŠ¨è§’åº¦
 	float PreDir = GetVelocity().ToOrientationRotator().Yaw - GetActorRotation().Yaw;
 
 	if (PreDir > 180.f)
@@ -69,19 +71,30 @@ void APlayerCharacter::Tick(float DeltaSeconds)
 	if (PreDir < -180.f)
 		PreDir += 360.f;
 
-	//ËÙ¶ÈÌ«Ð¡, ÒÆ¶¯½Ç¶ÈÎª0
+	//é€Ÿåº¦å¤ªå°, ç§»åŠ¨è§’åº¦ä¸º0
 	if (AnimSpeed < 5.f)
 		AnimDirection = 0.f;
 	else
 		AnimDirection = PreDir;
 }
 
+void APlayerCharacter::Destroyed()
+{
+	Super::Destroyed();
+
+	//åœæ­¢å®šæ—¶å™¨
+	GetWorld()->GetTimerManager().ClearTimer(AnimUpdateHandle);
+}
+
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ÐÞ¸ÄÊäÈëÄ£Ê½
+	// ä¿®æ”¹è¾“å…¥æ¨¡å¼
 	CombatController->SwitchInputMode(false);
+
+	//å¯åŠ¨æ›´æ–°åŠ¨ä½œå®šæ—¶å™¨,æ¯0.5ç§’è¿è¡Œä¸€æ¬¡ï¼Œå¾ªçŽ¯trueï¼Œå»¶æ—¶0.5sè¿è¡Œ
+	GetWorld()->GetTimerManager().SetTimer(AnimUpdateHandle, this, &APlayerCharacter::AnimUpdate, 0.5f, true, 0.5f);
 }
 
 void APlayerCharacter::DoJump()
@@ -126,6 +139,14 @@ void APlayerCharacter::Turn(float Value)
 void APlayerCharacter::LookUp(float Value)
 {
 	AddControllerPitchInput(Value * LookUpRate * GetWorld()->GetDeltaSeconds());
+}
+
+void APlayerCharacter::AnimUpdate()
+{
+	UKBEventData_AnimUpdate* EventData = NewObject<UKBEventData_AnimUpdate>();
+	EventData->Speed = AnimSpeed;
+	EventData->Direction = AnimDirection;
+	KBENGINE_EVENT_FIRE("AnimUpdate", EventData);
 }
 
 

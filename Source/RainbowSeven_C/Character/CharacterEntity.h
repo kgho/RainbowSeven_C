@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 #pragma once
 
@@ -8,7 +8,7 @@
 
 class ACombatGameMode;
 /**
- * KBE½ÇÉ«ÀàÊµÌå¶ÔÓ¦µÄUE4½ÇÉ«µÄ»ùÀà, ´¢´æÊµÌåid, ÊµÌåÊµÀı, ÒÆ¶¯Êı¾İ, ¶¯×÷Êı¾İ, ÆäÅÉÉúÀàÊµÏÖ¾ßÌåµÄÒÆ¶¯Í¬²½Âß¼­
+ * KBEè§’è‰²ç±»å®ä½“å¯¹åº”çš„UE4è§’è‰²çš„åŸºç±», å‚¨å­˜å®ä½“id, å®ä½“å®ä¾‹, ç§»åŠ¨æ•°æ®, åŠ¨ä½œæ•°æ®, å…¶æ´¾ç”Ÿç±»å®ç°å…·ä½“çš„ç§»åŠ¨åŒæ­¥é€»è¾‘
  */
 UCLASS()
 class RAINBOWSEVEN_C_API ACharacterEntity : public ACharacter
@@ -24,6 +24,9 @@ public:
 	void SetTargetPosition(FVector InPos);
 
 	void SetTargetRotator(FRotator InRot);
+
+	//è®¾ç½®ç›®æ ‡åŠ¨ä½œçš„å‡½æ•°
+	void SetTargetAnim(float Speed, float Direction);
 
 protected:
 	// Called when the game starts or when spawned
@@ -49,20 +52,39 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 		bool AnimIsInAir;
 
-	// Í¨¹ıÑªÁ¿¿ØÖÆËÀÍö¶¯»­²¥·Å
+	// é€šè¿‡è¡€é‡æ§åˆ¶æ­»äº¡åŠ¨ç”»æ’­æ”¾
 	UPROPERTY(BlueprintReadOnly)
 		int32 HP;
 
 protected:
 
-	//Ä¿±êÎ»ÖÃ
+	//ç›®æ ‡ä½ç½®
 	FVector TargetPosition;
 
-	//Ä¿±êĞı×ª
+	//ç›®æ ‡æ—‹è½¬
 	FRotator TargetRotator;
 
-	//ÉÏÒ»´Î¸üĞÂÎ»ÖÃµÄÊ±¼ä
+	//ä¸Šä¸€æ¬¡æ›´æ–°ä½ç½®çš„æ—¶é—´
 	float LastUpdatePositionTime;
 
 	 float MoveSpeed;
+
+	 //ä¸Šä¸€æ¬¡åŒæ­¥åŠ¨ä½œçš„æ—¶é—´
+	 float LastUpdateAnimTime;
+
+	 //æ›´æ–°åŠ¨ä½œæ—¶é—´é—´éš”
+	 float UpdateAnimSpaceTime;
+
+	 //å‰©ä½™åŠ¨ä½œæ›´æ–°æ—¶é—´
+	 float RemainAnimSpaceTime;
+
+	 //ç›®æ ‡é€Ÿåº¦å’Œç§»åŠ¨è§’åº¦
+	 float TargetSpeed;
+
+	 float TargetDirection;
+
+	 //ä¸Šä¸€æ¬¡çš„é€Ÿåº¦ä¸ç§»åŠ¨è§’åº¦
+	 float LastSpeed;
+
+	 float LastDirection;
 };
