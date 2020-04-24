@@ -80,7 +80,9 @@ void ACombatGameMode::OnEnterWorld(const UKBEventData* EventData)
 		// 强转实体类型为Role
 		KBEngine::Role* RoleInst = static_cast<KBEngine::Role*>(EntityInst);
 		FTransform SpawnTransform(Rotator, RoleInst->SpawnPoint);
-		PlayerCharacter = Cast<APlayerCharacter>(UGameplayStatics::BeginDeferredActorSpawnFromClass(this, PlayerClassList[RoleInst->RoleType], SpawnTransform));
+
+		// 类列表索引从 0 开始，干员类型编号从 1 开始。
+		PlayerCharacter = Cast<APlayerCharacter>(UGameplayStatics::BeginDeferredActorSpawnFromClass(this, PlayerClassList[RoleInst->RoleType - 1], SpawnTransform));
 		if (PlayerCharacter)
 		{
 			PlayerCharacter->EntityId = ServerData->entityID;

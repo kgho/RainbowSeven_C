@@ -95,6 +95,8 @@ public:
 
 	void ReqStartGame();
 
+	void LoadGame();
+
 	UFUNCTION(BlueprintCallable)
 		void ButtonCreatRoomEvent();
 
@@ -259,7 +261,12 @@ public:
 
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* Text_Select_Role_Name;
-	
+
+	// Wait
+	UPROPERTY(Meta = (BindWidget))
+		UCanvasPanel* CanvasLoadingGame;
+
+
 protected:
 	// 干员界面 按钮
 	void RoleItemSelect(uint8 RoleType, bool IsUnlock);

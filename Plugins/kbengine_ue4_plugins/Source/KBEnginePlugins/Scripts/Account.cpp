@@ -272,6 +272,7 @@ void KBEngine::Account::OnReqStartGame(uint8 arg1)
 	if (isPlayer())
 	{
 		DDH::Debug() << "Account::OnReqStartGame--> " << arg1 << DDH::Endl();
+		// 向服务器请求进入游戏
 		pBaseEntityCall->ReqEnterGame(0);
 	}
 }

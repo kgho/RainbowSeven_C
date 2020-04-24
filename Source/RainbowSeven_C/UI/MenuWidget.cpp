@@ -409,12 +409,18 @@ void UMenuWidget::ButtonReadyEvent()
 
 void UMenuWidget::ButtonStartGameEvent()
 {
+	CanvasLoadingGame->SetVisibility(ESlateVisibility::Visible);
 	ReqStartGame();
 }
 
 void UMenuWidget::ReqStartGame()
 {
 	KBENGINE_EVENT_FIRE("ReqStartGame", NewObject<UKBEventData>());
+}
+
+void UMenuWidget::LoadGame()
+{
+
 }
 
 void UMenuWidget::ReqRoomList()
