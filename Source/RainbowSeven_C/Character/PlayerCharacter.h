@@ -23,6 +23,8 @@ public:
 	// 当这个 Character 被 possess 是会得到 controller
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual void Tick(float DeltaSeconds) override;
+
 public:
 	ACombatController* CombatController;
 
@@ -47,6 +49,7 @@ protected:
 	void Turn(float Value);
 
 	void LookUp(float Value);
+
 
 protected:
 	UPROPERTY(EditAnywhere)

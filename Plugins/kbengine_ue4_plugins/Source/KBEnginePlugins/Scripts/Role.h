@@ -12,5 +12,7 @@ namespace KBEngine
 		virtual ~Role();
 		virtual void __init__() override;
 		virtual void onDestroy() override;
+
+		virtual void OnAnimUpdate(const ANIM_INFO& arg1) override;
 	};
 }

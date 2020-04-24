@@ -10,6 +10,7 @@
 #include "Controller/CombatController.h"
 #include "Scripts/ExCommon.h"
 #include "Character/RemoteCharacter.h"
+#include "Scripts/RSEventData.h"
 
 void ACombatGameMode::BeginPlay()
 {
@@ -200,6 +201,12 @@ void ACombatGameMode::UpdatePosition(const UKBEventData* EventData)
 
 void ACombatGameMode::OnAnimUpdate(const UKBEventData* EventData)
 {
+	const UKBEventData_OnAnimUpdate* ServerData = Cast<UKBEventData_OnAnimUpdate>(EventData);
+
+	if (CharacterMap.Contains(ServerData->EntityId))
+	{
+		ACharacterEntity* CharacterEntity = *CharacterMap.Find(ServerData->EntityId);
+	}
 }
 
 void ACombatGameMode::SetBaseHP(const UKBEventData* EventData)

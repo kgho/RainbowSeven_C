@@ -275,6 +275,32 @@ public:
 		uint8 AllReady;
 };
 
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_AnimUpdate : public UKBEventData {
+	GENERATED_BODY()
+public:
+	UPROPERTY()
+		float Speed;
+
+	UPROPERTY()
+		float Direction;
+};
+
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_OnAnimUpdate : public UKBEventData {
+	GENERATED_BODY()
+public:
+	// 哪个实体更新动作
+	UPROPERTY()
+		int32 EntityId;
+
+	UPROPERTY()
+		float Speed;
+
+	UPROPERTY()
+		float Direction;
+};
+
 /**
  *
  */

@@ -40,6 +40,19 @@ public:
 
 	bool IsPlayer;
 
+	UPROPERTY(BlueprintReadOnly)
+		float AnimSpeed;
+
+	UPROPERTY(BlueprintReadOnly)
+		float AnimDirection;
+
+	UPROPERTY(BlueprintReadOnly)
+		bool AnimIsInAir;
+
+	// 通过血量控制死亡动画播放
+	UPROPERTY(BlueprintReadOnly)
+		int32 HP;
+
 protected:
 
 	//目标位置
@@ -51,5 +64,5 @@ protected:
 	//上一次更新位置的时间
 	float LastUpdatePositionTime;
 
-	float MoveSpeed;
+	 float MoveSpeed;
 };

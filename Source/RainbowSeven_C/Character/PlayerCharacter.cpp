@@ -53,6 +53,29 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	PlayerInputComponent->BindAxis("LookUp", this, &APlayerCharacter::LookUp);
 }
 
+void APlayerCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	//获取动作蓝图参数
+	AnimSpeed = GetVelocity().Size();
+	AnimIsInAir = GetMovementComponent()->IsFalling();
+
+	//获取移动角度
+	float PreDir = GetVelocity().ToOrientationRotator().Yaw - GetActorRotation().Yaw;
+
+	if (PreDir > 180.f)
+		PreDir -= 360.f;
+	if (PreDir < -180.f)
+		PreDir += 360.f;
+
+	//速度太小, 移动角度为0
+	if (AnimSpeed < 5.f)
+		AnimDirection = 0.f;
+	else
+		AnimDirection = PreDir;
+}
+
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -104,4 +127,5 @@ void APlayerCharacter::LookUp(float Value)
 {
 	AddControllerPitchInput(Value * LookUpRate * GetWorld()->GetDeltaSeconds());
 }
+
 
