@@ -62,16 +62,16 @@ void UMenuWidget::RefreshRoleInfo(FROLE_INFO RoleInfo)
 	switch (RoleInfo.RoleType)
 	{
 	case 1:
-		Text_Role_Info_Name->SetText(FText::FromString("A"));
+		Text_Role_Info_Name->SetText(FText::FromString(TEXT("埃里克")));
 		break;
 	case 2:
-		Text_Role_Info_Name->SetText(FText::FromString("B"));
+		Text_Role_Info_Name->SetText(FText::FromString(TEXT("卡拉")));
 		break;
 	case 3:
-		Text_Role_Info_Name->SetText(FText::FromString("C"));
+		Text_Role_Info_Name->SetText(FText::FromString(TEXT("克劳迪娅")));
 		break;
 	case 4:
-		Text_Role_Info_Name->SetText(FText::FromString("D"));
+		Text_Role_Info_Name->SetText(FText::FromString(TEXT("曼纽尔")));
 		break;
 	}
 
@@ -333,7 +333,23 @@ void UMenuWidget::OnReqChangeState(uint8 state)
 
 void UMenuWidget::OnReqSelectRole(uint8 roleType)
 {
-	Text_Select_Role_Name->SetText(FText::FromString(TEXT("干员：") + FString::FromInt(roleType)));
+	FString selectRoleName;
+	switch (roleType)
+	{
+	case 1:
+		selectRoleName = TEXT("埃里克");
+		break;
+	case 2:
+		selectRoleName = TEXT("卡拉");
+		break;
+	case 3:
+		selectRoleName = TEXT("克劳迪娅");
+		break;
+	case 4:
+		selectRoleName = TEXT("曼纽尔");
+		break;
+	}
+	Text_Select_Role_Name->SetText(FText::FromString(selectRoleName));
 	for (int i = 0; i < RoomRoleItemArray.Num(); ++i)
 	{
 		if (RoomRoleItemArray[i]->RoleType != roleType)
@@ -341,7 +357,7 @@ void UMenuWidget::OnReqSelectRole(uint8 roleType)
 		else
 			RoomRoleItemArray[i]->ItemSelect();
 	}
-	Text_Room_Tip->SetText(FText::FromString(TEXT("已选择干员：") + FString::FromInt(roleType)));
+	Text_Room_Tip->SetText(FText::FromString(TEXT("已选择干员：") + selectRoleName));
 }
 
 void UMenuWidget::OnAllReady(uint8 allReady)
