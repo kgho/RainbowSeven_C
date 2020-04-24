@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 #pragma once
 
@@ -18,7 +18,7 @@ public:
 	AKBEClient();
 
 public:
-	//KBEMain×é¼þ
+	//KBEMainç»„ä»¶
 	UPROPERTY(EditAnywhere)
 		UKBEMain* KBEMain;
 };

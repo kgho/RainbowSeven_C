@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Engine/KBECommon.h"
 #include "Engine/RoleBase.h"

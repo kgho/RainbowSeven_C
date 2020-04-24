@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 #pragma once
 
@@ -13,7 +13,7 @@ class UImage;
 
 DECLARE_DELEGATE_TwoParams(FRoomRoleItemSelect, uint8, bool)
 /**
- * ÔÚ·¿¼äÖÐÑ¡Ôñ½ÇÉ«µÄ item
+ * åœ¨æˆ¿é—´ä¸­é€‰æ‹©è§’è‰²çš„ item
  */
 UCLASS()
 class RAINBOWSEVEN_C_API URoomRoleItem : public UUserWidget

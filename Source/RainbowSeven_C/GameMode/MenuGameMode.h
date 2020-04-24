@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 #pragma once
 
@@ -38,13 +38,13 @@ protected:
 
 	void OnReqRoleInfo(const UKBEventData* EventData);
 
-	// ÇëÇó·¿¼äÁĞ±í»Øµ÷º¯Êı
+	// è¯·æ±‚æˆ¿é—´åˆ—è¡¨å›è°ƒå‡½æ•°
 	void OnReqRoomList(const UKBEventData* EventData);
 
-	// ´´½¨·¿¼ä»Øµ÷º¯Êı
+	// åˆ›å»ºæˆ¿é—´å›è°ƒå‡½æ•°
 	void OnReqCreateRoom(const UKBEventData* EventData);
 
-	// ½øÈë·¿¼ä»Øµ÷º¯Êı
+	// è¿›å…¥æˆ¿é—´å›è°ƒå‡½æ•°
 	void OnReqEnterRoom(const UKBEventData* EventData);
 
 	void OnReqEnterRoomFailed(const UKBEventData* EventData);
@@ -59,6 +59,6 @@ protected:
 
 	void OnAllReady(const UKBEventData* EventData);
 
-	// ½øÈëÓÎÏ·µØÍ¼
+	// è¿›å…¥æ¸¸æˆåœ°å›¾
 	void AddSpaceGeometryMapping(const UKBEventData* EventData);
 };

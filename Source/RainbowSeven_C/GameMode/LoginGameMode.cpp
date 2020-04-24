@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 
 #include "LoginGameMode.h"
@@ -13,33 +13,33 @@ void ALoginGameMode::InstallEvent()
 {
 	Super::InstallEvent();
 
-	//´´½¨ÓÃ»§Èë¿ÚÊµÌå»Øµ÷
+	//åˆ›å»ºç”¨æˆ·å…¥å£å®ä½“å›è°ƒ
 	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::onCreateAccountResult, OnCreateAccountResult);
-	//µÇÂ½Ê§°Ü»Øµ÷
+	//ç™»é™†å¤±è´¥å›è°ƒ
 	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::onLoginFailed, OnLoginFailed);
-	//°æ±¾Æ¥Åä»Øµ÷
+	//ç‰ˆæœ¬åŒ¹é…å›è°ƒ
 	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::onVersionNotMatch, OnVersionNotMatch);
-	//°æ±¾²»Æ¥Åä»Øµ÷
+	//ç‰ˆæœ¬ä¸åŒ¹é…å›è°ƒ
 	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::onScriptVersionNotMatch, OnScriptVersionNotMatch);
-	//µÇÂ½baseappÊ§°Ü»Øµ÷
+	//ç™»é™†baseappå¤±è´¥å›è°ƒ
 	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::onLoginBaseappFailed, OnLoginBaseappFailed);
-	//µÇÂ½baseapp»Øµ÷
+	//ç™»é™†baseappå›è°ƒ
 	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::onLoginBaseapp, OnLoginBaseapp);
-	//µÇÂ½³É¹¦»Øµ÷, Éú³É AccountºóÔÚ __init__()Ê±µ÷ÓÃ, ÔÚÕâÀïÌø×ªµ½Ñ¡Ôñ½ÇÉ«³¡¾°
+	//ç™»é™†æˆåŠŸå›è°ƒ, ç”Ÿæˆ Accountååœ¨ __init__()æ—¶è°ƒç”¨, åœ¨è¿™é‡Œè·³è½¬åˆ°é€‰æ‹©è§’è‰²åœºæ™¯
 	KBENGINE_REGISTER_EVENT("onLoginSuccessfully", OnLoginSuccessfully);
 }
 
 void ALoginGameMode::BeginPlay()
 {
-	//Ã¿´Î½øÈëµ½µÇÂ¼½çÃæÇ°ÏÈÇåÀíÒ»´ÎKBE,·ñÔòKBE²å¼ş»º´æÄÚÈİÒ»Ö±´æÔÚ
+	//æ¯æ¬¡è¿›å…¥åˆ°ç™»å½•ç•Œé¢å‰å…ˆæ¸…ç†ä¸€æ¬¡KBE,å¦åˆ™KBEæ’ä»¶ç¼“å­˜å†…å®¹ä¸€ç›´å­˜åœ¨
 	KBEngine::KBEngineApp::getSingleton().reset();
 	Super::BeginPlay();
-	//´´½¨UI
+	//åˆ›å»ºUI
 	LoginWidget = CreateWidget<ULoginWidget>(GetWorld(), LoginWidgetClass);
 	LoginWidget->AddToViewport();
 	LoginWidget->LoginGameMode = this;
 	LoginWidget->InitWidget();
-	//±éÀú³¡¾°ÖĞµÄÎïÌå£¬ÕÒµ½KBEMain
+	//éå†åœºæ™¯ä¸­çš„ç‰©ä½“ï¼Œæ‰¾åˆ°KBEMain
 	for (TActorIterator<AKBEClient> ActorIt(GetWorld()); ActorIt; ++ActorIt)
 	{
 		KBEMain = (*ActorIt)->KBEMain;
@@ -49,13 +49,13 @@ void ALoginGameMode::BeginPlay()
 void ALoginGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
-	//×¢Ïú¸Ã¶ÔÏó×¢²áµÄËùÓĞÊÂ¼ş
+	//æ³¨é”€è¯¥å¯¹è±¡æ³¨å†Œçš„æ‰€æœ‰äº‹ä»¶
 	KBENGINE_DEREGISTER_ALL_EVENT();
 }
 
 void ALoginGameMode::OnCreateAccountResult(const UKBEventData* pEventData)
 {
-	//×ª»»ÎªÏàÓ¦µÄ²ÎÊı½á¹¹Ìå£¬È»ºó´òÓ¡ĞÅÏ¢
+	//è½¬æ¢ä¸ºç›¸åº”çš„å‚æ•°ç»“æ„ä½“ï¼Œç„¶åæ‰“å°ä¿¡æ¯
 	const UKBEventData_onCreateAccountResult* ServerData = Cast<UKBEventData_onCreateAccountResult>(pEventData);
 	DDH::Debug() << "OnCreateAccountResult : errorCode-->" << ServerData->errorCode << "; errorstr -->" << ServerData->errorStr << DDH::Endl();
 }
@@ -97,7 +97,7 @@ void ALoginGameMode::OnLoginSuccessfully(const UKBEventData* pEventData)
 		<< "; entity_id -->" << ServerData->entity_id
 		<< "; eventName -->" << ServerData->eventName
 		<< DDH::Endl();
-	//µÇÂ¼³É¹¦ºóÌø×ªµ½²Ëµ¥³¡¾°£¬ÔÚ¸Ã³¡¾°¿ÉÒÔ½âËø¸ÉÔ±£¬´´½¨¶ÔÕ½£¬²é¿´×ÊÁÏ£¬ÉèÖÃµÈ
+	//ç™»å½•æˆåŠŸåè·³è½¬åˆ°èœå•åœºæ™¯ï¼Œåœ¨è¯¥åœºæ™¯å¯ä»¥è§£é”å¹²å‘˜ï¼Œåˆ›å»ºå¯¹æˆ˜ï¼ŒæŸ¥çœ‹èµ„æ–™ï¼Œè®¾ç½®ç­‰
 	UGameplayStatics::OpenLevel(GetWorld(), FName("MenuMap"));
 }
 

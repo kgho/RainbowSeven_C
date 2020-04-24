@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Engine/KBECommon.h"
 #include "Engine/AccountBase.h"
 
@@ -44,10 +44,10 @@ namespace KBEngine
 		virtual void OnReqStartGame(uint8 arg1) override;
 
 	public:
-		//±£´æ¸ÉÔ±ĞÅÏ¢ÁĞ±íµ½±¾µØ
+		//ä¿å­˜å¹²å‘˜ä¿¡æ¯åˆ—è¡¨åˆ°æœ¬åœ°
 		ROLE_LIST RoleList;
 
-		// Ãû³Æ
+		// åç§°
 		FString accountName;
 	};
 }

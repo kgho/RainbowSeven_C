@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 
 #include "MenuGameMode.h"
@@ -33,7 +33,7 @@ void AMenuGameMode::InstallEvent()
 
 	KBENGINE_REGISTER_EVENT("OnAllReady", OnAllReady);
 
-	// ½øÈëÓÎÏ·µØÍ¼
+	// è¿›å…¥æ¸¸æˆåœ°å›¾
 	KBENGINE_REGISTER_EVENT("addSpaceGeometryMapping", AddSpaceGeometryMapping);
 }
 

@@ -1,4 +1,4 @@
-#include "Account.h"
+ï»¿#include "Account.h"
 #include "Engine/KBEngine.h"
 #include "Engine/KBEvent.h"
 #include "RSEventData.h"
@@ -12,7 +12,7 @@ KBEngine::Account::~Account()
 {
 }
 
-//µÇÂ¼³É¹¦¾Í»á´´½¨Account£¬È»ºóÖ´ĞĞ¸Ãº¯Êı
+//ç™»å½•æˆåŠŸå°±ä¼šåˆ›å»ºAccountï¼Œç„¶åæ‰§è¡Œè¯¥å‡½æ•°
 void KBEngine::Account::__init__()
 {
 	if (!isPlayer()) {
@@ -22,7 +22,7 @@ void KBEngine::Account::__init__()
 
 	DDH::Debug() << "Account::Init-->" << id() << DDH::Endl();
 
-	// ×¢²áÊÂ¼ş
+	// æ³¨å†Œäº‹ä»¶
 	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqRoleInfo", "ReqRoleInfo", [this](const UKBEventData* EventData) {
 		const UKBEventData_ReqRoleInfo* ServerData = Cast<UKBEventData_ReqRoleInfo>(EventData);
 
@@ -87,22 +87,22 @@ void KBEngine::Account::__init__()
 			pBaseEntityCall->ReqStartGame(0);
 		});
 
-	//ÓÃ»§ÊµÌå´´½¨ËµÃ÷µÇÂ¼³É¹¦£¬´¥·¢µÇÂ¼³É¹¦ÊÂ¼ş
+	//ç”¨æˆ·å®ä½“åˆ›å»ºè¯´æ˜ç™»å½•æˆåŠŸï¼Œè§¦å‘ç™»å½•æˆåŠŸäº‹ä»¶
 	UKBEventData_onLoginSuccessfully* EventData = NewObject<UKBEventData_onLoginSuccessfully>();
 	EventData->entity_uuid = KBEngineApp::getSingleton().entity_uuid();
 	EventData->entity_id = id();
 	KBENGINE_EVENT_FIRE("onLoginSuccessfully", EventData);
 
-	//Ïò·şÎñ¶ËÇëÇóÕË»§ĞÅÏ¢
+	//å‘æœåŠ¡ç«¯è¯·æ±‚è´¦æˆ·ä¿¡æ¯
 	pBaseEntityCall->ReqAccountInfo();
 
-	//Ïò·şÎñ¶ËÇëÇó¸ÉÔ±ĞÅÏ¢ÁĞ±í
+	//å‘æœåŠ¡ç«¯è¯·æ±‚å¹²å‘˜ä¿¡æ¯åˆ—è¡¨
 	pBaseEntityCall->ReqRoleList();
 }
 
 void KBEngine::Account::onDestroy()
 {
-	//×¢Ïú¸Ã¶ÔÏó×¢²áµÄËùÓĞÊÂ¼ş
+	//æ³¨é”€è¯¥å¯¹è±¡æ³¨å†Œçš„æ‰€æœ‰äº‹ä»¶
 	KBENGINE_DEREGISTER_ALL_EVENT();
 }
 
@@ -132,7 +132,7 @@ void KBEngine::Account::OnReqRoleInfo(const ROLE_INFO& arg1)
 	KBENGINE_EVENT_FIRE("OnReqRoleInfo", EventData);
 }
 
-//ÇëÇó¸ÉÔ±ĞÅÏ¢µÄ»Øµ÷º¯Êı
+//è¯·æ±‚å¹²å‘˜ä¿¡æ¯çš„å›è°ƒå‡½æ•°
 void KBEngine::Account::OnReqRoleList(const ROLE_LIST& arg1)
 {
 	UKBEventData_OnReqRoleList* EventData = NewObject<UKBEventData_OnReqRoleList>();
@@ -140,7 +140,7 @@ void KBEngine::Account::OnReqRoleList(const ROLE_LIST& arg1)
 
 	for (int i = 0; i < arg1.Value.Num(); i++)
 	{
-		//±£´æ¸ÉÔ±ÁĞ±íĞÅÏ¢µ½»Øµ÷·½·¨²ÎÊıÀà
+		//ä¿å­˜å¹²å‘˜åˆ—è¡¨ä¿¡æ¯åˆ°å›è°ƒæ–¹æ³•å‚æ•°ç±»
 		FROLE_INFO RoleInfo;
 		RoleInfo.InitData(arg1.Value[i].Dbid, arg1.Value[i].RoleType, arg1.Value[i].IsLock, arg1.Value[i].Kill, arg1.Value[i].Death, arg1.Value[i].Assist, arg1.Value[i].Point, arg1.Value[i].PlayCount);
 		EventData->RoleList.Add(RoleInfo);
@@ -156,7 +156,7 @@ void KBEngine::Account::OnReqUnlockRole(uint8 arg1, uint8 arg2)
 	KBENGINE_EVENT_FIRE("OnReqUnlockRole", EventData);
 }
 
-//·¿¼ä
+//æˆ¿é—´
 
 void KBEngine::Account::OnReqRoomList(const ROOM_LIST& arg1)
 {
@@ -194,7 +194,7 @@ void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2, cons
 		UKBEventData_OnReqEnterRoom* EventData = NewObject<UKBEventData_OnReqEnterRoom>();
 		DDH::Debug() << "Account::OnReqEnterRoom--> PlayerBlue Number:" << arg2.Value.Num() << DDH::Endl();
 
-		// À¶¶Ó
+		// è“é˜Ÿ
 		for (int i = 0; i < arg2.Value.Num(); i++)
 		{
 			FPLAYER_INFO PlayerInfo;
@@ -204,7 +204,7 @@ void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2, cons
 		}
 
 		DDH::Debug() << "Account::OnReqEnterRoom--> PlayerRed Number:" << arg3.Value.Num() << DDH::Endl();
-		// ºì¶Ó
+		// çº¢é˜Ÿ
 		for (int i = 0; i < arg3.Value.Num(); i++)
 		{
 			FPLAYER_INFO PlayerInfo;
@@ -272,7 +272,7 @@ void KBEngine::Account::OnReqStartGame(uint8 arg1)
 	if (isPlayer())
 	{
 		DDH::Debug() << "Account::OnReqStartGame--> " << arg1 << DDH::Endl();
-		// Ïò·şÎñÆ÷ÇëÇó½øÈëÓÎÏ·
+		// å‘æœåŠ¡å™¨è¯·æ±‚è¿›å…¥æ¸¸æˆ
 		pBaseEntityCall->ReqEnterGame(0);
 	}
 }

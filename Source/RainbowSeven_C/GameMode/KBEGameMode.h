@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 #pragma once
 
@@ -21,22 +21,22 @@ public:
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason)override;
 
-	//¶ÏÏßÖØÁ¬,¶ÏÏßºóÊı¾İ¶¼»á´Óloginapp×ªÒÆµ½baseapp
+	//æ–­çº¿é‡è¿,æ–­çº¿åæ•°æ®éƒ½ä¼šä»loginappè½¬ç§»åˆ°baseapp
 	void StartReloginBaseapp();
 
 	void StopReloginBaseapp();
 
-	//°ó¶¨¸ø¶¨Ê±Æ÷µÄÊÂ¼ş
+	//ç»‘å®šç»™å®šæ—¶å™¨çš„äº‹ä»¶
 	void OnReloginBaseappTimer();
 
 public:
 protected:
 	virtual void BeginPlay()override;
 
-	//×¢²áKBEÊÂ¼ş
+	//æ³¨å†ŒKBEäº‹ä»¶
 	virtual void InstallEvent();
 
-	//×¢ÏúKBEÊÂ¼ş
+	//æ³¨é”€KBEäº‹ä»¶
 	virtual void UnInstallEvent();
 
 	virtual void OnKicked(const UKBEventData* EventData);
@@ -50,6 +50,6 @@ protected:
 	virtual void OnReloginBaseappFailed(const UKBEventData* EventData);
 
 protected:
-	//¶ÏÏßÖØÁ¬£¬¶¨Ê±Æ÷
+	//æ–­çº¿é‡è¿ï¼Œå®šæ—¶å™¨
 	FTimerHandle  ReloginHandle;
 };

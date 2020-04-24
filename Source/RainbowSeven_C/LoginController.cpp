@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 
 #include "LoginController.h"
@@ -7,11 +7,11 @@ void ALoginController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//ÉèÖÃ´°¿Ú´óĞ¡ r.setres 960x540w  ´°¿ÚÄ£Ê½
+	//è®¾ç½®çª—å£å¤§å° r.setres 960x540w  çª—å£æ¨¡å¼
 	ConsoleCommand(FString::Printf(TEXT("r.setres %dx%dw"), ScreenWidth, ScreenHeight));
 	bShowMouseCursor = true;
 
-	//ÉèÖÃÊäÈëÄ£Ê½
+	//è®¾ç½®è¾“å…¥æ¨¡å¼
 	FInputModeUIOnly InputMode;
 	InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	SetInputMode(InputMode);

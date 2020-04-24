@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 #pragma once
 
@@ -7,7 +7,7 @@
 #include "CombatController.generated.h"
 
 /**
- * ÓÃÓÚÇĞ»»UIºÍGameÓÎÏ·Ä£Ê½
+ * ç”¨äºåˆ‡æ¢UIå’ŒGameæ¸¸æˆæ¨¡å¼
  */
 UCLASS()
 class RAINBOWSEVEN_C_API ACombatController : public APlayerController
@@ -16,7 +16,7 @@ class RAINBOWSEVEN_C_API ACombatController : public APlayerController
 
 public:
 
-	//ÇĞ»»ÊäÈëÄ£Ê½
+	//åˆ‡æ¢è¾“å…¥æ¨¡å¼
 	void SwitchInputMode(bool IsShowUI);
 	
 };

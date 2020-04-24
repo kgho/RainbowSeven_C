@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 
 #include "KBEGameMode.h"
@@ -26,7 +26,7 @@ void AKBEGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void AKBEGameMode::StartReloginBaseapp()
 {
-	//ÅĞ¶Ï¶¨Ê±Æ÷¾ä±úÊÇ·ñ¿ÉÓÃ
+	//åˆ¤æ–­å®šæ—¶å™¨å¥æŸ„æ˜¯å¦å¯ç”¨
 	if (!ReloginHandle.IsValid())
 	{
 		GetWorld()->GetTimerManager().SetTimer(ReloginHandle, this, &AKBEGameMode::OnReloginBaseappTimer, 1.f, true, 1.f);
@@ -35,7 +35,7 @@ void AKBEGameMode::StartReloginBaseapp()
 
 void AKBEGameMode::StopReloginBaseapp()
 {
-	//¿ÉÓÃ¾ÍÇå³ı¶¨Ê±Æ÷
+	//å¯ç”¨å°±æ¸…é™¤å®šæ—¶å™¨
 	if (!ReloginHandle.IsValid())
 	{
 		GetWorld()->GetTimerManager().ClearTimer(ReloginHandle);
@@ -44,13 +44,13 @@ void AKBEGameMode::StopReloginBaseapp()
 
 void AKBEGameMode::OnReloginBaseappTimer()
 {
-	//¶ÏÏßÖØÁ¬ÊÂ¼ş£¬Í¨Öª·şÎñÆ÷½øĞĞ¶ÏÏßÖØÁ¬
+	//æ–­çº¿é‡è¿äº‹ä»¶ï¼Œé€šçŸ¥æœåŠ¡å™¨è¿›è¡Œæ–­çº¿é‡è¿
 	KBEngine::KBEngineApp::getSingleton().reloginBaseapp();
 }
 
 void AKBEGameMode::InstallEvent()
 {
-	//×¢²á»ù±¾µÄ»Øµ÷ÊÂ¼ş£¬KBEventTypes.cpp Á¬½ÓÏà¹ØºÍlogonÏà¹ØµÄÊÂ¼ş
+	//æ³¨å†ŒåŸºæœ¬çš„å›è°ƒäº‹ä»¶ï¼ŒKBEventTypes.cpp è¿æ¥ç›¸å…³å’Œlogonç›¸å…³çš„äº‹ä»¶
 	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::onKicked, OnKicked);
 	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::onDisconnected, OnDisconnected);
 	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::onConnectionState, OnConnectionState);
@@ -85,7 +85,7 @@ void AKBEGameMode::OnReloginBaseappSuccessfully(const UKBEventData* EventData)
 {
 	const UKBEventData_onReloginBaseappSuccessfully* ServerData = Cast<UKBEventData_onReloginBaseappSuccessfully>(EventData);
 	DDH::Debug() << "OnReloginBaseappSuccessfully : eventName-->" << ServerData->eventName << DDH::Endl();
-	//ÖØÁ¬³É¹¦ºóÍ£Ö¹¶¨Ê±Æ÷
+	//é‡è¿æˆåŠŸååœæ­¢å®šæ—¶å™¨
 	StopReloginBaseapp();
 }
 

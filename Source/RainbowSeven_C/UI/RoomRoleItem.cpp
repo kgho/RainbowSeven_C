@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+﻿// Author : Kgho	Github : https://github.com/kgho
 
 
 #include "RoomRoleItem.h"

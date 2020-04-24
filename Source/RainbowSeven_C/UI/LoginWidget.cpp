@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 
 #include "LoginWidget.h"
@@ -26,7 +26,7 @@ void ULoginWidget::SignInButtonEvent()
 		DDH::Debug() << "Username or Password can not be none!" << DDH::Endl();
 		return;
 	}
-	//½«ÓÃ»§ÃûºÍÃÜÂë×ª»¯Îª¶þ½øÖÆÊý¾Ý
+	//å°†ç”¨æˆ·åå’Œå¯†ç è½¬åŒ–ä¸ºäºŒè¿›åˆ¶æ•°æ®
 	TArray<uint8> LoginData;
 	FString ProjectName("RainbowSeven");
 	for (int i = 0; i < ProjectName.Len(); ++i) {
@@ -44,7 +44,7 @@ void ULoginWidget::SignUpButtonEvent()
 		DDH::Debug() << "Username or Password can not be none!" << DDH::Endl();
 		return;
 	}
-	//½«ÓÃ»§ÃûºÍÃÜÂë×ª»¯Îª¶þ½øÖÆÊý¾Ý
+	//å°†ç”¨æˆ·åå’Œå¯†ç è½¬åŒ–ä¸ºäºŒè¿›åˆ¶æ•°æ®
 	TArray<uint8> LoginData;
 	FString ProjectName("RainbowSeven");
 	for (int i = 0; i < ProjectName.Len(); ++i) {

@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 
 #include "CombatGameMode.h"
@@ -17,8 +17,8 @@ void ACombatGameMode::BeginPlay()
 	Super::BeginPlay();
 	DDH::Debug() << "ACombatGameMode::BeginPlay-->" << DDH::Endl();
 	check(KBEngine::KBEngineApp::getSingleton().isInitialized());
-	// ´ËÊ±ÎÒÃÇĞèÒªÔÙ´Î´¥·¢Ò»´ÎonEnterWorld£¬ÈÃ±íÏÖ²ãÄÜ¹»ÔÚÓÎÏ·³¡¾°ÖĞ´´½¨³öËùÓĞµÄÊµÌå
-	// ±éÀú³¡¾°ËùÓĞÊµÌå£¬µ÷ÓÃonEnterWorld
+	// æ­¤æ—¶æˆ‘ä»¬éœ€è¦å†æ¬¡è§¦å‘ä¸€æ¬¡onEnterWorldï¼Œè®©è¡¨ç°å±‚èƒ½å¤Ÿåœ¨æ¸¸æˆåœºæ™¯ä¸­åˆ›å»ºå‡ºæ‰€æœ‰çš„å®ä½“
+	// éå†åœºæ™¯æ‰€æœ‰å®ä½“ï¼Œè°ƒç”¨onEnterWorld
 	KBEngine::KBEngineApp::ENTITIES_MAP& EntitiesMap = KBEngine::KBEngineApp::getSingleton().entities();
 	DDH::Debug() << "ACombatGameMode::BeginPlay--> EntitiesMap.Num: " << EntitiesMap.Num() << DDH::Endl();
 	for (auto& EntityItem : EntitiesMap)
@@ -61,9 +61,9 @@ void ACombatGameMode::InstallEvent()
 	KBENGINE_REGISTER_EVENT("SetHP", SetHP);
 }
 
-//¿Í»§¶Ë´´½¨cellÊµÌåÊ±, »á´¥·¢onEnterWorld·½·¨, °Ñ¸ÃÊµÌåÊı¾İ¸æÖªUE4, 
-//¿ÉÄÜ»áÓĞ²¿·ÖcellÊÓÍ¼ÔÚ¿Í»§¶ËÇĞ»»µØÍ¼Ç°¾Í´æÔÚ²¢ÇÒµ÷ÓÃÁËonEnterWorld·½·¨, 
-//ËùÒÔÇĞ»»µØÍ¼ºó, ¶ÔÓÚÒÑ¾­´æÔÚµÄcellÊµÌå, ĞèÒªÊÖ¶¯µ÷ÓÃonEnterWorldº¯Êı,
+//å®¢æˆ·ç«¯åˆ›å»ºcellå®ä½“æ—¶, ä¼šè§¦å‘onEnterWorldæ–¹æ³•, æŠŠè¯¥å®ä½“æ•°æ®å‘ŠçŸ¥UE4, 
+//å¯èƒ½ä¼šæœ‰éƒ¨åˆ†cellè§†å›¾åœ¨å®¢æˆ·ç«¯åˆ‡æ¢åœ°å›¾å‰å°±å­˜åœ¨å¹¶ä¸”è°ƒç”¨äº†onEnterWorldæ–¹æ³•, 
+//æ‰€ä»¥åˆ‡æ¢åœ°å›¾å, å¯¹äºå·²ç»å­˜åœ¨çš„cellå®ä½“, éœ€è¦æ‰‹åŠ¨è°ƒç”¨onEnterWorldå‡½æ•°,
 void ACombatGameMode::OnEnterWorld(const UKBEventData* EventData)
 {
 	const UKBEventData_onEnterWorld* ServerData = Cast<UKBEventData_onEnterWorld>(EventData);
@@ -71,19 +71,19 @@ void ACombatGameMode::OnEnterWorld(const UKBEventData* EventData)
 	DDH::Debug() << "ACombatGameMode::OnEnterWorld--> entityID: " << ServerData->entityID << DDH::Endl();
 
 
-	//¸ù¾İÊµÌåid»ñÈ¡ÊµÌåµÄÊµÀı
+	//æ ¹æ®å®ä½“idè·å–å®ä½“çš„å®ä¾‹
 	KBEngine::Entity* EntityInst = *KBEngine::KBEngineApp::getSingleton().entities().Find(ServerData->entityID);
-	//»ñÈ¡Ğı×ª
+	//è·å–æ—‹è½¬
 	FRotator Rotator(0.f, 0.f, 0.f);
 	KBDir2UE4Dir(Rotator, ServerData->direction);
-	//Çø·ÖÀàĞÍÉú³ÉUE4¶ÔÏó
+	//åŒºåˆ†ç±»å‹ç”ŸæˆUE4å¯¹è±¡
 	if (ServerData->isPlayer)
 	{
-		// Ç¿×ªÊµÌåÀàĞÍÎªRole
+		// å¼ºè½¬å®ä½“ç±»å‹ä¸ºRole
 		KBEngine::Role* RoleInst = static_cast<KBEngine::Role*>(EntityInst);
 		FTransform SpawnTransform(Rotator, RoleInst->SpawnPoint);
 
-		// ÀàÁĞ±íË÷Òı´Ó 0 ¿ªÊ¼£¬¸ÉÔ±ÀàĞÍ±àºÅ´Ó 1 ¿ªÊ¼¡£
+		// ç±»åˆ—è¡¨ç´¢å¼•ä» 0 å¼€å§‹ï¼Œå¹²å‘˜ç±»å‹ç¼–å·ä» 1 å¼€å§‹ã€‚
 		PlayerCharacter = Cast<APlayerCharacter>(UGameplayStatics::BeginDeferredActorSpawnFromClass(this, PlayerClassList[RoleInst->RoleType - 1], SpawnTransform));
 		if (PlayerCharacter)
 		{
@@ -93,7 +93,7 @@ void ACombatGameMode::OnEnterWorld(const UKBEventData* EventData)
 			PlayerCharacter->RoleName = RoleInst->Name;
 			PlayerCharacter->IsPlayer = true;
 
-			// ´´½¨³ö½ÇÉ«, ĞèÒª°ó¶¨µ½Controller
+			// åˆ›å»ºå‡ºè§’è‰², éœ€è¦ç»‘å®šåˆ°Controller
 			ACombatController* CombatController = Cast<ACombatController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
 			PlayerCharacter->CombatController = CombatController;
@@ -105,16 +105,16 @@ void ACombatGameMode::OnEnterWorld(const UKBEventData* EventData)
 	}
 	else
 	{
-		// »ñÈ¡Éú³ÉÎ»ÖÃ
+		// è·å–ç”Ÿæˆä½ç½®
 		FTransform SpawnTransform(Rotator, ServerData->position);
 
-		// Ô¶³ÌÍæ¼Ò
+		// è¿œç¨‹ç©å®¶
 		if (ServerData->entityClassName.Equals(FString("Role")))
 		{
-			// Ç¿×ªÊµÌåÀàĞÍÎªExRole
+			// å¼ºè½¬å®ä½“ç±»å‹ä¸ºExRole
 			KBEngine::Role* RoleInst = static_cast<KBEngine::Role*>(EntityInst);
 
-			//Éú³ÉÔ¶³ÌÍæ¼Ò
+			//ç”Ÿæˆè¿œç¨‹ç©å®¶
 			ARemoteCharacter* RemoteCharacter = Cast<ARemoteCharacter>(UGameplayStatics::BeginDeferredActorSpawnFromClass(this, RemoteClassList[RoleInst->RoleType - 1], SpawnTransform));
 			if (RemoteCharacter)
 			{
@@ -146,18 +146,18 @@ void ACombatGameMode::OnLeaveSpace(const UKBEventData* EventData)
 {
 	const UKBEventData_onLeaveWorld* ServerData = Cast<UKBEventData_onLeaveWorld>(EventData);
 
-	//Èç¹û´æÔÚÓÚCharacterMap, ËµÃ÷²»ÊÇ±¾µØÍæ¼Ò
+	//å¦‚æœå­˜åœ¨äºCharacterMap, è¯´æ˜ä¸æ˜¯æœ¬åœ°ç©å®¶
 	if (CharacterMap.Contains(ServerData->entityID))
 	{
 		ACharacterEntity* CharacterEntity = *CharacterMap.Find(ServerData->entityID);
 
-		//¸ù¾İÊµÌåId»ñÈ¡ÊµÌå¶ÔÏó
+		//æ ¹æ®å®ä½“Idè·å–å®ä½“å¯¹è±¡
 		KBEngine::Entity* EntityInst = *KBEngine::KBEngineApp::getSingleton().entities().Find(ServerData->entityID);
 
-		//Ô¶³ÌÍæ¼Ò
+		//è¿œç¨‹ç©å®¶
 		if (EntityInst->className().Equals(FString("Role")))
 		{
-			//Ö±½ÓÏú»ÙÔ¶³ÌÍæ¼Ò
+			//ç›´æ¥é”€æ¯è¿œç¨‹ç©å®¶
 			CharacterEntity->Destroy();
 		}
 	}
@@ -166,7 +166,7 @@ void ACombatGameMode::OnLeaveSpace(const UKBEventData* EventData)
 void ACombatGameMode::SetPosition(const UKBEventData* EventData)
 {
 	const UKBEventData_set_position* ServerData = Cast<UKBEventData_set_position>(EventData);
-	// ·Ç±¾µØÍæ¼Ò
+	// éæœ¬åœ°ç©å®¶
 	if (CharacterMap.Contains(ServerData->entityID))
 	{
 		ACharacterEntity* CharacterEntity = *CharacterMap.Find(ServerData->entityID);

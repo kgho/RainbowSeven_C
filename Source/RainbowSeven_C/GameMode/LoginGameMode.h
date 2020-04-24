@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+﻿// Author : Kgho	Github : https://github.com/kgho
 
 #pragma once
 
@@ -28,7 +28,7 @@ protected:
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason)override;
 
-	//KBE�¼�
+	//KBE事件
 	void OnCreateAccountResult(const UKBEventData* pEventData);
 
 	void OnLoginFailed(const UKBEventData* pEventData);

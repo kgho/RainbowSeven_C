@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 #pragma once
 
@@ -35,11 +35,11 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		bool isUnlock;
 
-	// ĞèÒª¶àÉÙÉùÍû½âËø
+	// éœ€è¦å¤šå°‘å£°æœ›è§£é”
 	UPROPERTY(EditAnywhere)
 		uint16 Fame;
 
-	// ĞèÒª¶àÉÙ½ğ±Ò½âËø
+	// éœ€è¦å¤šå°‘é‡‘å¸è§£é”
 	UPROPERTY(EditAnywhere)
 		uint16 Coin;
 

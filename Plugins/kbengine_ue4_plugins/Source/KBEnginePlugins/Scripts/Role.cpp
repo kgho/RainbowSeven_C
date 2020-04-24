@@ -1,4 +1,4 @@
-#include "Role.h"
+ï»¿#include "Role.h"
 #include "Engine/KBEngine.h"
 #include "Engine/KBEvent.h"
 #include "ExCommon.h"
@@ -14,11 +14,11 @@ KBEngine::Role::~Role()
 
 void KBEngine::Role::__init__()
 {
-	// ±¾µØÍæ¼Ò²ÅĞèÒªÏò·şÎñÆ÷Í¬²½Êı¾İ
-		// Èç¹ûÊÇ±¾µØÍæ¼Ò
+	// æœ¬åœ°ç©å®¶æ‰éœ€è¦å‘æœåŠ¡å™¨åŒæ­¥æ•°æ®
+		// å¦‚æœæ˜¯æœ¬åœ°ç©å®¶
 	if (isPlayer())
 	{
-		//×¢²á¶¯×÷Í¬²½ÊÂ¼ş
+		//æ³¨å†ŒåŠ¨ä½œåŒæ­¥äº‹ä»¶
 		KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("AnimUpdate", "AnimUpdate", [this](const UKBEventData* EventData)
 			{
 				const UKBEventData_AnimUpdate* ServerData = Cast<UKBEventData_AnimUpdate>(EventData);
@@ -35,7 +35,7 @@ void KBEngine::Role::__init__()
 
 void KBEngine::Role::onDestroy()
 {
-	//×¢Ïú¸Ã¶ÔÏó×¢²áµÄËùÓĞÊÂ¼ş
+	//æ³¨é”€è¯¥å¯¹è±¡æ³¨å†Œçš„æ‰€æœ‰äº‹ä»¶
 	KBENGINE_DEREGISTER_ALL_EVENT();
 }
 

@@ -1,4 +1,4 @@
-// Author : Kgho	Github : https://github.com/kgho
+ï»¿// Author : Kgho	Github : https://github.com/kgho
 
 #pragma once
 
@@ -7,7 +7,7 @@
 #include "CombatGameMode.generated.h"
 
 /**
- * °ó¶¨ÊµÌå½øÈëÍË³ö³¡¾°ÓëÒÆ¶¯µÈ»Øµ÷ÊÂ¼ş
+ * ç»‘å®šå®ä½“è¿›å…¥é€€å‡ºåœºæ™¯ä¸ç§»åŠ¨ç­‰å›è°ƒäº‹ä»¶
  */
 
 class APlayerCharacter;
@@ -24,15 +24,15 @@ public:
 	UPROPERTY()
 		APlayerCharacter* PlayerCharacter;
 
-	// ±¾µØÍæ¼ÒÀà
+	// æœ¬åœ°ç©å®¶ç±»
 	UPROPERTY(EditAnywhere)
 		TArray<TSubclassOf<APlayerCharacter>> PlayerClassList;
 
-	// Ô¶³ÌÍæ¼ÒÀà
+	// è¿œç¨‹ç©å®¶ç±»
 	UPROPERTY(EditAnywhere)
 		TArray<TSubclassOf<ARemoteCharacter>> RemoteClassList;
 
-	// ×Öµä±£´æÁËËùÓĞµÄ·ÇÍæ¼ÒÊµÌå£¬key£ºÊµÌåID,value£º¸ÉÔ±½ÇÉ«Ö¸Õë
+	// å­—å…¸ä¿å­˜äº†æ‰€æœ‰çš„éç©å®¶å®ä½“ï¼Œkeyï¼šå®ä½“ID,valueï¼šå¹²å‘˜è§’è‰²æŒ‡é’ˆ
 	TMap<int32, ACharacterEntity*> CharacterMap;
 
 
