@@ -19,6 +19,12 @@ public:
 	// Sets default values for this character's properties
 	ACharacterEntity();
 
+	virtual void Destroyed() override;
+
+	void SetTargetPosition(FVector InPos);
+
+	void SetTargetRotator(FRotator InRot);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -30,7 +36,20 @@ public:
 
 	FString RoleName;
 
-	ACombatGameMode* MmoGameMode;
+	ACombatGameMode* CombatGameMode;
 
 	bool IsPlayer;
+
+protected:
+
+	//目标位置
+	FVector TargetPosition;
+
+	//目标旋转
+	FRotator TargetRotator;
+
+	//上一次更新位置的时间
+	float LastUpdatePositionTime;
+
+	float MoveSpeed;
 };

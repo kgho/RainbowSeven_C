@@ -9,6 +9,7 @@
 #include "Character/PlayerCharacter.h"
 #include "Controller/CombatController.h"
 #include "Scripts/ExCommon.h"
+#include "Character/RemoteCharacter.h"
 
 void ACombatGameMode::BeginPlay()
 {
@@ -86,7 +87,7 @@ void ACombatGameMode::OnEnterWorld(const UKBEventData* EventData)
 		if (PlayerCharacter)
 		{
 			PlayerCharacter->EntityId = ServerData->entityID;
-			PlayerCharacter->MmoGameMode = this;
+			PlayerCharacter->CombatGameMode = this;
 			PlayerCharacter->RoleType = RoleInst->RoleType;
 			PlayerCharacter->RoleName = RoleInst->Name;
 			PlayerCharacter->IsPlayer = true;
@@ -103,7 +104,28 @@ void ACombatGameMode::OnEnterWorld(const UKBEventData* EventData)
 	}
 	else
 	{
-		// 远程玩家等...
+		// 获取生成位置
+		FTransform SpawnTransform(Rotator, ServerData->position);
+
+		// 远程玩家
+		if (ServerData->entityClassName.Equals(FString("Role")))
+		{
+			// 强转实体类型为ExRole
+			KBEngine::Role* RoleInst = static_cast<KBEngine::Role*>(EntityInst);
+
+			//生成远程玩家
+			ARemoteCharacter* RemoteCharacter = Cast<ARemoteCharacter>(UGameplayStatics::BeginDeferredActorSpawnFromClass(this, RemoteClassList[RoleInst->RoleType - 1], SpawnTransform));
+			if (RemoteCharacter)
+			{
+				RemoteCharacter->EntityId = ServerData->entityID;
+				RemoteCharacter->CombatGameMode = this;
+				RemoteCharacter->RoleType = RoleInst->RoleType;
+				RemoteCharacter->RoleName = RoleInst->Name;
+				RemoteCharacter->IsPlayer = false;
+
+				UGameplayStatics::FinishSpawningActor(RemoteCharacter, SpawnTransform);
+			}
+		}
 	}
 }
 
@@ -111,28 +133,69 @@ void ACombatGameMode::UnInstallEvent()
 {
 }
 
-void ACombatGameMode::OnEnterSpace(const UKBEventData* EventData)
+void ACombatGameMode::OnLeaveWorld(const UKBEventData* EventData)
 {
 }
 
-void ACombatGameMode::OnLeaveWorld(const UKBEventData* EventData)
+void ACombatGameMode::OnEnterSpace(const UKBEventData* EventData)
 {
 }
 
 void ACombatGameMode::OnLeaveSpace(const UKBEventData* EventData)
 {
+	const UKBEventData_onLeaveWorld* ServerData = Cast<UKBEventData_onLeaveWorld>(EventData);
+
+	//如果存在于CharacterMap, 说明不是本地玩家
+	if (CharacterMap.Contains(ServerData->entityID))
+	{
+		ACharacterEntity* CharacterEntity = *CharacterMap.Find(ServerData->entityID);
+
+		//根据实体Id获取实体对象
+		KBEngine::Entity* EntityInst = *KBEngine::KBEngineApp::getSingleton().entities().Find(ServerData->entityID);
+
+		//远程玩家
+		if (EntityInst->className().Equals(FString("Role")))
+		{
+			//直接销毁远程玩家
+			CharacterEntity->Destroy();
+		}
+	}
 }
 
 void ACombatGameMode::SetPosition(const UKBEventData* EventData)
 {
+	const UKBEventData_set_position* ServerData = Cast<UKBEventData_set_position>(EventData);
+	// 非本地玩家
+	if (CharacterMap.Contains(ServerData->entityID))
+	{
+		ACharacterEntity* CharacterEntity = *CharacterMap.Find(ServerData->entityID);
+		CharacterEntity->SetActorLocation(ServerData->position);
+		CharacterEntity->SetTargetPosition(ServerData->position);
+	}
 }
 
 void ACombatGameMode::SetDirection(const UKBEventData* EventData)
 {
+	const UKBEventData_set_direction* ServerData = Cast<UKBEventData_set_direction>(EventData);
+
+	if (CharacterMap.Contains(ServerData->entityID))
+	{
+		ACharacterEntity* CharacterEntity = *CharacterMap.Find(ServerData->entityID);
+		CharacterEntity->SetActorRotation(ServerData->direction);
+		CharacterEntity->SetTargetRotator(ServerData->direction);
+	}
 }
 
 void ACombatGameMode::UpdatePosition(const UKBEventData* EventData)
 {
+	const UKBEventData_updatePosition* ServerData = Cast<UKBEventData_updatePosition>(EventData);
+
+	if (CharacterMap.Contains(ServerData->entityID))
+	{
+		ACharacterEntity* CharacterEntity = *CharacterMap.Find(ServerData->entityID);
+		CharacterEntity->SetTargetPosition(ServerData->position);
+		CharacterEntity->SetTargetRotator(ServerData->direction);
+	}
 }
 
 void ACombatGameMode::OnAnimUpdate(const UKBEventData* EventData)

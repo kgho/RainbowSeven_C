@@ -11,6 +11,8 @@
  */
 
 class APlayerCharacter;
+class ARemoteCharacter;
+class ACharacterEntity;
 
 UCLASS()
 class RAINBOWSEVEN_C_API ACombatGameMode : public AKBEGameMode
@@ -22,8 +24,16 @@ public:
 	UPROPERTY()
 		APlayerCharacter* PlayerCharacter;
 
+	// 本地玩家类
 	UPROPERTY(EditAnywhere)
 		TArray<TSubclassOf<APlayerCharacter>> PlayerClassList;
+
+	// 远程玩家类
+	UPROPERTY(EditAnywhere)
+		TArray<TSubclassOf<ARemoteCharacter>> RemoteClassList;
+
+	// 字典保存了所有的非玩家实体，key：实体ID,value：干员角色指针
+	TMap<int32, ACharacterEntity*> CharacterMap;
 
 
 public:
