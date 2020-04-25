@@ -70,12 +70,14 @@ void ALoginGameMode::OnVersionNotMatch(const UKBEventData* pEventData)
 {
 	const UKBEventData_onVersionNotMatch* ServerData = Cast<UKBEventData_onVersionNotMatch>(pEventData);
 	DDH::Debug() << "OnVersionNotMatch : serverVersion-->" << ServerData->serverVersion << "; clientVersion -->" << ServerData->clientVersion << DDH::Endl();
+	LoginWidget->ShowErrorPanel();
 }
 
 void ALoginGameMode::OnScriptVersionNotMatch(const UKBEventData* pEventData)
 {
 	const UKBEventData_onScriptVersionNotMatch* ServerData = Cast<UKBEventData_onScriptVersionNotMatch>(pEventData);
 	DDH::Debug() << "OnScriptVersionNotMatch : clientScriptVersion-->" << ServerData->clientScriptVersion << "; serverScriptVersion -->" << ServerData->serverScriptVersion << DDH::Endl();
+	LoginWidget->ShowErrorPanel();
 }
 
 void ALoginGameMode::OnLoginBaseappFailed(const UKBEventData* pEventData)

@@ -7,6 +7,7 @@
 #include "Engine/KBEMain.h"
 #include "TextBlock.h"
 #include "Scripts/ExCommon.h"
+#include "SizeBox.h"
 
 void ULoginWidget::InitWidget()
 {
@@ -51,5 +52,10 @@ void ULoginWidget::SignUpButtonEvent()
 		LoginData.Add((uint8)ProjectName[i]);
 	}
 	LoginGameMode->KBEMain->createAccount(Username, Password, LoginData);
+}
+
+void ULoginWidget::ShowErrorPanel()
+{
+	SizeBoxError->SetVisibility(ESlateVisibility::Visible);
 }
 

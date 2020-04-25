@@ -9,6 +9,7 @@
 class UEditableTextBox;
 class UTextBlock;
 class ALoginGameMode;
+class USizeBox;
 /**
 *
 */
@@ -25,6 +26,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void SignUpButtonEvent();
+
+	void ShowErrorPanel();
 
 public:
 	ALoginGameMode* LoginGameMode;
@@ -48,4 +51,7 @@ public:
 		UEditableTextBox* EditableTextBox_Password;
 
 	FString AccountName;
+
+	UPROPERTY(Meta = (BindWidget))
+		USizeBox* SizeBoxError;
 };
