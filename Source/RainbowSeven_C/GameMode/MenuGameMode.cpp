@@ -7,6 +7,7 @@
 #include "UI/MenuWidget.h"
 #include "Scripts/ExCommon.h"
 #include "Kismet/GameplayStatics.h"
+#include "RSGameInstance.h"
 
 void AMenuGameMode::InstallEvent()
 {
@@ -32,6 +33,8 @@ void AMenuGameMode::InstallEvent()
 	KBENGINE_REGISTER_EVENT("OnReqSelectRole", OnReqSelectRole);
 
 	KBENGINE_REGISTER_EVENT("OnAllReady", OnAllReady);
+
+	KBENGINE_REGISTER_EVENT("OnReqStartGame", OnReqStartGame);
 
 	// 进入游戏地图
 	KBENGINE_REGISTER_EVENT("addSpaceGeometryMapping", AddSpaceGeometryMapping);
@@ -128,6 +131,14 @@ void AMenuGameMode::OnAllReady(const UKBEventData* EventData)
 {
 	const UKBEventData_OnAllReady* ServerData = Cast<UKBEventData_OnAllReady>(EventData);
 	MenuWidget->OnAllReady(ServerData->AllReady);
+}
+
+void AMenuGameMode::OnReqStartGame(const UKBEventData* EventData)
+{
+	//保存选中的房间名字到GameInstance
+	URSGameInstance* GameInstance = Cast<URSGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	GameInstance->BluePlayerNameArr = { TEXT("Blue 1"), TEXT("Blue 2"), TEXT("Blue 3") , TEXT("Blue 4") , TEXT("Blue 5") };
+	GameInstance->RedPlayerNameArr = { TEXT("Red 1"), TEXT("Red 2"), TEXT("Red 3"), TEXT("Red 4"), TEXT("Red 5") };
 }
 
 void AMenuGameMode::AddSpaceGeometryMapping(const UKBEventData* EventData)

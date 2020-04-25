@@ -3,6 +3,7 @@
 #include "Engine/KBEvent.h"
 #include "RSEventData.h"
 #include "ExCommon.h"
+#include "Kismet/GameplayStatics.h"
 
 KBEngine::Account::Account()
 {
@@ -275,6 +276,11 @@ void KBEngine::Account::OnReqStartGame(uint8 arg1)
 		// 向服务器请求进入游戏
 		pBaseEntityCall->ReqEnterGame(0);
 	}
+
+	// 消息需要添加玩家信息列表 发给MenuGameMode
+	// 保存到  房间玩家数据 到 GameInstance
+	KBENGINE_EVENT_FIRE("OnReqStartGame", NewObject<UKBEventData>());
+
 }
 
 

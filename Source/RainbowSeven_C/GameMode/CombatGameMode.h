@@ -13,6 +13,7 @@
 class APlayerCharacter;
 class ARemoteCharacter;
 class ACharacterEntity;
+class UCombatWidget;
 
 UCLASS()
 class RAINBOWSEVEN_C_API ACombatGameMode : public AKBEGameMode
@@ -34,6 +35,9 @@ public:
 
 	// 字典保存了所有的非玩家实体，key：实体ID,value：干员角色指针
 	TMap<int32, ACharacterEntity*> CharacterMap;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UCombatWidget> CombatWidgetClass;
 
 
 public:
@@ -65,4 +69,7 @@ protected:
 
 	void SetHP(const UKBEventData* EventData);
 
+protected:
+
+	UCombatWidget* CombatWidget;
 };

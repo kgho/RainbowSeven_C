@@ -59,6 +59,8 @@ protected:
 
 	void OnAllReady(const UKBEventData* EventData);
 
+	void OnReqStartGame(const UKBEventData* EventData);
+
 	// 进入游戏地图
 	void AddSpaceGeometryMapping(const UKBEventData* EventData);
 };

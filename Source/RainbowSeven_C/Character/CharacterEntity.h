@@ -65,7 +65,7 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 		int32 HP;
 
-	int32 BaseHp;
+	int32 BaseHP;
 
 protected:
 

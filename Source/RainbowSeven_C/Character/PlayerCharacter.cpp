@@ -88,7 +88,7 @@ void APlayerCharacter::Destroyed()
 
 void APlayerCharacter::SetBaseHP(int32 InBaseHP)
 {
-	BaseHp = InBaseHP;
+	BaseHP = InBaseHP;
 }
 
 void APlayerCharacter::SetHP(int32 InHP)
@@ -100,7 +100,7 @@ void APlayerCharacter::SetHP(int32 InHP)
 	}
 
 	// 新血值不为0，且比旧血值小，并且不是第一次设置的基础血值，说明在掉血
-	if (InHP > 0 && InHP < HP && InHP != BaseHp)
+	if (InHP > 0 && InHP < HP && InHP != BaseHP)
 	{
 		//播放受击动画
 	}
