@@ -91,7 +91,23 @@ void UMenuWidget::OnReqUnlockRole(uint8 result)
 {
 	if (result == 0)
 	{
-		CanvasRoleUnlockSuccessful->SetVisibility(ESlateVisibility::Visible);
+		FString selectRoleName;
+		switch (selectedRoleType)
+		{
+		case 1:
+			selectRoleName = TEXT("埃里克");
+			break;
+		case 2:
+			selectRoleName = TEXT("卡拉");
+			break;
+		case 3:
+			selectRoleName = TEXT("克劳迪娅");
+			break;
+		case 4:
+			selectRoleName = TEXT("曼纽尔");
+			break;
+		}
+		Text_Role_Unlock_Name->SetVisibility(ESlateVisibility::Visible);
 	}
 }
 

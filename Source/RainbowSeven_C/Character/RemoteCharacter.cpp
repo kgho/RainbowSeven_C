@@ -2,10 +2,27 @@
 
 
 #include "RemoteCharacter.h"
+#include "Components/BoxComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+
+FName ARemoteCharacter::GroundName(TEXT("Ground"));
 
 ARemoteCharacter::ARemoteCharacter()
 {
 	GetMesh()->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
+
+	GroundBox = CreateDefaultSubobject<UBoxComponent>(TEXT("GroundBox"));
+	GroundBox->SetupAttachment(RootComponent);
+	GroundBox->SetCollisionProfileName(FName("OverlapAll"));
+
+	// 绑定，通过反射触发事件
+	FScriptDelegate OverlapBegin;
+	OverlapBegin.BindUFunction(this, "OnOverlapBegin");
+	GroundBox->OnComponentBeginOverlap.Add(OverlapBegin);
+
+	FScriptDelegate OverlapEnd;
+	OverlapEnd.BindUFunction(this, "OnOverlapEnd");
+	GroundBox->OnComponentEndOverlap.Add(OverlapEnd);
 }
 
 void ARemoteCharacter::Tick(float DeltaTime)
@@ -40,4 +57,22 @@ void ARemoteCharacter::Tick(float DeltaTime)
 	float AnimLerpPercent = FMath::Clamp(RemainAnimSpaceTime / UpdateAnimSpaceTime, 0.f, 1.f);
 	AnimSpeed = FMath::Lerp(TargetSpeed, LastSpeed, AnimLerpPercent);
 	AnimDirection = FMath::Lerp(TargetDirection, LastDirection, AnimLerpPercent);
+}
+
+void ARemoteCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	//是否碰到地面
+	if (OtherActor->GetFName().IsEqual(GroundName))
+	{
+		AnimIsInAir = false;
+	}
+}
+
+void ARemoteCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	//是否碰到地面
+	if (OtherActor->GetFName().IsEqual(GroundName))
+	{
+		AnimIsInAir = true;
+	}
 }
