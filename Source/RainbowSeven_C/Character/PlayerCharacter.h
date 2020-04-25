@@ -27,6 +27,10 @@ public:
 
 	virtual void Destroyed() override;
 
+	virtual void SetBaseHP(int32 InBaseHP) override;
+
+	virtual void SetHP(int32 InHP) override;
+
 public:
 	ACombatController* CombatController;
 

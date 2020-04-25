@@ -301,6 +301,36 @@ public:
 		float Direction;
 };
 
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_SetBaseHP : public UKBEventData {
+	GENERATED_BODY()
+public:
+	// 哪个实体更新的
+	UPROPERTY()
+		int32 EntityId;
+
+	UPROPERTY()
+		bool IsPlayer;
+
+	UPROPERTY()
+		int32 BaseHP;
+};
+
+UCLASS()
+class KBENGINEPLUGINS_API UKBEventData_SetHP : public UKBEventData {
+	GENERATED_BODY()
+public:
+	// 哪个实体更新的
+	UPROPERTY()
+		int32 EntityId;
+
+	UPROPERTY()
+		bool IsPlayer;
+
+	UPROPERTY()
+		int32 HP;
+};
+
 /**
  *
  */

@@ -86,6 +86,29 @@ void APlayerCharacter::Destroyed()
 	GetWorld()->GetTimerManager().ClearTimer(AnimUpdateHandle);
 }
 
+void APlayerCharacter::SetBaseHP(int32 InBaseHP)
+{
+	BaseHp = InBaseHP;
+}
+
+void APlayerCharacter::SetHP(int32 InHP)
+{
+	if (InHP == 0)
+	{
+		// 死亡,目前还没有观战功能，死亡后切换到UI输入模式
+		CombatController->SwitchInputMode(true);
+	}
+
+	// 新血值不为0，且比旧血值小，并且不是第一次设置的基础血值，说明在掉血
+	if (InHP > 0 && InHP < HP && InHP != BaseHp)
+	{
+		//播放受击动画
+	}
+
+	//保存
+	HP = InHP;
+}
+
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();

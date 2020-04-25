@@ -49,3 +49,23 @@ void KBEngine::Role::OnAnimUpdate(const ANIM_INFO& arg1)
 
 	KBENGINE_EVENT_FIRE("OnAnimUpdate", EventData);
 }
+
+void KBEngine::Role::onBaseHPChanged(int16 oldValue)
+{
+	UKBEventData_SetBaseHP* EventData = NewObject<UKBEventData_SetBaseHP>();
+	EventData->EntityId = id();
+	EventData->IsPlayer = isPlayer();
+	EventData->BaseHP = BaseHP;
+
+	KBENGINE_EVENT_FIRE("SetBaseHP", EventData);
+}
+
+void KBEngine::Role::onHPChanged(int16 oldValue)
+{
+	UKBEventData_SetHP* EventData = NewObject<UKBEventData_SetHP>();
+	EventData->EntityId = id();
+	EventData->IsPlayer = isPlayer();
+	EventData->HP = HP;
+
+	KBENGINE_EVENT_FIRE("SetHP", EventData);
+}

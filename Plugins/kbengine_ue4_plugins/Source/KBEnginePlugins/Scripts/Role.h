@@ -14,5 +14,10 @@ namespace KBEngine
 		virtual void onDestroy() override;
 
 		virtual void OnAnimUpdate(const ANIM_INFO& arg1) override;
+
+		virtual void onBaseHPChanged(int16 oldValue) override;
+
+		virtual void onHPChanged(int16 oldValue) override;
+
 	};
 }

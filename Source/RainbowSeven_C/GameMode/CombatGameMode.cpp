@@ -57,6 +57,7 @@ void ACombatGameMode::InstallEvent()
 	KBENGINE_REGISTER_EVENT(KBEngine::KBEventTypes::updatePosition, UpdatePosition);
 
 	KBENGINE_REGISTER_EVENT("OnAnimUpdate", OnAnimUpdate);
+
 	KBENGINE_REGISTER_EVENT("SetBaseHP", SetBaseHP);
 	KBENGINE_REGISTER_EVENT("SetHP", SetHP);
 }
@@ -212,8 +213,34 @@ void ACombatGameMode::OnAnimUpdate(const UKBEventData* EventData)
 
 void ACombatGameMode::SetBaseHP(const UKBEventData* EventData)
 {
+	const UKBEventData_SetBaseHP* ServerData = Cast<UKBEventData_SetBaseHP>(EventData);
+
+	if (ServerData->IsPlayer)
+	{
+		if (PlayerCharacter)
+		{
+			PlayerCharacter->SetBaseHP(ServerData->BaseHP);
+		}
+	}
+	else
+	{
+
+	}
 }
 
 void ACombatGameMode::SetHP(const UKBEventData* EventData)
 {
+	const UKBEventData_SetHP* ServerData = Cast<UKBEventData_SetHP>(EventData);
+
+	if (ServerData->IsPlayer)
+	{
+		if (PlayerCharacter)
+		{
+			PlayerCharacter->SetHP(ServerData->HP);
+		}
+	}
+	else
+	{
+
+	}
 }
