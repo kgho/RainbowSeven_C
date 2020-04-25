@@ -52,6 +52,10 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 		bool AnimIsInAir;
 
+	 // 蹲下 - Left Ctrl
+	UPROPERTY(BlueprintReadOnly)
+		bool Crouching;
+
 	// 通过血量控制死亡动画播放
 	UPROPERTY(BlueprintReadOnly)
 		int32 HP;
