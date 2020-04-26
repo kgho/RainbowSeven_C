@@ -89,7 +89,7 @@ public:
 #pragma endregion
 namespace DDH
 {
-	FORCEINLINE DDRecord& Debug(float InTime = 60, FColor InColor = FColor::Yellow)
+	FORCEINLINE DDRecord& Debug(float InTime = 0, FColor InColor = FColor::Yellow)
 	{
 
 		DDRecord::Get()->PatternID = 0;

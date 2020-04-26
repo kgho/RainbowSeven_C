@@ -189,6 +189,9 @@ public:
 		UTextBlock* Text_Role_Unlock_Name;
 
 	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* Text_UnlockRoleSuccessfulName;
+
+	UPROPERTY(Meta = (BindWidget))
 		UCanvasPanel* CanvasRoleUnlockSuccessful;
 
 	UPROPERTY(Meta = (BindWidget))
