@@ -18,6 +18,8 @@
 #include "PlayerItem.h"
 #include "VerticalBoxSlot.h"
 #include "RoomRoleItem.h"
+#include "VerticalBox.h"
+#include "VerticalBoxSlot.h"
 
 void UMenuWidget::NativeConstruct()
 {
@@ -294,14 +296,14 @@ void UMenuWidget::OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerListBlue, TArray<FPL
 	//清空数组
 	PlayerItemGroupBlue.Empty();
 
-	Scroll_Box_TeamBlue->ClearChildren();
+	Vertical_Box_TeamBlue->ClearChildren();
 
 	for (int i = 0; i < PlayerListBlue.Num(); ++i)
 	{
 		// 创建PlayerItem
 		UPlayerItem* PlayerItem = WidgetTree->ConstructWidget<UPlayerItem>(PlayerItemClass);
-		UScrollBoxSlot* PlayerItemSlot = Cast<UScrollBoxSlot>(Scroll_Box_TeamBlue->AddChild(PlayerItem));
-		PlayerItemSlot->SetPadding(FMargin(0.f, 5.f, 0.f, 5.f));
+		UVerticalBoxSlot* PlayerItemSlot = Cast<UVerticalBoxSlot>(Vertical_Box_TeamBlue->AddChild(PlayerItem));
+		PlayerItemSlot->SetPadding(FMargin(5.f, 5.f, 5.f, 5.f));
 
 		// 设置玩家信息
 		PlayerItem->RefreshItem(PlayerListBlue[i]);
@@ -318,12 +320,12 @@ void UMenuWidget::OnReqEnterRoom(TArray<FPLAYER_INFO> PlayerListBlue, TArray<FPL
 		PlayerItemGroupRed[i]->ConditionalBeginDestroy();
 	}
 	PlayerItemGroupRed.Empty();
-	Scroll_Box_TeamRed->ClearChildren();
+	Vertical_Box_TeamRed->ClearChildren();
 	for (int i = 0; i < PlayerListRed.Num(); ++i)
 	{
 		UPlayerItem* PlayerItem = WidgetTree->ConstructWidget<UPlayerItem>(PlayerItemClass);
-		UScrollBoxSlot* PlayerItemSlot = Cast<UScrollBoxSlot>(Scroll_Box_TeamRed->AddChild(PlayerItem));
-		PlayerItemSlot->SetPadding(FMargin(0.f, 5.f, 0.f, 5.f));
+		UVerticalBoxSlot* PlayerItemSlot = Cast<UVerticalBoxSlot>(Vertical_Box_TeamRed->AddChild(PlayerItem));
+		PlayerItemSlot->SetPadding(FMargin(5.f, 5.f, 5.f, 5.f));
 		PlayerItem->RefreshItem(PlayerListRed[i]);
 		//PlayerItem->ItemSelectDel.BindUObject(this, &UMenuWidget::RoomItemSelect);
 		PlayerItemGroupRed.Add(PlayerItem);

@@ -13,12 +13,13 @@ class UProgressBar;
 class UButton;
 class URoleItem;
 class UCanvasPanel;
-class UScrollBox;
 class URoomItem;
 class UEditableTextBox;
 class UPlayerItem;
 class UVerticalBox;
 class URoomRoleItem;
+class UScrollBox;
+class UVerticalBox;
 /**
  *
  */
@@ -242,10 +243,10 @@ public:
 		UCanvasPanel* CanvasRoom;
 
 	UPROPERTY(Meta = (BindWidget))
-		UScrollBox* Scroll_Box_TeamBlue;
+		UVerticalBox* Vertical_Box_TeamBlue;
 
 	UPROPERTY(Meta = (BindWidget))
-		UScrollBox* Scroll_Box_TeamRed;
+		UVerticalBox* Vertical_Box_TeamRed;
 
 	UPROPERTY()
 		TArray<UPlayerItem*> PlayerItemGroupBlue;

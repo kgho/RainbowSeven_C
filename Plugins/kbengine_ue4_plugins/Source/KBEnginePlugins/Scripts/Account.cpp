@@ -63,6 +63,7 @@ void KBEngine::Account::__init__()
 
 	KBENGINE_REGISTER_EVENT_OVERRIDE_FUNC("ReqLeaveRoom", "ReqLeaveRoom", [this](const UKBEventData* EventData)
 		{
+			DDH::Debug() << "Account::ReqLeaveRoom-->" << DDH::Endl();
 			pBaseEntityCall->ReqLeaveRoom();
 		});
 
@@ -235,6 +236,7 @@ void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2, cons
 
 void  KBEngine::Account::OnReqLeaveRoom(uint8 arg1)
 {
+	DDH::Debug() << "Account::OnReqLeaveRoom--> State:" << arg1 << DDH::Endl();
 	KBENGINE_EVENT_FIRE("OnReqLeaveRoom", NewObject<UKBEventData>());
 }
 
