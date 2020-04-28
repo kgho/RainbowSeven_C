@@ -154,6 +154,7 @@ void KBEngine::Account::OnReqUnlockRole(uint8 arg1, uint8 arg2)
 {
 	UKBEventData_OnReqUnlockRole* EventData = NewObject< UKBEventData_OnReqUnlockRole>();
 	EventData->Result = arg1;
+	EventData->RoleType = arg2;
 	DDH::Debug() << "Account::OnReqUnlockRole--> Result:" << arg1 << ", RoelType:" << arg2 << DDH::Endl();
 	KBENGINE_EVENT_FIRE("OnReqUnlockRole", EventData);
 }

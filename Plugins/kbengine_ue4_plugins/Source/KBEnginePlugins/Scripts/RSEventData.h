@@ -132,6 +132,9 @@ class KBENGINEPLUGINS_API UKBEventData_OnReqUnlockRole :public UKBEventData
 public:
 	UPROPERTY()
 		uint8 Result;
+
+	UPROPERTY()
+		uint8 RoleType;
 };
 
 UCLASS()

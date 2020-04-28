@@ -37,7 +37,7 @@ public:
 
 	void RefreshRoleInfo(FROLE_INFO RoleInfo);
 
-	void OnReqUnlockRole(uint8 result);
+	void OnReqUnlockRole(uint8 result, uint8 roleType);
 
 	void ReqRoomList();
 

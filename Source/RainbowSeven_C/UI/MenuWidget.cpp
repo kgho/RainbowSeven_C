@@ -89,14 +89,14 @@ void UMenuWidget::RefreshRoleInfo(FROLE_INFO RoleInfo)
 	Text_Role_Info_PlayCount->SetText(FText::FromString(FString::FromInt(playCount)));
 }
 
-void UMenuWidget::OnReqUnlockRole(uint8 result)
+void UMenuWidget::OnReqUnlockRole(uint8 result,uint8 roleType)
 {
 	if (result == 0)
 	{
 		CanvasRoleUnlockSuccessful->SetVisibility(ESlateVisibility::Visible);
 
 		FString selectRoleName;
-		switch (selectedRoleType)
+		switch (roleType)
 		{
 		case 1:
 			selectRoleName = TEXT("埃里克");

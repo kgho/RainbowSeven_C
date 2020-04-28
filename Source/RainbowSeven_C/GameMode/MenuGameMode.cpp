@@ -70,7 +70,7 @@ void AMenuGameMode::OnReqUnlockRole(const UKBEventData* EventData)
 {
 	const UKBEventData_OnReqUnlockRole* ServerData = Cast<UKBEventData_OnReqUnlockRole>(EventData);
 	DDH::Debug() << "AMenuGameMode::OnReqUnlockRole Result-->" << ServerData->Result << DDH::Endl();
-	MenuWidget->OnReqUnlockRole(ServerData->Result);
+	MenuWidget->OnReqUnlockRole(ServerData->Result, ServerData->RoleType);
 }
 
 void AMenuGameMode::OnReqRoleInfo(const UKBEventData* EventData)
