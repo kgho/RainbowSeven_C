@@ -9,6 +9,7 @@
 class ACombatController;
 class USpringArmComponent;
 class UCameraComponent;
+class UCombatWidget;
 /**
  * 本地玩家角色类
  */
@@ -40,6 +41,8 @@ public:
 	UPROPERTY(EditAnywhere)
 		float LookUpRate;
 
+	UCombatWidget* CombatWidget;
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -59,6 +62,10 @@ protected:
 	// 定时器绑定的方法
 	void AnimUpdate();
 
+	void ShowCanvasPanelScoreboard();
+
+	void HideCanvasPanelScoreboard();
+
 protected:
 	UPROPERTY(EditAnywhere)
 		USpringArmComponent* CameraSpringArm;
@@ -68,4 +75,5 @@ protected:
 
 	//更新动作到服务端定时器句柄，在 begin 中启动，在 destroyed 取消
 	FTimerHandle AnimUpdateHandle;
+
 };

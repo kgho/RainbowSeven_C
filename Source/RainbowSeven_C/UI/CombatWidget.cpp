@@ -27,6 +27,18 @@ void UCombatWidget::SetHPPercent(float InPercent)
 	//如果血值为0, 显示死亡 UI
 	if (InPercent <= 0.f)
 	{
-		CanvasPanelDeath->SetVisibility(ESlateVisibility::Hidden);
+		CanvasPanelDeath->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void UCombatWidget::ToggleCanvasPanelScoreboard(bool isShow)
+{
+	if (isShow)
+	{
+		CanvasPanelScoreboard->SetVisibility(ESlateVisibility::Visible);
+	}
+	else
+	{
+		CanvasPanelScoreboard->SetVisibility(ESlateVisibility::Hidden);
 	}
 }

@@ -201,7 +201,6 @@ void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2, cons
 		{
 			FPLAYER_INFO PlayerInfo;
 			PlayerInfo.InitData(arg2.Value[i].Name, arg2.Value[i].Level, arg2.Value[i].State, arg2.Value[i].Avatar, arg2.Value[i].Master);
-			DDH::Debug() << "Account::OnReqEnterRoom--> Name:" << arg2.Value[i].Name << "IsMaster:" << arg2.Value[i].Master << DDH::Endl();
 			EventData->PlayerListBlue.Add(PlayerInfo);
 		}
 
@@ -211,7 +210,6 @@ void KBEngine::Account::OnReqEnterRoom(uint8 arg1, const PLAYER_LIST& arg2, cons
 		{
 			FPLAYER_INFO PlayerInfo;
 			PlayerInfo.InitData(arg3.Value[i].Name, arg3.Value[i].Level, arg3.Value[i].State, arg3.Value[i].Avatar, arg3.Value[i].Master);
-			DDH::Debug() << "Account::OnReqEnterRoom--> Name:" << arg3.Value[i].Name << "IsMaster:" << arg3.Value[i].Master << DDH::Endl();
 			EventData->PlayerListRed.Add(PlayerInfo);
 		}
 

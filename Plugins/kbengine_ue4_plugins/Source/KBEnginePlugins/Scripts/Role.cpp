@@ -57,6 +57,8 @@ void KBEngine::Role::onBaseHPChanged(int16 oldValue)
 	EventData->IsPlayer = isPlayer();
 	EventData->BaseHP = BaseHP;
 
+	DDH::Debug() << "Role::onBaseHPChanged --> " << oldValue << DDH::Endl();
+
 	KBENGINE_EVENT_FIRE("SetBaseHP", EventData);
 }
 
@@ -67,5 +69,7 @@ void KBEngine::Role::onHPChanged(int16 oldValue)
 	EventData->IsPlayer = isPlayer();
 	EventData->HP = HP;
 
-	KBENGINE_EVENT_FIRE("SetHP", EventData);
+	DDH::Debug() << "Role::onHPChanged --> " << oldValue << DDH::Endl();
+
+	//KBENGINE_EVENT_FIRE("SetHP", EventData);
 }

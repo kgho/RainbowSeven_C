@@ -9,6 +9,8 @@
 #include "Camera/CameraComponent.h"
 #include "Engine/KBEngine.h"
 #include "Scripts/RSEventData.h"
+#include "GameMode/CombatGameMode.h"
+#include "UI/CombatWidget.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -53,6 +55,9 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 	PlayerInputComponent->BindAxis("Turn", this, &APlayerCharacter::Turn);
 	PlayerInputComponent->BindAxis("LookUp", this, &APlayerCharacter::LookUp);
+
+	PlayerInputComponent->BindAction("ScoreToggle", IE_Pressed, this, &APlayerCharacter::ShowCanvasPanelScoreboard);
+	PlayerInputComponent->BindAction("ScoreToggle", IE_Released, this, &APlayerCharacter::HideCanvasPanelScoreboard);
 }
 
 void APlayerCharacter::Tick(float DeltaSeconds)
@@ -171,5 +176,16 @@ void APlayerCharacter::AnimUpdate()
 	EventData->Direction = AnimDirection;
 	KBENGINE_EVENT_FIRE("AnimUpdate", EventData);
 }
+
+void APlayerCharacter::ShowCanvasPanelScoreboard()
+{
+	CombatWidget->ToggleCanvasPanelScoreboard(true);
+}
+
+void APlayerCharacter::HideCanvasPanelScoreboard()
+{
+	CombatWidget->ToggleCanvasPanelScoreboard(false);
+}
+
 
 

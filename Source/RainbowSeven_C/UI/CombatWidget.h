@@ -23,11 +23,16 @@ public:
 
 	void SetHPPercent(float InPercent);
 
+	void ToggleCanvasPanelScoreboard(bool isShow);
+
 public:
 	UPROPERTY(Meta = (BindWidget))
 		UProgressBar* ProgressBar_Blood;
 
 	UPROPERTY(Meta = (BindWidget))
 		UCanvasPanel* CanvasPanelDeath;
+
+	UPROPERTY(Meta = (BindWidget))
+		UCanvasPanel* CanvasPanelScoreboard;
 
 };
